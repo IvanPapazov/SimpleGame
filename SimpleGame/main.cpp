@@ -18,8 +18,8 @@ int main(int argc, char* argv[]) {
 
     player.x = 100;
     player.y = 200;
-    player.w = 70;
-    player.h = 90;
+    player.w = 80;
+    player.h = 100;
     player.texture = loadTexture("images/preview.png");
     if (!player.texture) {
         std::cerr << "Failed to load player texture!\n";

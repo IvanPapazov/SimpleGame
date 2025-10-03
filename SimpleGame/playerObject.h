@@ -5,6 +5,9 @@ typedef struct {
     int y;
     int w;
     int h;
+
+    float vy;
+
     SDL_Texture* texture;
 } Entity; 
 
