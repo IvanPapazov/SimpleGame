@@ -51,8 +51,7 @@ int main(int argc, char* argv[]) {
         SDL_RenderClear(app.renderer);
 
         blit(ground.texture, ground.x, ground.y, ground.w, ground.h);
-        blit(player.texture, player.x, player.y,player.w,player.h);
-        
+        gra
         SDL_RenderPresent(app.renderer);
     }
 
