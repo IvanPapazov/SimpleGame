@@ -23,12 +23,15 @@
     <ClCompile Include="loadTexture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="playerObject.cpp" />
-    <ClCompile Include="window.cpp" />
+    <ClCompile Include="system\GameObject.cpp" />
+    <ClCompile Include="system\RenderingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="loadTexture.h" />
+    <ClInclude Include="physics.h" />
     <ClInclude Include="playerObject.h" />
-    <ClInclude Include="window.h" />
+    <ClInclude Include="system\GameObject.h" />
+    <ClInclude Include="system\RenderingManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -54,7 +57,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -92,6 +95,8 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Users\i_pap\Desktop\SImpleGame\externals\SDL2_image\include;C:\Users\i_pap\Desktop\SImpleGame\externals\SDL2\include;D:\SimpleGame\externals\SDL2_image\include;D:\SimpleGame\externals\SDL2\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\i_pap\Desktop\SImpleGame\externals\SDL2_image\lib\x64;C:\Users\i_pap\Desktop\SImpleGame\externals\SDL2\lib\x64;D:\SimpleGame\externals\SDL2_image\lib\x64;D:\SimpleGame\externals\SDL2\lib\x64;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)build\</OutDir>
+    <IntDir>$(SolutionDir)build\obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -130,12 +135,17 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SimpleGame\system;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)externals\SDL2\lib\x64\SDL2.dll" "$(SolutionDir)build\SDL2.dll"
+copy /Y "$(SolutionDir)externals\SDL2_image\lib\x64\SDL2_image.dll" "$(SolutionDir)build\SDL2_image.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

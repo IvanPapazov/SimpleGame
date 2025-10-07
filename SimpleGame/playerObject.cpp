@@ -1,19 +1,17 @@
-#include "window.h"
 #include "playerObject.h"
+#include "loadTexture.h"
+#include "RenderingManager.h"
 
-Entity player;
-Entity ground;
-
-void blit(SDL_Texture* texture, int x, int y, int w, int h)
+RenderingManager& rendererManager = RenderingManager::getInstance();
+void blit(SDL_Texture* texture, float x, float y, float w, float h)
 {
 	SDL_Rect dest;
-
 	dest.x = x;
 	dest.y = y;
 	dest.w = w;
 	dest.h = h;
 
 	SDL_QueryTexture(texture, NULL, NULL, NULL, NULL);
-
-	SDL_RenderCopy(app.renderer, texture, NULL, &dest);
+	SDL_RenderCopy(rendererManager.getRenderer(), texture, NULL, &dest);
 }
+

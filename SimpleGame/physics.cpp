@@ -1,102 +1,63 @@
 #include <SDL.h>
 #include <iostream>
-#include "window.h"
 #include "playerObject.h"
+#include "physics.h"
+#include "GameObject.h"
 
-const float GRAVITY = 9.8f;
-const float GROUND_Y= NULL;
 
-struct Vec2 {
-    float x, y;
-    Vec2(float x = 0, float y = 0) : x(x), y(y) {}
-    Vec2 operator+(const Vec2& other) const { return Vec2(x + other.x, y + other.y); }
-    Vec2 operator*(float scalar) const { return Vec2(x * scalar, y * scalar); }
-    Vec2& operator+=(const Vec2& other) { x += other.x; y += other.y; return *this; }
-};
+Rigidbody::Rigidbody(float x, float y)
+    : position(x, y), velocity(0.0f, 0.0f), acceleration(0.0f, 0.0f) {}
 
-struct Rigidbody {
-    Vec2 position;
-    Vec2 velocity;
-    Vec2 acceleration;
+void Rigidbody::update(float deltaTime) {
+    velocity += acceleration * deltaTime;
+    position += velocity * deltaTime;
+}
 
-    Rigidbody(float x, float y) {
-        position = Vec2(x, y);
-        velocity = Vec2(0, 0);
-        acceleration = Vec2(0, GRAVITY);
+void Rigidbody::applyGravity(GameObject& gameObject, float deltaTime, float gravity, float groundY) {
+    Rigidbody& rb = gameObject.getRigidbody();
+
+    Vec2 acc = rb.getAcceleration();
+    acc.y = gravity;
+    rb.update(deltaTime);
+
+    Vec2 pos = rb.getPosition();
+    float height = gameObject.getHeight();
+
+    if (pos.y + height >= groundY) {
+        pos.y = groundY - height;
+        Vec2 vel = rb.getVelocity();
+        vel.y = 0.0f;
+        acc.y = 0.0f;
+        rb.setVelocity(vel);
     }
 
-    void update(float dt) {
-        velocity += acceleration * dt;
-        position += velocity * dt;     
-    }
-};
-
-void gravity(Entity object)
-{
-    //vy += GRAVITY;
-    //object.y += vy;
-
-    // Simple ground collision
-    //if (object.y + object.h >= GROUND_Y) {
-    //    object.y = GROUND_Y - object.h;
-    //   // vy = 0;
-    //}
-
-    blit(player.texture, player.x, player.y, player.w, player.h);
+    rb.setPosition(pos);
+    rb.setAcceleration(acc);
 }
 
 
+Vec2 Rigidbody::getPosition() {
+    return position;
+}
+
+Vec2 Rigidbody::getVelocity() {
+    return velocity;
+}
+
+Vec2 Rigidbody::getAcceleration() {
+    return acceleration;
+}
 
 
+void Rigidbody::setPosition(Vec2& pos) {
+    position = pos;
+}
 
+void Rigidbody::setVelocity(Vec2& vel) {
+    velocity = vel;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void Rigidbody::setAcceleration(Vec2& acc) {
+    acceleration = acc;
+}
 

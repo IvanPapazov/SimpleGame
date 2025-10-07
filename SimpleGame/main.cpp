@@ -1,44 +1,40 @@
 #include <SDL.h>
 #include <iostream>
-#include "window.h"
 #include "playerObject.h"
 #include "loadTexture.h"
+#include "RenderingManager.h"
+#include <GameObject.h>
 
 const int GROUND_HEIGHT = 50;
 
-int main(int argc, char* argv[]) {
-    memset(&app, 0, sizeof(App));
-    memset(&player, 0, sizeof(Entity));
-    memset(&ground, 0, sizeof(Entity));
 
-    if (!init()) {
+int main(int argc, char* argv[]) {
+
+    RenderingManager& rendererManager = RenderingManager::getInstance();
+
+    if (!rendererManager.init()) {
         std::cerr << "Failed to initialize!\n";
         return 1;
     }
 
-    player.x = 100;
-    player.y = 200;
-    player.w = 80;
-    player.h = 100;
-    player.texture = loadTexture("images/preview.png");
-    if (!player.texture) {
-        std::cerr << "Failed to load player texture!\n";
-        close();
-        return 1;
-    }
+    //ground.x = 0;
+    //ground.y = GROUND_HEIGHT;
+    //ground.w = SCREEN_WIDTH;
+    //ground.h = SCREEN_HEIGHT;
+    //ground.texture = loadTexture("images/ground.png");
+    //if (!ground.texture) {
+    //    std::cerr << "Failed to load player texture!\n";
+    //    close();
+    //    return 1;
+    //}
 
-    ground.x = 0;
-    ground.y = GROUND_HEIGHT;
-    ground.w = SCREEN_WIDTH;
-    ground.h = SCREEN_HEIGHT;
-    ground.texture = loadTexture("images/ground.png");
-    if (!ground.texture) {
-        std::cerr << "Failed to load player texture!\n";
-        close();
-        return 1;
-    }
     bool running = true;
     SDL_Event event;
+    Uint64 NOW = SDL_GetPerformanceCounter();
+    Uint64 LAST = 0;
+    float deltaTime = 0;
+   
+    GameObject player = initializeGameObject(100, 200, "images/preview.png");
 
     while (running) {
         while (SDL_PollEvent(&event)) {
@@ -47,14 +43,21 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        SDL_SetRenderDrawColor(app.renderer, 135, 206, 235, 255);
-        SDL_RenderClear(app.renderer);
+        SDL_SetRenderDrawColor(rendererManager.getRenderer(), 135, 206, 235, 255);
+        SDL_RenderClear(rendererManager.getRenderer());
+        
 
-        blit(ground.texture, ground.x, ground.y, ground.w, ground.h);
-        gra
-        SDL_RenderPresent(app.renderer);
+        LAST = NOW;
+        NOW = SDL_GetPerformanceCounter();
+        deltaTime = (float)((NOW - LAST) * 1000.0f / (float)SDL_GetPerformanceFrequency()) / 1000.0f;
+
+        Rigidbody rigidbody = player.getRigidbody();
+        rigidbody.applyGravity(player, deltaTime, 9.8f, 400.0f);
+        rigidbody.update(deltaTime);
+        blit(player.getTexture(), rigidbody.getPosition().x, rigidbody.getPosition().y, player.getWidth(), player.getHeight());
+        SDL_RenderPresent(rendererManager.getRenderer());
     }
 
-    close();
+    rendererManager.close();
     return 0;
 }
