@@ -48,3 +48,9 @@ void RenderingManager::close()
         window = NULL;
     }
 }
+
+void RenderingManager::addGameObject(GameObject* gameObject)
+{
+    gameObjects.insert({ gameObject->getId(),gameObject });
+
+}

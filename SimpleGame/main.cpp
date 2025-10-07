@@ -34,8 +34,9 @@ int main(int argc, char* argv[]) {
     Uint64 LAST = 0;
     float deltaTime = 0;
    
-    GameObject player = initializeGameObject(100, 200, "images/preview.png");
-
+    GameObject* player = initializeGameObject(100, 200, "images/preview.png");
+    rendererManager.addGameObject(player);
+   
     while (running) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -51,13 +52,14 @@ int main(int argc, char* argv[]) {
         NOW = SDL_GetPerformanceCounter();
         deltaTime = (float)((NOW - LAST) * 1000.0f / (float)SDL_GetPerformanceFrequency()) / 1000.0f;
 
-        Rigidbody rigidbody = player.getRigidbody();
+        Rigidbody rigidbody = player->getRigidbody();
         rigidbody.applyGravity(player, deltaTime, 9.8f, 400.0f);
         rigidbody.update(deltaTime);
-        blit(player.getTexture(), rigidbody.getPosition().x, rigidbody.getPosition().y, player.getWidth(), player.getHeight());
+        blit(player->getTexture(), rigidbody.getPosition().x, rigidbody.getPosition().y, player->getWidth(), player->getHeight());
+
         SDL_RenderPresent(rendererManager.getRenderer());
     }
-
+    delete player;
     rendererManager.close();
     return 0;
 }

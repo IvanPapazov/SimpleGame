@@ -24,17 +24,17 @@ public:
 
     
     void update(float deltaTime);
-    void applyGravity(GameObject& gameObject, float deltaTime, float gravity, float groundY);
+    void applyGravity(GameObject* gameObject, float deltaTime, float gravity, float groundY);
 
     
-    Vec2 getPosition();
-    Vec2 getVelocity();
-    Vec2 getAcceleration();
+    Vec2 getPosition() { return position; };
+    Vec2 getVelocity() { return velocity; };
+    Vec2 getAcceleration() { return acceleration; };
 
     
-    void setPosition(Vec2& pos);
-    void setVelocity(Vec2& vel);
-    void setAcceleration(Vec2& acc);
+    void setPosition(Vec2& pos) { position = pos; };
+    void setVelocity(Vec2& vel) { velocity = vel; };
+    void setAcceleration(Vec2& acc) { acceleration = acc; };
 };
 
 
