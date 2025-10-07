@@ -1,5 +1,9 @@
 #include <GameObject.h>
 #include "../LoadTexture.h"
+#include <RenderingManager.h>
+#include <unordered_map>
+
+
 
 static int ms_GameObjectIdCounter = 0;
 
@@ -19,10 +23,10 @@ GameObject::~GameObject() {
 }
 
 
-GameObject* InitializeGameObject(float x, float y, const char* filePath) {
+GameObject* InitializeGameObject(float x, float y, float w, float h, const char* filePath) {
     GameObject* object = new GameObject();
-    object->SetWidth(80.0f);
-    object->SetHeight(100.0f);
+    object->SetWidth(w);
+    object->SetHeight(h);
     object->SetRigidBody(RigidBody(x, y));
     object->SetTexture(LoadTexture(filePath));
     if (!object->GetTexture()) {
@@ -30,5 +34,23 @@ GameObject* InitializeGameObject(float x, float y, const char* filePath) {
     }
     ms_GameObjectIdCounter++;
     return object;
+}
+
+GameObject* SelectGameObjectAt(float mouseX, float mouseY, std::unordered_map<int, GameObject*> gameObjects)
+{
+    for (auto& element : gameObjects) {
+
+        SDL_Rect bounds;
+        bounds.x = element.second->GetRigidBody().GetPosition().x;
+        bounds.y = element.second->GetRigidBody().GetPosition().y;
+        bounds.w = element.second->GetWidth();
+        bounds.h = element.second->GetHeight();
+
+        SDL_Point mousePoint = { mouseX, mouseY };
+        if (SDL_PointInRect(&mousePoint, &bounds)) {
+            return element.second;
+        }
+    }
+    return nullptr;
 }
 

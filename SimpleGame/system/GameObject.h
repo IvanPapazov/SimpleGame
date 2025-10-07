@@ -1,11 +1,13 @@
 #pragma once
 #include <SDL.h>
 #include "../physics.h"
+#include <unordered_map>
 
-class GameObject {
+
+class GameObject  {
 private:
 	int m_Id;
-	float m_Width, m_Height;
+	float m_Width, m_Height, m_Weight;
 	RigidBody m_RigidBody;
 	SDL_Texture* m_Texture;
 public:
@@ -24,4 +26,5 @@ public:
 	void SetRigidBody(const RigidBody& rb) { m_RigidBody = rb; }
 	void SetTexture(SDL_Texture* tex) { m_Texture = tex; }
 };
-GameObject* InitializeGameObject(float x, float y, const char* filePath);
+GameObject* SelectGameObjectAt(float mouseX, float mouseY, std::unordered_map<int, GameObject*> gameObjects);
+GameObject* InitializeGameObject(float x, float y, float w, float h, const char* filePath);

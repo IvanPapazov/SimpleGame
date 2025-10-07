@@ -24,7 +24,8 @@ public:
 
     
     void Update(float deltaTime);
-    void ApplyGravity(GameObject* gameObject, float deltaTime, float gravity, float groundY);
+    void ApplyGravityForce(GameObject* gameObject, float deltaTime);
+    void ApplyJumpForce(GameObject* gameObject, float deltaTime);
 
     
     Vec2 GetPosition() { return m_Position; };

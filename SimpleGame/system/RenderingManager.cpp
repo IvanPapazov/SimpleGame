@@ -52,5 +52,9 @@ void RenderingManager::Close()
 void RenderingManager::AddGameObject(GameObject* gameObject)
 {
     m_GameObjects.insert({ gameObject->GetId(),gameObject });
+}
 
+std::unordered_map<int, GameObject*>& RenderingManager::GetAllGameObjects()
+{
+    return m_GameObjects;
 }
