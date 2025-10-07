@@ -2,12 +2,12 @@
 #include <SDL_image.h>
 #include "RenderingManager.h"
 
-SDL_Texture* loadTexture(const char* filePath)
+SDL_Texture* LoadTexture(const char* filePath)
 {
 	RenderingManager& rendererManager = RenderingManager::getInstance();
-	SDL_Texture* texture;
-	SDL_Surface* loadedSurface = IMG_Load(filePath);
-	texture = SDL_CreateTextureFromSurface(rendererManager.getRenderer(), loadedSurface);
+	SDL_Texture* m_Texture;
+	SDL_Surface* m_LoadedSurface = IMG_Load(filePath);
+	m_Texture = SDL_CreateTextureFromSurface(rendererManager.GetRenderer(), m_LoadedSurface);
 
-	return texture;
+	return m_Texture;
 }

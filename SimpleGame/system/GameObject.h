@@ -6,23 +6,22 @@ class GameObject {
 private:
 	int m_Id;
 	float m_Width, m_Height;
-	Rigidbody rigidbody;
-	SDL_Texture* texture;
+	RigidBody m_RigidBody;
+	SDL_Texture* m_Texture;
 public:
 	GameObject();
-	GameObject(float width, float height, const Rigidbody& rb, SDL_Texture* tex);
+	GameObject(float width, float height, const RigidBody& rb, SDL_Texture* tex);
 	~GameObject();
 
-	int getId() { return m_Id; }
-	float getWidth() { return m_Width; }
-	float getHeight() { return m_Height; }
-	Rigidbody& getRigidbody() { return rigidbody; }
-	SDL_Texture* getTexture() { return texture; }
+	int GetId() { return m_Id; }
+	float GetWidth() { return m_Width; }
+	float GetHeight() { return m_Height; }
+	RigidBody& GetRigidBody() { return m_RigidBody; }
+	SDL_Texture* GetTexture() { return m_Texture; }
 
-	void setId(int id) { m_Id = id; }
-	void setWidth(float width) { m_Width = width; }
-	void setHeight(float height) { m_Height = height; }
-	void setRigidbody(const Rigidbody& rb) { rigidbody = rb; }
-	void setTexture(SDL_Texture* tex) { texture = tex; }
+	void SetWidth(float width) { m_Width = width; }
+	void SetHeight(float height) { m_Height = height; }
+	void SetRigidBody(const RigidBody& rb) { m_RigidBody = rb; }
+	void SetTexture(SDL_Texture* tex) { m_Texture = tex; }
 };
-GameObject* initializeGameObject(float x, float y, const char* filePath);
+GameObject* InitializeGameObject(float x, float y, const char* filePath);

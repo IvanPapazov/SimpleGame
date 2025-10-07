@@ -4,11 +4,11 @@
 
 RenderingManager& RenderingManager::getInstance()
 {
-    static RenderingManager instance;
-    return instance;
+    static RenderingManager ms_Instance;
+    return ms_Instance;
 }
 
-bool RenderingManager::init()
+bool RenderingManager::m_IsInitialized()
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -16,41 +16,41 @@ bool RenderingManager::init()
         return false;
     }
 
-    window = SDL_CreateWindow("Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    m_Window = SDL_CreateWindow("Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, g_ScreenWidth, g_ScreenHeight, SDL_WINDOW_SHOWN);
 
-    if (window == NULL)
+    if (m_Window == NULL)
     {
-        std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        std::cerr << "m_Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         return false;
     }
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL)
+    m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
+    if (m_Renderer == NULL)
     {
-        std::cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        std::cerr << "m_Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         return false;
     }
 
     return true;
 }
 
-void RenderingManager::close()
+void RenderingManager::Close()
 {
-    if (renderer)
+    if (m_Renderer)
     {
-        SDL_DestroyRenderer(renderer);
-        renderer = NULL;
+        SDL_DestroyRenderer(m_Renderer);
+        m_Renderer = NULL;
     }
 
-    if (window)
+    if (m_Window)
     {
-        SDL_DestroyWindow(window);
-        window = NULL;
+        SDL_DestroyWindow(m_Window);
+        m_Window = NULL;
     }
 }
 
-void RenderingManager::addGameObject(GameObject* gameObject)
+void RenderingManager::AddGameObject(GameObject* gameObject)
 {
-    gameObjects.insert({ gameObject->getId(),gameObject });
+    m_GameObjects.insert({ gameObject->GetId(),gameObject });
 
 }

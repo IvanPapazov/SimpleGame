@@ -1,9 +1,9 @@
 #include "playerObject.h"
-#include "loadTexture.h"
+#include "LoadTexture.h"
 #include "RenderingManager.h"
 
-RenderingManager& rendererManager = RenderingManager::getInstance();
-void blit(SDL_Texture* texture, float x, float y, float w, float h)
+RenderingManager& ms_RendererManager = RenderingManager::getInstance();
+void Blit(SDL_Texture* texture, float x, float y, float w, float h)
 {
 	SDL_Rect dest;
 	dest.x = x;
@@ -12,6 +12,6 @@ void blit(SDL_Texture* texture, float x, float y, float w, float h)
 	dest.h = h;
 
 	SDL_QueryTexture(texture, NULL, NULL, NULL, NULL);
-	SDL_RenderCopy(rendererManager.getRenderer(), texture, NULL, &dest);
+	SDL_RenderCopy(ms_RendererManager.GetRenderer(), texture, NULL, &dest);
 }
 

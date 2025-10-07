@@ -1,34 +1,34 @@
 #include <GameObject.h>
-#include "../loadTexture.h"
+#include "../LoadTexture.h"
 
-static int m_gameObjectIdCounter = 0;
+static int ms_GameObjectIdCounter = 0;
 
 GameObject::GameObject()
-    : m_Id(m_gameObjectIdCounter), m_Width(0.0f), m_Height(0.0f), texture(nullptr) {
+    : m_Id(ms_GameObjectIdCounter), m_Width(0.0f), m_Height(0.0f), m_Texture(nullptr) {
 }
 
-GameObject::GameObject(float width, float height, const Rigidbody& rb, SDL_Texture* tex)
-    : m_Id(m_gameObjectIdCounter), m_Width(width), m_Height(height), rigidbody(rb), texture(tex) {
+GameObject::GameObject(float width, float height, const RigidBody& rb, SDL_Texture* tex)
+    : m_Id(ms_GameObjectIdCounter), m_Width(width), m_Height(height), m_RigidBody(rb), m_Texture(tex) {
 }
 
 GameObject::~GameObject() {
-    if (texture) {
-        SDL_DestroyTexture(texture);
-        texture = nullptr;
+    if (m_Texture) {
+        SDL_DestroyTexture(m_Texture);
+        m_Texture = nullptr;
     }
 }
 
 
-GameObject* initializeGameObject(float x, float y, const char* filePath) {
+GameObject* InitializeGameObject(float x, float y, const char* filePath) {
     GameObject* object = new GameObject();
-    object->setWidth(80.0f);
-    object->setHeight(100.0f);
-    object->setRigidbody(Rigidbody(x, y));
-    object->setTexture(loadTexture(filePath));
-    if (!object->getTexture()) {
+    object->SetWidth(80.0f);
+    object->SetHeight(100.0f);
+    object->SetRigidBody(RigidBody(x, y));
+    object->SetTexture(LoadTexture(filePath));
+    if (!object->GetTexture()) {
         std::cerr << "Failed to load player texture!\n";
     }
-    m_gameObjectIdCounter++;
+    ms_GameObjectIdCounter++;
     return object;
 }
 

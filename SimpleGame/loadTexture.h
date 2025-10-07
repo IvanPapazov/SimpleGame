@@ -1,4 +1,4 @@
 #pragma once
 #include <SDL.h>
 
-SDL_Texture * loadTexture(const char* filePath);
+SDL_Texture * LoadTexture(const char* filePath);

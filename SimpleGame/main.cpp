@@ -1,65 +1,65 @@
 #include <SDL.h>
 #include <iostream>
 #include "playerObject.h"
-#include "loadTexture.h"
+#include "LoadTexture.h"
 #include "RenderingManager.h"
 #include <GameObject.h>
 
-const int GROUND_HEIGHT = 50;
+const int g_GroundHeight = 50;
 
 
 int main(int argc, char* argv[]) {
 
-    RenderingManager& rendererManager = RenderingManager::getInstance();
+    RenderingManager& ms_RendererManager = RenderingManager::getInstance();
 
-    if (!rendererManager.init()) {
+    if (!ms_RendererManager.m_IsInitialized()) {
         std::cerr << "Failed to initialize!\n";
         return 1;
     }
 
     //ground.x = 0;
-    //ground.y = GROUND_HEIGHT;
-    //ground.w = SCREEN_WIDTH;
-    //ground.h = SCREEN_HEIGHT;
-    //ground.texture = loadTexture("images/ground.png");
+    //ground.y = g_GroundHeight;
+    //ground.w = g_ScreenWidth;
+    //ground.h = g_ScreenHeight;
+    //ground.texture = LoadTexture("images/ground.png");
     //if (!ground.texture) {
     //    std::cerr << "Failed to load player texture!\n";
-    //    close();
+    //    Close();
     //    return 1;
     //}
 
-    bool running = true;
-    SDL_Event event;
-    Uint64 NOW = SDL_GetPerformanceCounter();
-    Uint64 LAST = 0;
-    float deltaTime = 0;
+    bool m_IsRunning = true;
+    SDL_Event m_Event;
+    Uint64 m_Now = SDL_GetPerformanceCounter();
+    Uint64 m_Last = 0;
+    float m_DeltaTime = 0;
    
-    GameObject* player = initializeGameObject(100, 200, "images/preview.png");
-    rendererManager.addGameObject(player);
+    GameObject* m_Player = InitializeGameObject(100, 200, "images/preview.png");
+    ms_RendererManager.AddGameObject(m_Player);
    
-    while (running) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                running = false;
+    while (m_IsRunning) {
+        while (SDL_PollEvent(&m_Event)) {
+            if (m_Event.type == SDL_QUIT) {
+                m_IsRunning = false;
             }
         }
 
-        SDL_SetRenderDrawColor(rendererManager.getRenderer(), 135, 206, 235, 255);
-        SDL_RenderClear(rendererManager.getRenderer());
+        SDL_SetRenderDrawColor(ms_RendererManager.GetRenderer(), 135, 206, 235, 255);
+        SDL_RenderClear(ms_RendererManager.GetRenderer());
         
 
-        LAST = NOW;
-        NOW = SDL_GetPerformanceCounter();
-        deltaTime = (float)((NOW - LAST) * 1000.0f / (float)SDL_GetPerformanceFrequency()) / 1000.0f;
+        m_Last = m_Now;
+        m_Now = SDL_GetPerformanceCounter();
+        m_DeltaTime = (float)((m_Now - m_Last) * 1000.0f / (float)SDL_GetPerformanceFrequency()) / 1000.0f;
 
-        Rigidbody rigidbody = player->getRigidbody();
-        rigidbody.applyGravity(player, deltaTime, 9.8f, 400.0f);
-        rigidbody.update(deltaTime);
-        blit(player->getTexture(), rigidbody.getPosition().x, rigidbody.getPosition().y, player->getWidth(), player->getHeight());
+        RigidBody m_RigidBody = m_Player->GetRigidBody();
+        m_RigidBody.ApplyGravity(m_Player, m_DeltaTime, 9.8f, 400.0f);
+        m_RigidBody.Update(m_DeltaTime);
+        Blit(m_Player->GetTexture(), m_RigidBody.GetPosition().x, m_RigidBody.GetPosition().y, m_Player->GetWidth(), m_Player->GetHeight());
 
-        SDL_RenderPresent(rendererManager.getRenderer());
+        SDL_RenderPresent(ms_RendererManager.GetRenderer());
     }
-    delete player;
-    rendererManager.close();
+    delete m_Player;
+    ms_RendererManager.Close();
     return 0;
 }

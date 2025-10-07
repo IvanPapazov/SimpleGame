@@ -5,34 +5,34 @@
 #include "GameObject.h"
 
 
-Rigidbody::Rigidbody(float x, float y)
-    : position(x, y), velocity(0.0f, 0.0f), acceleration(0.0f, 0.0f) {}
+RigidBody::RigidBody(float x, float y)
+    : m_Position(x, y), m_Velocity(0.0f, 0.0f), m_Acceleration(0.0f, 0.0f) {}
 
-void Rigidbody::update(float deltaTime) {
-    velocity += acceleration * deltaTime;
-    position += velocity * deltaTime;
+void RigidBody::Update(float deltaTime) {
+    m_Velocity += m_Acceleration * deltaTime;
+    m_Position += m_Velocity * deltaTime;
 }
 
-void Rigidbody::applyGravity(GameObject* gameObject, float deltaTime, float gravity, float groundY) {
-    Rigidbody& rb = gameObject->getRigidbody();
+void RigidBody::ApplyGravity(GameObject* gameObject, float deltaTime, float gravity, float groundY) {
+    RigidBody& rb = gameObject->GetRigidBody();
 
-    Vec2 acc = rb.getAcceleration();
+    Vec2 acc = rb.GetAcceleration();
     acc.y = gravity;
-    rb.update(deltaTime);
+    rb.Update(deltaTime);
 
-    Vec2 pos = rb.getPosition();
-    float height = gameObject->getHeight();
+    Vec2 pos = rb.GetPosition();
+    float height = gameObject->GetHeight();
 
     if (pos.y + height >= groundY) {
         pos.y = groundY - height;
-        Vec2 vel = rb.getVelocity();
+        Vec2 vel = rb.GetVelocity();
         vel.y = 0.0f;
         acc.y = 0.0f;
-        rb.setVelocity(vel);
+        rb.SetVelocity(vel);
     }
 
-    rb.setPosition(pos);
-    rb.setAcceleration(acc);
+    rb.SetPosition(pos);
+    rb.SetAcceleration(acc);
 }
 
 

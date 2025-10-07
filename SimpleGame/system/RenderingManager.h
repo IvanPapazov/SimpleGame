@@ -4,27 +4,27 @@
 #include <unordered_map>
 #include <GameObject.h>
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+const int g_ScreenWidth = 800;
+const int g_ScreenHeight = 600;
 
 class RenderingManager
 {
 public:
     static RenderingManager& getInstance();
 
-    bool init();
-    void close();
-    void addGameObject(GameObject* gameObject);
+    bool m_IsInitialized();
+    void Close();
+    void AddGameObject(GameObject* gameObject);
 
-    SDL_Renderer* getRenderer() const { return renderer; }
-    SDL_Window* getWindow() const { return window; }
+    SDL_Renderer* GetRenderer() const { return m_Renderer; }
+    SDL_Window* GetWindow() const { return m_Window; }
 
 private:
     RenderingManager() = default;
     ~RenderingManager() = default;
 
-    SDL_Window* window = nullptr;
-    SDL_Renderer* renderer = nullptr;
+    SDL_Window* m_Window = nullptr;
+    SDL_Renderer* m_Renderer = nullptr;
 
-    std::unordered_map<int, GameObject*> gameObjects;
+    std::unordered_map<int, GameObject*> m_GameObjects;
 };

@@ -13,28 +13,28 @@ struct Vec2 {
     Vec2& operator+=(const Vec2& other) { x += other.x; y += other.y; return *this; }
 };
 
-class Rigidbody {
+class RigidBody {
 private:
-    Vec2 position;
-    Vec2 velocity;
-    Vec2 acceleration;
+    Vec2 m_Position;
+    Vec2 m_Velocity;
+    Vec2 m_Acceleration;
 
 public:
-    Rigidbody(float x = 0.0f, float y = 0.0f);
+    RigidBody(float x = 0.0f, float y = 0.0f);
 
     
-    void update(float deltaTime);
-    void applyGravity(GameObject* gameObject, float deltaTime, float gravity, float groundY);
+    void Update(float deltaTime);
+    void ApplyGravity(GameObject* gameObject, float deltaTime, float gravity, float groundY);
 
     
-    Vec2 getPosition() { return position; };
-    Vec2 getVelocity() { return velocity; };
-    Vec2 getAcceleration() { return acceleration; };
+    Vec2 GetPosition() { return m_Position; };
+    Vec2 GetVelocity() { return m_Velocity; };
+    Vec2 GetAcceleration() { return m_Acceleration; };
 
     
-    void setPosition(Vec2& pos) { position = pos; };
-    void setVelocity(Vec2& vel) { velocity = vel; };
-    void setAcceleration(Vec2& acc) { acceleration = acc; };
+    void SetPosition(Vec2& pos) { m_Position = pos; };
+    void SetVelocity(Vec2& vel) { m_Velocity = vel; };
+    void SetAcceleration(Vec2& acc) { m_Acceleration = acc; };
 };
 
 
