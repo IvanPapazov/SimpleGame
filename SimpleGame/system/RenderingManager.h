@@ -12,17 +12,25 @@ class RenderingManager
 public:
     static RenderingManager& getInstance();
 
-    bool m_IsInitialized();
+    bool IsInitialized();
     void Close();
     void AddGameObject(GameObject* gameObject);
     std::unordered_map<int, GameObject*>& GetAllGameObjects();
 
-    SDL_Renderer* GetRenderer() const { return m_Renderer; }
-    SDL_Window* GetWindow() const { return m_Window; }
+    SDL_Renderer* GetRenderer() const 
+    {
+        return m_Renderer; 
+    }
+    SDL_Window* GetWindow() const 
+    {
+        return m_Window;
+    }
 
 private:
     RenderingManager() = default;
     ~RenderingManager() = default;
+    RenderingManager(const RenderingManager& rm) = delete;
+    RenderingManager(RenderingManager&& rm) = delete;
 
     SDL_Window* m_Window = nullptr;
     SDL_Renderer* m_Renderer = nullptr;

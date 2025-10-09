@@ -8,7 +8,7 @@ RenderingManager& RenderingManager::getInstance()
     return ms_Instance;
 }
 
-bool RenderingManager::m_IsInitialized()
+bool RenderingManager::IsInitialized()
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -17,7 +17,6 @@ bool RenderingManager::m_IsInitialized()
     }
 
     m_Window = SDL_CreateWindow("Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, g_ScreenWidth, g_ScreenHeight, SDL_WINDOW_SHOWN);
-
     if (m_Window == NULL)
     {
         std::cerr << "m_Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
@@ -51,7 +50,7 @@ void RenderingManager::Close()
 
 void RenderingManager::AddGameObject(GameObject* gameObject)
 {
-    m_GameObjects.insert({ gameObject->GetId(),gameObject });
+    //m_GameObjects.insert({ gameObject->GetId(),gameObject });
 }
 
 std::unordered_map<int, GameObject*>& RenderingManager::GetAllGameObjects()
