@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <SDL.h>
 #include <iostream>
 #include <RenderingManager.h>
@@ -50,7 +51,7 @@ void RenderingManager::Close()
 
 void RenderingManager::AddGameObject(GameObject* gameObject)
 {
-    //m_GameObjects.insert({ gameObject->GetId(),gameObject });
+    m_GameObjects.emplace(std::make_pair(gameObject->GetId(), gameObject));
 }
 
 std::unordered_map<int, GameObject*>& RenderingManager::GetAllGameObjects()

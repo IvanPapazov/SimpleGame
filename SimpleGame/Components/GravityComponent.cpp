@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "GameObject.h"
 #include "GravityComponent.h"
 #include "RigidBodyComponent.h"

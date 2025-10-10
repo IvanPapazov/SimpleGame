@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <SDL.h>
 #include <iostream>
 #include "RenderingManager.h"
@@ -5,6 +6,8 @@
 #include <GameObject.h>
 #include "Components/ComponentManager.h"
 #include "Components/JumpComponent.h"
+#include <Components/MoveLeftComponent.h>
+#include <Components/MoveRightComponent.h>
 
 const float g_GroundHeight = 50.0f;
 RenderingManager& ms_RendererManager = RenderingManager::getInstance();
@@ -17,18 +20,40 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	GameObject* player = nullptr;
 	bool m_IsRunning = true;
 	SDL_Event m_Event;
 	ComponentManager m_ComponentManager;
-	GameObject* player = m_ComponentManager.CreateGameObject(ms_RendererManager);
-
+	std::vector<GameObject*> players = m_ComponentManager.ReadInfo(ms_RendererManager);
+	for (GameObject* player1 : players)
+	{
+		player = player1;
+		player1->UpdateComponents(player1);
+		ms_RendererManager.AddGameObject(player1);
+	}
+	/*Uint64 m_Now = SDL_GetPerformanceCounter();
+	Uint64 m_Last = 0;*/
 	while (m_IsRunning)
 	{
 		while (SDL_PollEvent(&m_Event))
 		{
+			/*m_Last = m_Now;
+			m_Now = SDL_GetPerformanceCounter();
+			float deltaTime = (float)((m_Now - m_Last) * 1000.0f / (float)SDL_GetPerformanceFrequency()) / 1000.0f;*/
 			if (m_Event.type == SDL_QUIT)
 			{
 				m_IsRunning = false;
+			}
+			if (m_Event.type == SDL_MOUSEBUTTONDOWN)
+			{
+				float mouseX;
+				float mouseY;
+				if (m_Event.button.button == SDL_BUTTON_LEFT)
+				{
+					mouseX = m_Event.button.x;
+					mouseY = m_Event.button.y;
+					player = SelectGameObjectAt(mouseX, mouseY, ms_RendererManager.GetAllGameObjects());
+				}
 			}
 			if (m_Event.type == SDL_KEYDOWN)
 			{
@@ -46,37 +71,29 @@ int main(int argc, char* argv[])
 						jump->Update();
 					}
 					break;
-					break;
-				/*case SDLK_LEFT:
-					player->GetRigidBody().ApplyMovementForce(player, -m_DeltaTime);
+				case SDLK_LEFT:
+					if (player->HasComponent<MoveLeftComponent>()) {
+						Components* move = player->GetComponent<MoveLeftComponent>();
+						move->Update();
+					}
 					break;
 				case SDLK_RIGHT:
-					player->GetRigidBody().ApplyMovementForce(player, m_DeltaTime);
-					break;*/
-				/*case SDLK_DOWN:
-					player->GetRigidBody().ApplyMovementForce(player, 0);
-					break;*/
+					if (player->HasComponent<MoveRightComponent>()) {
+						Components* move = player->GetComponent<MoveRightComponent>();
+						move->Update();
+					}
+					break;
 				}
-
 			}
-			/*if (m_Event.type == SDL_MOUSEBUTTONDOWN)
-			{
-				float mouseX;
-				float mouseY;
-				if (m_Event.button.button == SDL_BUTTON_LEFT)
-				{
-					mouseX = m_Event.button.x;
-					mouseY = m_Event.button.y;
-					player = SelectGameObjectAt(mouseX, mouseY, ms_RendererManager.GetAllGameObjects());
-				}
-			}*/
 		}
 
-		SDL_SetRenderDrawColor(ms_RendererManager.GetRenderer(), 135, 206, 235, 255);
+		//SDL_SetRenderDrawColor(ms_RendererManager.GetRenderer(), 135, 206, 235, 255);
 		SDL_RenderClear(ms_RendererManager.GetRenderer());
 
 		
-		player->UpdateComponents(player);
+		
+			player->UpdateComponents(player);
+		
 
 		SDL_RenderPresent(ms_RendererManager.GetRenderer());
 	}

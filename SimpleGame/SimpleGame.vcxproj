@@ -19,22 +19,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="Components\ComponentManager.cpp" />
     <ClCompile Include="Components\JumpComponent.cpp" />
-    <ClCompile Include="Components\MoveComponent.cpp" />
+    <ClCompile Include="Components\MoveLeftComponent.cpp" />
     <ClCompile Include="Components\DrawComponent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Components\MoveRightComponent.cpp" />
+    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="system\GameObject.cpp" />
     <ClCompile Include="Components\GravityComponent.cpp" />
     <ClCompile Include="system\RenderingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h" />
+    <ClInclude Include="..\externals\jsoncpp\json\json.h" />
     <ClInclude Include="Components\ComponentManager.h" />
     <ClInclude Include="Components\JumpComponent.h" />
-    <ClInclude Include="Components\MoveComponent.h" />
+    <ClInclude Include="Components\MoveLeftComponent.h" />
     <ClInclude Include="Components\RigidBodyComponent.h" />
     <ClInclude Include="Components\DrawComponent.h" />
     <ClInclude Include="Components\Components.h" />
+    <ClInclude Include="Components\MoveRightComponent.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\GameObject.h" />
     <ClInclude Include="Components\GravityComponent.h" />
     <ClInclude Include="system\RenderingManager.h" />
@@ -141,8 +148,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SimpleGame\system;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SimpleGame\externals\jsoncpp;$(SolutionDir)\SimpleGame\system;$(SolutionDir)\SimpleGame\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -17,6 +17,10 @@ public:
 
 	void AddComponent(Components* component);
 
+	int GetId() const {
+		return m_Id;
+	}
+
 	template<typename T>
 	T* GetComponent() {
 		for (const auto& [key, comp] : m_Components) {
@@ -30,6 +34,7 @@ public:
 	bool HasComponent() {
 		return GetComponent<T>() != nullptr;
 	}
+
 
 //	int GetId() 
 //	{
@@ -77,5 +82,4 @@ public:
 //		m_Texture = tex; 
 //	}
 };
-//GameObject* SelectGameObjectAt(float mouseX, float mouseY, std::unordered_map<int, GameObject*> gameObjects);
-//GameObject* InitializeGameObject(float x, float y, float w, float h,float m, const char* filePath);
+GameObject* SelectGameObjectAt(float mouseX, float mouseY, std::unordered_map<int, GameObject*> gameObjects);
