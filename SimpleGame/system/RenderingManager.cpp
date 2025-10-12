@@ -54,7 +54,8 @@ void RenderingManager::AddGameObject(GameObject* gameObject)
     m_GameObjects.emplace(std::make_pair(gameObject->GetId(), gameObject));
 }
 
-std::unordered_map<int, GameObject*>& RenderingManager::GetAllGameObjects()
+std::unordered_map<int, GameObject*> RenderingManager::GetAllGameObjects()
 {
+
     return m_GameObjects;
 }

@@ -11,7 +11,9 @@
 static int ms_GameObjectIdCounter = 0;
 
 GameObject::GameObject()
-    : m_Id(ms_GameObjectIdCounter){}
+    : m_Id(ms_GameObjectIdCounter){
+    ms_GameObjectIdCounter++;
+}
 
 
 GameObject::~GameObject() 

@@ -28,13 +28,20 @@ int main(int argc, char* argv[])
 	for (GameObject* player1 : players)
 	{
 		player = player1;
-		player1->UpdateComponents(player1);
 		ms_RendererManager.AddGameObject(player1);
 	}
 	/*Uint64 m_Now = SDL_GetPerformanceCounter();
 	Uint64 m_Last = 0;*/
 	while (m_IsRunning)
 	{
+
+		for (unordered_map<int, GameObject*> player : ms_RendererManager.GetAllGameObjects())
+		{
+			player = player1;
+			ms_RendererManager.AddGameObject(player1);
+		}
+		player->UpdateComponents(player);
+
 		while (SDL_PollEvent(&m_Event))
 		{
 			/*m_Last = m_Now;
@@ -89,12 +96,6 @@ int main(int argc, char* argv[])
 
 		//SDL_SetRenderDrawColor(ms_RendererManager.GetRenderer(), 135, 206, 235, 255);
 		SDL_RenderClear(ms_RendererManager.GetRenderer());
-
-		
-		
-			player->UpdateComponents(player);
-		
-
 		SDL_RenderPresent(ms_RendererManager.GetRenderer());
 	}
 	delete player;
