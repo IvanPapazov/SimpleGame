@@ -12,6 +12,10 @@ struct Vec2
     {
         return Vec2(x * scalar, y * scalar);
     }
+    Vec2 operator/(float scalar) const
+    {
+        return Vec2(x / scalar, y / scalar);
+    }
     Vec2& operator+=(const Vec2& other)
     {
         x += other.x;

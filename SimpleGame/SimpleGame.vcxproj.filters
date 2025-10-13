@@ -30,7 +30,7 @@
     <ClCompile Include="Components\JumpComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\MoveLeftComponent.cpp">
+    <ClCompile Include="Components\MoveLeftRightComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Components\DrawComponent.cpp">
@@ -45,7 +45,7 @@
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\MoveRightComponent.cpp">
+    <ClCompile Include="Components\FireBuletComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,7 +68,7 @@
     <ClInclude Include="Components\JumpComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\MoveLeftComponent.h">
+    <ClInclude Include="Components\MoveLeftRightComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Components\DrawComponent.h">
@@ -86,7 +86,7 @@
     <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\MoveRightComponent.h">
+    <ClInclude Include="Components\FireBuletComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

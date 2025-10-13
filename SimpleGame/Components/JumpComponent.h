@@ -5,18 +5,22 @@
 class JumpComponent : public Components
 {
 public:
-
-    JumpComponent(RigidBodyComponent* rb, float m_Mass);
+    void Update() override;
+    JumpComponent(RigidBodyComponent* rb,float m_Height);
     int GetComponentId() override {
         return m_ComponentId;
+    }
+    float GetHeight() const {
+        return m_Height;
+    }
+
+    void SetHeight(float height) {
+        m_Height = height;
     }
 
 private:
     RigidBodyComponent* m_RigidBodyComponent;
     const int m_ComponentId = GetUniqueComponentID();
 
-    float m_Mass;
-    float GetMass() const { return m_Mass; }
-
-    void Update() override;
+    float m_Height;
 };

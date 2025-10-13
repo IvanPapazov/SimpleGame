@@ -7,20 +7,25 @@
     "mass": 7,
     "image": "images/preview.png"
   },
-  "player2": {
+  "enemy1": {
     "x": 250,
     "y": 150,
-    "width": 60,
-    "height": 90,
+    "width": 90,
+    "height": 100,
     "mass": 5,
-    "image": "images/preview.png"
+    "image": "images/AmongGun.png"
   },
-  "player3": {
+  "player2": {
     "x": 400,
     "y": 200,
-    "width": 100,
-    "height": 120,
+    "width": 80,
+    "height": 100,
     "mass": 9,
     "image": "images/preview.png"
+  },
+  "bulet1": {
+    "width": 50,
+    "height": 25,
+    "image": "images/bulet.png"
   }
 }

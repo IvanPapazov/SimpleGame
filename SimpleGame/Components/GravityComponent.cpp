@@ -4,8 +4,8 @@
 #include "RigidBodyComponent.h"
 
 
-GravityComponent::GravityComponent(RigidBodyComponent* rb,float mass)
-	:m_RigidBodyComponent(rb), m_Mass(mass) {}
+GravityComponent::GravityComponent(RigidBodyComponent* rb,float mass,float height)
+	:m_RigidBodyComponent(rb), m_Mass(mass),m_Height(height) {}
 
 void GravityComponent::Update()
 {
@@ -13,20 +13,19 @@ void GravityComponent::Update()
 	acc.y = mg_Gravity * GetMass();
 
 	Vec2 vel = m_RigidBodyComponent->GetVelocity();
-	Vec2 velCalc = vel + (acc * 0.016f);
+	Vec2 velCalc = vel + (acc * GetDeltaTime()*50);
 	m_RigidBodyComponent->SetVelocity(velCalc);
 
 	Vec2 pos = m_RigidBodyComponent->GetPosition();
 	Vec2 vel1 = m_RigidBodyComponent->GetVelocity();
-	Vec2 posCalc = pos + vel1 * 0.016f;
+	Vec2 posCalc = pos + vel1 * GetDeltaTime();
 	m_RigidBodyComponent->SetPosition(posCalc);
 
 	Vec2 pos1 = m_RigidBodyComponent->GetPosition();
-	//float height = gameObject->GetHeight();
 
-	if (pos1.y + 80 >= 500)
+	if (pos1.y + GetHeight() >= 500)
 	{
-		pos1.y = 500.0f - 80.0f;
+		pos1.y = 500.0f - GetHeight();
 		Vec2 vel2 = m_RigidBodyComponent->GetVelocity();
 		vel2.y = 0.0f;
 		acc.y = 0.0f;

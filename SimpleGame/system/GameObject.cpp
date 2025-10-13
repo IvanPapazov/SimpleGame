@@ -48,16 +48,19 @@ GameObject* SelectGameObjectAt(float mouseX, float mouseY, std::unordered_map<in
 {
     for (auto& element : gameObjects)
     {
-        SDL_Rect bounds;
-        bounds.x = element.second->GetComponent<GravityComponent>()->GetRigidBodyComponent()->GetPosition().x;
-        bounds.y = element.second->GetComponent<GravityComponent>()->GetRigidBodyComponent()->GetPosition().y;
-        bounds.w = element.second->GetComponent<DrawComponent>()->GetWidth();
-        bounds.h = element.second->GetComponent<DrawComponent>()->GetHeight();
-
-        SDL_Point mousePoint = { mouseX, mouseY };
-        if (SDL_PointInRect(&mousePoint, &bounds))
+        if (element.second->HasComponent<GravityComponent>())
         {
-            return element.second;
+            SDL_Rect bounds;
+            bounds.x = element.second->GetComponent<GravityComponent>()->GetRigidBodyComponent()->GetPosition().x;
+            bounds.y = element.second->GetComponent<GravityComponent>()->GetRigidBodyComponent()->GetPosition().y;
+            bounds.w = element.second->GetComponent<DrawComponent>()->GetWidth();
+            bounds.h = element.second->GetComponent<DrawComponent>()->GetHeight();
+
+            SDL_Point mousePoint = { mouseX, mouseY };
+            if (SDL_PointInRect(&mousePoint, &bounds))
+            {
+                return element.second;
+            }
         }
     }
     //return nullptr;

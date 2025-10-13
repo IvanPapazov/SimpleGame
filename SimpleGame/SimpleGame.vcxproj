@@ -22,10 +22,10 @@
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="Components\ComponentManager.cpp" />
     <ClCompile Include="Components\JumpComponent.cpp" />
-    <ClCompile Include="Components\MoveLeftComponent.cpp" />
+    <ClCompile Include="Components\MoveLeftRightComponent.cpp" />
     <ClCompile Include="Components\DrawComponent.cpp" />
+    <ClCompile Include="Components\FireBuletComponent.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Components\MoveRightComponent.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="system\GameObject.cpp" />
     <ClCompile Include="Components\GravityComponent.cpp" />
@@ -36,11 +36,11 @@
     <ClInclude Include="..\externals\jsoncpp\json\json.h" />
     <ClInclude Include="Components\ComponentManager.h" />
     <ClInclude Include="Components\JumpComponent.h" />
-    <ClInclude Include="Components\MoveLeftComponent.h" />
+    <ClInclude Include="Components\MoveLeftRightComponent.h" />
     <ClInclude Include="Components\RigidBodyComponent.h" />
     <ClInclude Include="Components\DrawComponent.h" />
     <ClInclude Include="Components\Components.h" />
-    <ClInclude Include="Components\MoveRightComponent.h" />
+    <ClInclude Include="Components\FireBuletComponent.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\GameObject.h" />
     <ClInclude Include="Components\GravityComponent.h" />
