@@ -27,7 +27,6 @@ int main(int argc, char* argv[])
 	std::vector<GameObject*> players = m_ComponentManager.ReadInfo(ms_RendererManager);
 	for (GameObject* player1 : players)
 	{
-		player = player1;
 		ms_RendererManager.AddGameObject(player1);
 	}
 	/*Uint64 m_Now = SDL_GetPerformanceCounter();
@@ -35,12 +34,14 @@ int main(int argc, char* argv[])
 	while (m_IsRunning)
 	{
 
-		for (unordered_map<int, GameObject*> player : ms_RendererManager.GetAllGameObjects())
+		//std::unordered_map<int, GameObject*> players = ms_RendererManager.GetAllGameObjects();
+		SDL_RenderClear(ms_RendererManager.GetRenderer());
+		for (GameObject* playerUpdate : players)
 		{
-			player = player1;
-			ms_RendererManager.AddGameObject(player1);
+			playerUpdate->UpdateComponents(playerUpdate);
 		}
-		player->UpdateComponents(player);
+		SDL_RenderPresent(ms_RendererManager.GetRenderer());
+
 
 		while (SDL_PollEvent(&m_Event))
 		{
@@ -62,41 +63,43 @@ int main(int argc, char* argv[])
 					player = SelectGameObjectAt(mouseX, mouseY, ms_RendererManager.GetAllGameObjects());
 				}
 			}
-			if (m_Event.type == SDL_KEYDOWN)
+			if (player != nullptr)
 			{
-				switch (m_Event.key.keysym.sym)
+				if (m_Event.type == SDL_KEYDOWN)
 				{
-				case SDLK_SPACE:
-					if (player->HasComponent<JumpComponent>()) {
-						Components* jump = player->GetComponent<JumpComponent>();
-						jump->Update();
+					switch (m_Event.key.keysym.sym)
+					{
+					case SDLK_SPACE:
+						if (player->HasComponent<JumpComponent>()) {
+							Components* jump = player->GetComponent<JumpComponent>();
+							jump->Update();
+						}
+						break;
+					case SDLK_UP:
+						if (player->HasComponent<JumpComponent>()) {
+							Components* jump = player->GetComponent<JumpComponent>();
+							jump->Update();
+						}
+						break;
+					case SDLK_LEFT:
+						if (player->HasComponent<MoveLeftComponent>()) {
+							Components* move = player->GetComponent<MoveLeftComponent>();
+							move->Update();
+						}
+						break;
+					case SDLK_RIGHT:
+						if (player->HasComponent<MoveRightComponent>()) {
+							Components* move = player->GetComponent<MoveRightComponent>();
+							move->Update();
+						}
+						break;
 					}
-					break;
-				case SDLK_UP:
-					if (player->HasComponent<JumpComponent>()) {
-						Components* jump = player->GetComponent<JumpComponent>();
-						jump->Update();
-					}
-					break;
-				case SDLK_LEFT:
-					if (player->HasComponent<MoveLeftComponent>()) {
-						Components* move = player->GetComponent<MoveLeftComponent>();
-						move->Update();
-					}
-					break;
-				case SDLK_RIGHT:
-					if (player->HasComponent<MoveRightComponent>()) {
-						Components* move = player->GetComponent<MoveRightComponent>();
-						move->Update();
-					}
-					break;
 				}
 			}
 		}
-
 		//SDL_SetRenderDrawColor(ms_RendererManager.GetRenderer(), 135, 206, 235, 255);
-		SDL_RenderClear(ms_RendererManager.GetRenderer());
-		SDL_RenderPresent(ms_RendererManager.GetRenderer());
+		
+		
 	}
 	delete player;
 	ms_RendererManager.Close();
