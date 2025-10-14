@@ -1,12 +1,13 @@
 #pragma once
 #include "Components.h"
 #include "RigidBodyComponent.h"
+#include "GameObject.h"
 
 class FireBuletComponent:public Components
 {
 public:
 
-    FireBuletComponent(RigidBodyComponent* rb_bulet, RigidBodyComponent* rb_enemy);
+    FireBuletComponent();
 
     int GetComponentId() override {
         return m_ComponentId;
@@ -32,11 +33,11 @@ public:
 
     float GetDeltaTime() const { return m_deltaTime; }
     void SetDeltaTime(float deltaTime) { m_deltaTime = deltaTime; }
+    void SetBulet(GameObject* bulet) { m_bulet = bulet; }
 
 private:
     const int m_ComponentId = GetUniqueComponentID();
-    RigidBodyComponent* m_RigidBodyBulet;
-    RigidBodyComponent* m_RigidBodyEnemy;
+    GameObject* m_bulet;
     float m_deltaTime;
 
 };

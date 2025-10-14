@@ -23,6 +23,7 @@ public:
 	float GetHeight() const { return m_Height; }
 	SDL_Renderer* GetRenderer() const { return m_Renderer; }
 	const char* GetFilePath() const { return m_FilePath; }
+	RigidBodyComponent* GetRigidBodyComponent() const { return m_RigidBodyComponent; }
 
 	int GetComponentId() override {
 		return m_ComponentId;

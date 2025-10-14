@@ -3,18 +3,17 @@
 #include "GameObject.h"
 #include "MoveLeftRightComponent.h"
 #include "RigidBodyComponent.h"
-#include "ComponentManager.h"
+#include "DrawComponent.h"
+#include "GameObjectFactory.h"
 
-FireBuletComponent::FireBuletComponent(RigidBodyComponent* rb_bulet, RigidBodyComponent* rb_enemy)
-	:m_RigidBodyBulet(rb_bulet), m_RigidBodyEnemy(rb_enemy){}
+FireBuletComponent::FireBuletComponent(){}
 
 void FireBuletComponent::Update()
 {
-	ComponentManager compManager;
-	//compManager
-	Vec2 velocity = m_RigidBodyBulet->GetVelocity();
-	velocity.x = (1000000.0f) * GetDeltaTime();
-	Vec2 position = m_RigidBodyEnemy->GetPosition();
-	m_RigidBodyBulet->SetPosition(position);
-	m_RigidBodyBulet->SetVelocity(velocity);
+	Vec2 velocity = m_bulet->GetComponent<DrawComponent>()->GetRigidBodyComponent()->GetVelocity();
+	velocity.x = (100000.0f) * GetDeltaTime();
+	Vec2 position = m_bulet->GetComponent<DrawComponent>()->GetRigidBodyComponent()->GetPosition();
+	position += velocity;
+	m_bulet->GetComponent<DrawComponent>()->GetRigidBodyComponent()->SetVelocity(velocity);
+	m_bulet->GetComponent<DrawComponent>()->GetRigidBodyComponent()->SetPosition(position);
 }

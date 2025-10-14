@@ -4,11 +4,12 @@
 #include "RenderingManager.h"
 #include <unordered_map> 
 #include <GameObject.h>
-#include "Components/ComponentManager.h"
+#include "Components/GameObjectFactory.h"
 #include "Components/JumpComponent.h"
 #include <Components/MoveLeftRightComponent.h>
 #include "Components/GravityComponent.h"
 #include "Components/FireBuletComponent.h"
+#include <Components/DrawComponent.h>
 
 const float g_GroundHeight = 50.0f;
 RenderingManager& ms_RendererManager = RenderingManager::getInstance();
@@ -28,11 +29,14 @@ int main(int argc, char* argv[])
 	GameObject* player = nullptr;
 	bool m_IsRunning = true;
 	SDL_Event m_Event;
-	ComponentManager m_ComponentManager;
+	GameObjectFactory m_ComponentManager;
 	std::vector<GameObject*> players = m_ComponentManager.ReadInfo(ms_RendererManager);
 	for (GameObject* player1 : players)
 	{
-		ms_RendererManager.AddGameObject(player1);
+		if (player1->GetComponent<DrawComponent>()->GetRigidBodyComponent()->GetPosition().x > -1 && player1->GetComponent<DrawComponent>()->GetRigidBodyComponent()->GetPosition().y > -1)
+		{
+			ms_RendererManager.AddGameObject(player1);
+		}
 	}
 	Uint64 m_Last = SDL_GetPerformanceCounter();
 	float deltaTime = 0.0f;
@@ -45,8 +49,9 @@ int main(int argc, char* argv[])
 		//std::unordered_map<int, GameObject*> players = ms_RendererManager.GetAllGameObjects();
 		SDL_RenderClear(ms_RendererManager.GetRenderer());
 		SDL_SetRenderDrawColor(ms_RendererManager.GetRenderer(), 135, 206, 235, 255);
-		for (GameObject* playerUpdate : players)
+		for (auto& pair : ms_RendererManager.GetAllGameObjects())
 		{
+			GameObject* playerUpdate = pair.second;
 			if (playerUpdate->HasComponent<MoveLeftRightComponent>())
 			{
 				GravityComponent* gravity = playerUpdate->GetComponent<GravityComponent>();
@@ -59,9 +64,6 @@ int main(int argc, char* argv[])
 
 		while (SDL_PollEvent(&m_Event))
 		{
-			/*m_Last = m_Now;
-			m_Now = SDL_GetPerformanceCounter();
-			deltaTime = (float)((m_Now - m_Last) * 1000.0f / (float)SDL_GetPerformanceFrequency()) / 1000.0f;*/
 			if (m_Event.type == SDL_QUIT)
 			{
 				m_IsRunning = false;
@@ -91,8 +93,20 @@ int main(int argc, char* argv[])
 						if (player->HasComponent<FireBuletComponent>() )
 						{
 							FireBuletComponent* bulet = player->GetComponent<FireBuletComponent>();
-							
-							bulet->Update();
+							for (GameObject* player1 : players)
+							{
+								if (player1->GetComponent<DrawComponent>()->GetRigidBodyComponent()->GetPosition().x == -1 && player1->GetComponent<DrawComponent>()->GetRigidBodyComponent()->GetPosition().y == -1)
+								{
+									float x = player->GetComponent<DrawComponent>()->GetRigidBodyComponent()->GetPosition().x + player->GetComponent<DrawComponent>()->GetWidth();
+									float y = player->GetComponent<DrawComponent>()->GetRigidBodyComponent()->GetPosition().y + player->GetComponent<DrawComponent>()->GetHeight() / 2;
+									Vec2 v = Vec2(x, y);
+									player1->GetComponent<DrawComponent>()->GetRigidBodyComponent()->SetPosition(v);
+									ms_RendererManager.AddGameObject(player1);
+									bulet->SetBulet(player1);
+									bulet->SetDeltaTime(deltaTime);
+								}
+							}
+							bulet->Update(); 
 
 						}
 						break;
