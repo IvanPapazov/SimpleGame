@@ -17,6 +17,7 @@ public:
 	DrawComponent(float width, float height, SDL_Renderer* renderer, RigidBodyComponent* rigidBodyComponent, const char* filePath);
 	~DrawComponent();
 	void Update() override;
+	void HandleAllEvents() override;
 	void Draw();
 
 	float GetWidth() const { return m_Width; }

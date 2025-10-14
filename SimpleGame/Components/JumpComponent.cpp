@@ -16,3 +16,12 @@ void JumpComponent::Update()
 	}
 }
 
+void JumpComponent::HandleAllEvents()
+{
+	const Uint8* state = SDL_GetKeyboardState(NULL);
+	if (state[SDL_SCANCODE_UP])
+	{
+		Update();
+	}
+}
+

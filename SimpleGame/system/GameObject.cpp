@@ -11,58 +11,43 @@
 static int ms_GameObjectIdCounter = 0;
 
 GameObject::GameObject()
-    : m_Id(ms_GameObjectIdCounter){
-    ms_GameObjectIdCounter++;
+	: m_Id(ms_GameObjectIdCounter) {
+	ms_GameObjectIdCounter++;
 }
 
 
-GameObject::~GameObject() 
+GameObject::~GameObject()
 {
-    for (auto& [id, comp] : m_Components) {
-        if (comp) {   
-            delete comp;    
-        }
-    }
-    m_Components.clear();
+	for (auto& [id, comp] : m_Components)
+	{
+		if (comp)
+		{
+			delete comp;
+		}
+	}
+	m_Components.clear();
 }
-void GameObject::UpdateComponents(GameObject* player)
+
+void GameObject::UpdateComponents() 
 {
-    if (player->HasComponent<GravityComponent>()) {
-        Components* gravity = player->GetComponent<GravityComponent>();
-        gravity->Update();
-    }
-    if (player->HasComponent<DrawComponent>()) {
-        Components* draw = player->GetComponent<DrawComponent>();
-        draw->Update();
-    }
+	for (auto& [type, comp] : m_Components) {
+		if (type == typeid(GravityComponent))
+		{
+			comp->Update();
+		}
+		else if (type == typeid(DrawComponent))
+		{
+			comp->Update();
+		}
+	}
 }
-
-void GameObject::AddComponent(Components* component)
+void GameObject::HandleAllEvents() 
 {
-    m_Components.emplace(component->GetComponentId(), component);
-    
+	for (auto& [type, comp] : m_Components)
+	{
+			comp->HandleAllEvents();
+	}
 }
 
 
-GameObject* SelectGameObjectAt(float mouseX, float mouseY, std::unordered_map<int, GameObject*> gameObjects)
-{
-    for (auto& element : gameObjects)
-    {
-        if (element.second->HasComponent<GravityComponent>())
-        {
-            SDL_Rect bounds;
-            bounds.x = element.second->GetComponent<GravityComponent>()->GetRigidBodyComponent()->GetPosition().x;
-            bounds.y = element.second->GetComponent<GravityComponent>()->GetRigidBodyComponent()->GetPosition().y;
-            bounds.w = element.second->GetComponent<DrawComponent>()->GetWidth();
-            bounds.h = element.second->GetComponent<DrawComponent>()->GetHeight();
-
-            SDL_Point mousePoint = { mouseX, mouseY };
-            if (SDL_PointInRect(&mousePoint, &bounds))
-            {
-                return element.second;
-            }
-        }
-    }
-    //return nullptr;
-}
 

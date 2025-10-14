@@ -7,7 +7,7 @@ class GameObjectFactory
 {
 private:
 	GameObject* CreatePlayerObject(RenderingManager& ms_RendererManager, Json::Value& player);
-	GameObject* CreateBuletObject(RenderingManager& ms_RendererManager, Json::Value& player);
+	GameObject* CreateBulletObject(RenderingManager& ms_RendererManager, Json::Value& player);
 	GameObject* CreateEnemyObject(RenderingManager& ms_RendererManager, Json::Value& player);
     
 public:

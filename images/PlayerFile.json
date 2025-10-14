@@ -23,7 +23,7 @@
     "mass": 9,
     "image": "images/preview.png"
   },
-  "bulet1": {
+  "bullet1": {
     "width": 50,
     "height": 25,
     "image": "images/bulet.png"

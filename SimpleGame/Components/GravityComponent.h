@@ -18,9 +18,6 @@ public:
     void SetMass(float mass) {
         m_Mass = mass;
     }
-    float GetDeltaTime() const { return m_deltaTime; }
-    void SetDeltaTime(float deltaTime) { m_deltaTime = deltaTime; }
-
     GravityComponent(RigidBodyComponent* rb,float m_Mass,float m_Height);
     int GetComponentId() override {
         return m_ComponentId;
@@ -29,10 +26,12 @@ public:
     RigidBodyComponent* GetRigidBodyComponent() const {
         return m_RigidBodyComponent;
     }
+    void HandleAllEvents() override;
     void Update() override;
 private:
     RigidBodyComponent* m_RigidBodyComponent;
     const int m_ComponentId = GetUniqueComponentID();
+    Uint64 m_Last = SDL_GetPerformanceCounter();
 
     float m_Height;
     float m_Mass;

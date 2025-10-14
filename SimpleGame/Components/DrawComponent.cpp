@@ -26,6 +26,9 @@ DrawComponent::~DrawComponent() {
 	}
 }
 
+void DrawComponent::HandleAllEvents() {
+}
+
 void DrawComponent::Draw()
 {
 	SDL_Rect dest;

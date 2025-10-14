@@ -5,6 +5,7 @@
 class JumpComponent : public Components
 {
 public:
+    void HandleAllEvents() override;
     void Update() override;
     JumpComponent(RigidBodyComponent* rb,float m_Height);
     int GetComponentId() override {

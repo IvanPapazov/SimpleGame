@@ -5,6 +5,7 @@ class Components {
 public:
     virtual ~Components() = default;
     virtual void Update() = 0;
+    virtual void HandleAllEvents() = 0;
     virtual int GetComponentId() = 0;
 protected:
     static int GetUniqueComponentID() {

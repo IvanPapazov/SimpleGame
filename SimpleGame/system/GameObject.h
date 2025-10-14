@@ -1,24 +1,30 @@
 #pragma once
 #include <SDL.h>
 #include <unordered_map>
-#include "../Components/Components.h"
+#include "Components/Components.h"
+#include <typeindex>
 
 
 class GameObject  
 {
 private:
 	int m_Id;
-	std::unordered_map<int , Components*> m_Components;
+	std::unordered_map<std::type_index, Components*> m_Components;
 public:
 	GameObject();
 	~GameObject();
 
-	void UpdateComponents(GameObject* player);
-
-	void AddComponent(Components* component);
+	void UpdateComponents();
+	void HandleAllEvents();
 
 	int GetId() const {
 		return m_Id;
+	}
+
+	template<typename T>
+	void AddComponent(T* component) {
+		static_assert(std::is_base_of<Components, T>::value);
+		m_Components[typeid(T)] = component;
 	}
 
 	template<typename T>
@@ -34,52 +40,4 @@ public:
 	bool HasComponent() {
 		return GetComponent<T>() != nullptr;
 	}
-
-
-//	int GetId() 
-//	{
-//		return m_Id; 
-//	}
-//	float GetWidth() 
-//	{
-//		return m_Width; 
-//	}
-//	float GetHeight() 
-//	{
-//		return m_Height; 
-//	}
-//	float GetMass()
-//	{
-//		return m_Mass;
-//	}
-//	RigidBody& GetRigidBody() 
-//	{
-//		return m_RigidBody; 
-//	}
-//	SDL_Texture* GetTexture() 
-//	{
-//		return m_Texture; 
-//	}
-//
-//	void SetWidth(float width) 
-//	{
-//		m_Width = width; 
-//	}
-//	void SetHeight(float height) 
-//	{
-//		m_Height = height; 
-//	}
-//	void SetMass(float mass)
-//	{
-//		m_Mass = mass;
-//	}
-//	void SetRigidBody(const RigidBody& rb) 
-//	{
-//		m_RigidBody = rb; 
-//	}
-//	void SetTexture(SDL_Texture* tex) 
-//	{
-//		m_Texture = tex; 
-//	}
 };
-GameObject* SelectGameObjectAt(float mouseX, float mouseY, std::unordered_map<int, GameObject*> gameObjects);

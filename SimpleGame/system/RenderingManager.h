@@ -14,8 +14,6 @@ public:
 
     bool IsInitialized();
     void Close();
-    void AddGameObject(GameObject* gameObject);
-    std::unordered_map<int, GameObject*>& GetAllGameObjects();
 
     SDL_Renderer* GetRenderer() const 
     {
@@ -35,5 +33,4 @@ private:
     SDL_Window* m_Window = nullptr;
     SDL_Renderer* m_Renderer = nullptr;
 
-    std::unordered_map<int, GameObject*> m_GameObjects;
 };

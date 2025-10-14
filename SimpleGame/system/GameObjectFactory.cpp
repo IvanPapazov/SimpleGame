@@ -2,10 +2,10 @@
 #include "GameObjectFactory.h"
 #include <fstream>
 #include <GameObject.h>
-#include "DrawComponent.h"
-#include "GravityComponent.h"
-#include "JumpComponent.h"
-#include "MoveLeftRightComponent.h"
+#include "Components/DrawComponent.h"
+#include "Components/GravityComponent.h"
+#include "Components/JumpComponent.h"
+#include "Components/MoveLeftRightComponent.h"
 #include <Components/FireBuletComponent.h>
 
 GameObjectFactory::GameObjectFactory() {}
@@ -35,9 +35,9 @@ std::vector<GameObject*> GameObjectFactory::ReadInfo(RenderingManager& rendererM
             {
                 gameObjects.push_back(CreatePlayerObject(rendererManager, root[key]));
             }
-            else if (key.find("bulet") != std::string::npos) 
+            else if (key.find("bullet") != std::string::npos) 
             {
-                gameObjects.push_back(CreateBuletObject(rendererManager, root[key]));
+                gameObjects.push_back(CreateBulletObject(rendererManager, root[key]));
             }
             else if (key.find("enemy") != std::string::npos) 
             {
@@ -53,16 +53,16 @@ std::vector<GameObject*> GameObjectFactory::ReadInfo(RenderingManager& rendererM
     return gameObjects;
 }
 
-GameObject* GameObjectFactory::CreateBuletObject(RenderingManager& rendererManager, Json::Value& data) 
+GameObject* GameObjectFactory::CreateBulletObject(RenderingManager& rendererManager, Json::Value& data) 
 {
-    GameObject* bulet = new GameObject();
+    GameObject* bullet = new GameObject();
 
     auto* rb = new RigidBodyComponent(Vec2(-1, -1), Vec2(0.0f, 0.0f), Vec2(0.0f, 0.0f));
     auto* draw = new DrawComponent(data["width"].asFloat(), data["height"].asFloat(),
         rendererManager.GetRenderer(), rb, data["image"].asCString());
 
-    bulet->AddComponent(draw);
-    return bulet;
+    bullet->AddComponent(draw);
+    return bullet;
 }
 
 GameObject* GameObjectFactory::CreatePlayerObject(RenderingManager& rendererManager, Json::Value& data) 
@@ -77,7 +77,7 @@ GameObject* GameObjectFactory::CreatePlayerObject(RenderingManager& rendererMana
 
     auto* gravity = new GravityComponent(rb, data["mass"].asFloat(), data["height"].asFloat());
     auto* jump = new JumpComponent(rb, data["height"].asFloat());
-    auto* move = new MoveLeftRightComponent(rb, data["mass"].asFloat(), 0.0f);
+    auto* move = new MoveLeftRightComponent(rb, data["mass"].asFloat());
 
     player->AddComponent(draw);
     player->AddComponent(gravity);
@@ -99,7 +99,7 @@ GameObject* GameObjectFactory::CreateEnemyObject(RenderingManager& rendererManag
 
     auto* gravity = new GravityComponent(rb, data["mass"].asFloat(), data["height"].asFloat());
     auto* jump = new JumpComponent(rb, data["height"].asFloat());
-    auto* move = new MoveLeftRightComponent(rb, data["mass"].asFloat(), 0.0f);
+    auto* move = new MoveLeftRightComponent(rb, data["mass"].asFloat());
     auto* fire = new FireBuletComponent();
 
     enemy->AddComponent(draw);

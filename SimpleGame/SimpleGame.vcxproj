@@ -20,8 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
-    <ClCompile Include="Components\ComponentManager.cpp" />
-    <ClCompile Include="Components\GameObjectFactory.cpp" />
+    <ClCompile Include="system\GameObjectFactory.cpp" />
     <ClCompile Include="Components\JumpComponent.cpp" />
     <ClCompile Include="Components\MoveLeftRightComponent.cpp" />
     <ClCompile Include="Components\DrawComponent.cpp" />
@@ -36,8 +35,7 @@
   <ItemGroup>
     <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h" />
     <ClInclude Include="..\externals\jsoncpp\json\json.h" />
-    <ClInclude Include="Components\ComponentManager.h" />
-    <ClInclude Include="Components\GameObjectFactory.h" />
+    <ClInclude Include="system\GameObjectFactory.h" />
     <ClInclude Include="Components\JumpComponent.h" />
     <ClInclude Include="Components\MoveLeftRightComponent.h" />
     <ClInclude Include="Components\RigidBodyComponent.h" />

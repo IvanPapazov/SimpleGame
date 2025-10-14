@@ -3,37 +3,39 @@
 #include "GravityComponent.h"
 #include "RigidBodyComponent.h"
 
+constexpr float GROUND_Y = 500.0f;
 
 GravityComponent::GravityComponent(RigidBodyComponent* rb,float mass,float height)
 	:m_RigidBodyComponent(rb), m_Mass(mass),m_Height(height) {}
 
+void GravityComponent::HandleAllEvents() {
+}
+
 void GravityComponent::Update()
 {
-	Vec2 acc = m_RigidBodyComponent->GetAcceleration();
-	acc.y = mg_Gravity * GetMass();
+    Uint64 m_Now = SDL_GetPerformanceCounter();
+    m_deltaTime = (float)(m_Now - m_Last) / (float)SDL_GetPerformanceFrequency();
+    m_Last = m_Now;
 
-	Vec2 vel = m_RigidBodyComponent->GetVelocity();
-	Vec2 velCalc = vel + (acc * GetDeltaTime()*50);
-	m_RigidBodyComponent->SetVelocity(velCalc);
+    Vec2 acceleration = m_RigidBodyComponent->GetAcceleration();
+    acceleration.y = mg_Gravity * m_Mass;
 
-	Vec2 pos = m_RigidBodyComponent->GetPosition();
-	Vec2 vel1 = m_RigidBodyComponent->GetVelocity();
-	Vec2 posCalc = pos + vel1 * GetDeltaTime();
-	m_RigidBodyComponent->SetPosition(posCalc);
+    Vec2 velocity = m_RigidBodyComponent->GetVelocity();
+    velocity += acceleration * m_deltaTime * 50.0f;
 
-	Vec2 pos1 = m_RigidBodyComponent->GetPosition();
+    Vec2 position = m_RigidBodyComponent->GetPosition();
+    position += velocity * m_deltaTime;
 
-	if (pos1.y + GetHeight() >= 500)
-	{
-		pos1.y = 500.0f - GetHeight();
-		Vec2 vel2 = m_RigidBodyComponent->GetVelocity();
-		vel2.y = 0.0f;
-		acc.y = 0.0f;
-		m_RigidBodyComponent->SetVelocity(vel2);
-	}
+    if (position.y + m_Height >= GROUND_Y)
+    {
+        position.y = GROUND_Y - m_Height;
+        velocity.y = 0.0f;
+        acceleration.y = 0.0f;
+    }
 
-	m_RigidBodyComponent->SetPosition(pos1);
-	m_RigidBodyComponent->SetAcceleration(acc);
+    m_RigidBodyComponent->SetAcceleration(acceleration);
+    m_RigidBodyComponent->SetVelocity(velocity);
+    m_RigidBodyComponent->SetPosition(position);
 }
  
 
