@@ -4,6 +4,7 @@
 class Components {
 public:
     virtual ~Components() = default;
+    virtual Components* Clone() const = 0;
     virtual void Update() = 0;
     virtual void HandleAllEvents() = 0;
     virtual int GetComponentId() = 0;

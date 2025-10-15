@@ -1,17 +1,26 @@
 #pragma once
 #include <RenderingManager.h>
 #include <any>
+#include "Components/RigidBodyComponent.h"
+#include "Components/DrawComponent.h"
+#include "Components/GravityComponent.h"
+#include "Components/JumpComponent.h"
+#include "Components/MoveLeftRightComponent.h"
+#include "Components/FireBulletComponent.h"
 
 
 class GameObjectFactory
 {
 private:
-	GameObject* CreatePlayerObject(RenderingManager& ms_RendererManager, Json::Value& player);
-	GameObject* CreateBulletObject(RenderingManager& ms_RendererManager, Json::Value& player);
-	GameObject* CreateEnemyObject(RenderingManager& ms_RendererManager, Json::Value& player);
-    
+
+	RigidBodyComponent* CreateRigidBodyComponent(Json::Value& player);
+	Components* CreateDrawComponent(RenderingManager& ms_RendererManager, RigidBodyComponent* rb, Json::Value& player);
+	Components* CreateGraviryComponent(RigidBodyComponent* rb, Json::Value& player);
+	Components* CreateJumpComponent(RigidBodyComponent* rb, Json::Value& player);
+	Components* CreateMoveComponent(RigidBodyComponent* rb, Json::Value& player);
+	Components* CreateFireBuletComponent(RigidBodyComponent* rb);
 public:
     GameObjectFactory();
-	std::vector<GameObject*> ReadInfo(RenderingManager& ms_RendererManager);
+	std::unordered_map<std::string, Components*> ReadInfo(RenderingManager& ms_RendererManager);
 };
 

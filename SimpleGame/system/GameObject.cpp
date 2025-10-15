@@ -6,6 +6,7 @@
 #include "../Components/GravityComponent.h"
 #include "../Components/JumpComponent.h"
 #include "../Components/DrawComponent.h"
+#include <Components/FireBulletComponent.h>
 
 
 static int ms_GameObjectIdCounter = 0;
@@ -36,6 +37,10 @@ void GameObject::UpdateComponents()
 			comp->Update();
 		}
 		else if (type == typeid(DrawComponent))
+		{
+			comp->Update();
+		}
+		else if (type == typeid(FireBulletComponent))
 		{
 			comp->Update();
 		}

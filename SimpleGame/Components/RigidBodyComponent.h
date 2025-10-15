@@ -38,6 +38,11 @@ public:
     RigidBodyComponent(const Vec2& pos, const Vec2& vel, const Vec2& acc)
         :m_Position(pos), m_Velocity(vel), m_Acceleration(acc) {}
 
+    RigidBodyComponent(const RigidBodyComponent& other)
+        : m_Position(other.m_Position),
+        m_Velocity(other.m_Velocity),
+        m_Acceleration(other.m_Acceleration) {}
+
     Vec2 GetPosition()
     {
         return m_Position;

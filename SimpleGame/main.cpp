@@ -8,7 +8,7 @@
 #include "Components/JumpComponent.h"
 #include <Components/MoveLeftRightComponent.h>
 #include "Components/GravityComponent.h"
-#include "Components/FireBuletComponent.h"
+#include "Components/FireBulletComponent.h"
 #include <Components/DrawComponent.h>
 #include <GameObjectManager.h>
 
@@ -17,32 +17,23 @@ RenderingManager& ms_RendererManager = RenderingManager::getInstance();
 
 int main(int argc, char* argv[])
 {
-	bool m_IsRunning = true;
-	bool m_IsPressd = false;
-	SDL_Event m_Event;
-
 	if (!ms_RendererManager.IsInitialized())
 	{
 		std::cerr << "Failed to initialize!\n";
 		return 1;
 	}
 
+
+	bool m_IsRunning = true;
+	SDL_Event m_Event;
 	GameObjectFactory m_ComponentManager;
 	GameObjectManager m_gameObjectManager;
-	std::vector<GameObject*> gameObjects = m_ComponentManager.ReadInfo(ms_RendererManager);
-	for (GameObject* object : gameObjects)
-	{
-		if (object->GetComponent<DrawComponent>()->GetRigidBodyComponent()->GetPosition().x > -1 && object->GetComponent<DrawComponent>()->GetRigidBodyComponent()->GetPosition().y > -1)
-		{
-			m_gameObjectManager.AddGameObject(object);
-		}
-	}
+	std::unordered_map<std::string, Components*> m_Componets = m_ComponentManager.ReadInfo(ms_RendererManager);
 	while (m_IsRunning)
 	{
 		SDL_RenderClear(ms_RendererManager.GetRenderer());
 		SDL_SetRenderDrawColor(ms_RendererManager.GetRenderer(), 135, 206, 235, 255);
 		m_gameObjectManager.UpdateComponents();
-		
 
 
 		while (SDL_PollEvent(&m_Event))
@@ -61,6 +52,10 @@ int main(int argc, char* argv[])
 					mouseY = m_Event.button.y;
 					m_gameObjectManager.HandleAllEvents(mouseX, mouseY);
 				}
+			}
+			if (m_Event.type == SDL_KEYDOWN)
+			{
+				m_gameObjectManager.CreateGameObject(m_Componets);
 			}
 		}
 		SDL_RenderPresent(ms_RendererManager.GetRenderer());

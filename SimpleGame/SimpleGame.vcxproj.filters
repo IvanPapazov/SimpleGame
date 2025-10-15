@@ -45,7 +45,7 @@
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\FireBuletComponent.cpp">
+    <ClCompile Include="Components\FireBulletComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="system\GameObjectManager.cpp">
@@ -89,7 +89,7 @@
     <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\FireBuletComponent.h">
+    <ClInclude Include="Components\FireBulletComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="system\GameObjectManager.h">

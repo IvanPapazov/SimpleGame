@@ -7,6 +7,9 @@ class MoveLeftRightComponent : public Components
 public:
 
     MoveLeftRightComponent(RigidBodyComponent* rb, float m_Mass);
+    MoveLeftRightComponent* Clone() const override {
+        return new MoveLeftRightComponent(*this);
+    }
 
     int GetComponentId() override {
         return m_ComponentId;
@@ -15,9 +18,8 @@ public:
     RigidBodyComponent* GetRigidBodyComponent() const {
         return m_RigidBodyComponent;
     }
-
-    void SetRigidBodyComponent(RigidBodyComponent* rb) {
-        m_RigidBodyComponent = rb;
+    void SetRigidBodyComponent(RigidBodyComponent* rigidBodyComponent) {
+        m_RigidBodyComponent = rigidBodyComponent;
     }
 
     void Update() override;

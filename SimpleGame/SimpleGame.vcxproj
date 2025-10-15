@@ -24,7 +24,7 @@
     <ClCompile Include="Components\JumpComponent.cpp" />
     <ClCompile Include="Components\MoveLeftRightComponent.cpp" />
     <ClCompile Include="Components\DrawComponent.cpp" />
-    <ClCompile Include="Components\FireBuletComponent.cpp" />
+    <ClCompile Include="Components\FireBulletComponent.cpp" />
     <ClCompile Include="system\GameObjectManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
@@ -41,7 +41,7 @@
     <ClInclude Include="Components\RigidBodyComponent.h" />
     <ClInclude Include="Components\DrawComponent.h" />
     <ClInclude Include="Components\Components.h" />
-    <ClInclude Include="Components\FireBuletComponent.h" />
+    <ClInclude Include="Components\FireBulletComponent.h" />
     <ClInclude Include="system\GameObjectManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\GameObject.h" />

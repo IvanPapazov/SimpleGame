@@ -16,6 +16,9 @@ private:
 public:
 	DrawComponent(float width, float height, SDL_Renderer* renderer, RigidBodyComponent* rigidBodyComponent, const char* filePath);
 	~DrawComponent();
+	DrawComponent* Clone() const override {
+		return new DrawComponent(*this);
+	}
 	void Update() override;
 	void HandleAllEvents() override;
 	void Draw();
@@ -25,6 +28,9 @@ public:
 	SDL_Renderer* GetRenderer() const { return m_Renderer; }
 	const char* GetFilePath() const { return m_FilePath; }
 	RigidBodyComponent* GetRigidBodyComponent() const { return m_RigidBodyComponent; }
+	void SetRigidBodyComponent(RigidBodyComponent* rigidBodyComponent) {
+		m_RigidBodyComponent = rigidBodyComponent;
+	}
 
 	int GetComponentId() override {
 		return m_ComponentId;

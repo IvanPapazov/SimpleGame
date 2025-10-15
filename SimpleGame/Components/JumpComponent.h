@@ -8,6 +8,9 @@ public:
     void HandleAllEvents() override;
     void Update() override;
     JumpComponent(RigidBodyComponent* rb,float m_Height);
+    JumpComponent* Clone() const override {
+        return new JumpComponent(*this);;
+    }
     int GetComponentId() override {
         return m_ComponentId;
     }
@@ -17,6 +20,10 @@ public:
 
     void SetHeight(float height) {
         m_Height = height;
+    }
+
+    void SetRigidBodyComponent(RigidBodyComponent* rigidBodyComponent) {
+        m_RigidBodyComponent = rigidBodyComponent;
     }
 
 private:

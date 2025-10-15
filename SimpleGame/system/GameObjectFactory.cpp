@@ -2,23 +2,24 @@
 #include "GameObjectFactory.h"
 #include <fstream>
 #include <GameObject.h>
+#include "Components/RigidBodyComponent.h"
 #include "Components/DrawComponent.h"
 #include "Components/GravityComponent.h"
 #include "Components/JumpComponent.h"
 #include "Components/MoveLeftRightComponent.h"
-#include <Components/FireBuletComponent.h>
+#include <Components/FireBulletComponent.h>
 
 GameObjectFactory::GameObjectFactory() {}
 
-std::vector<GameObject*> GameObjectFactory::ReadInfo(RenderingManager& rendererManager) 
+std::unordered_map<std::string, Components*> GameObjectFactory::ReadInfo(RenderingManager& rendererManager)
 {
     std::ifstream file("images/PlayerFile.json", std::ios::binary);
     Json::Value root;
     Json::CharReaderBuilder builder;
     std::string errs;
 
-    std::vector<GameObject*> gameObjects;
-
+    std::unordered_map<std::string, Components*> m_AllComponents;
+     
     if (!file.is_open()) 
     {
         std::cerr << "Could not open PlayerFile.json\n";
@@ -30,18 +31,28 @@ std::vector<GameObject*> GameObjectFactory::ReadInfo(RenderingManager& rendererM
         for (const auto& key : root.getMemberNames()) 
         {
             const Json::Value& data = root[key];
-
+            auto* rb = CreateRigidBodyComponent(root[key]);
             if (key.find("player") != std::string::npos) 
             {
-                gameObjects.push_back(CreatePlayerObject(rendererManager, root[key]));
+                
+                m_AllComponents["DrawPlayer"] = CreateDrawComponent(rendererManager, rb, root[key]);
+                m_AllComponents["GravityPlayer"] = CreateGraviryComponent(rb, root[key]);
+                m_AllComponents["MovePlayer"] = CreateMoveComponent(rb, root[key]);
+                m_AllComponents["JumpPlayer"] = CreateJumpComponent(rb, root[key]);
             }
             else if (key.find("bullet") != std::string::npos) 
             {
-                gameObjects.push_back(CreateBulletObject(rendererManager, root[key]));
+                m_AllComponents["DrawBullet"] = CreateDrawComponent(rendererManager, rb, root[key]);
+                m_AllComponents["FireBulletEnemy"] = CreateFireBuletComponent(rb);
+
             }
             else if (key.find("enemy") != std::string::npos) 
             {
-                gameObjects.push_back(CreateEnemyObject(rendererManager, root[key]));
+                
+                m_AllComponents["DrawEnemy"] = CreateDrawComponent(rendererManager, rb, root[key]);
+                m_AllComponents["GravityEnemy"] = CreateGraviryComponent(rb, root[key]);
+                m_AllComponents["MoveEnemy"] = CreateMoveComponent(rb, root[key]);
+                m_AllComponents["JumpEnemy"] = CreateJumpComponent(rb, root[key]);
             }
         }
     }
@@ -50,63 +61,43 @@ std::vector<GameObject*> GameObjectFactory::ReadInfo(RenderingManager& rendererM
         std::cerr << "Failed to parse JSON: " << errs << std::endl;
     }
 
-    return gameObjects;
+    return m_AllComponents;
 }
 
-GameObject* GameObjectFactory::CreateBulletObject(RenderingManager& rendererManager, Json::Value& data) 
+RigidBodyComponent* GameObjectFactory::CreateRigidBodyComponent(Json::Value& data)
 {
-    GameObject* bullet = new GameObject();
-
-    auto* rb = new RigidBodyComponent(Vec2(-1, -1), Vec2(0.0f, 0.0f), Vec2(0.0f, 0.0f));
-    auto* draw = new DrawComponent(data["width"].asFloat(), data["height"].asFloat(),
-        rendererManager.GetRenderer(), rb, data["image"].asCString());
-
-    bullet->AddComponent(draw);
-    return bullet;
-}
-
-GameObject* GameObjectFactory::CreatePlayerObject(RenderingManager& rendererManager, Json::Value& data) 
-{
-    GameObject* player = new GameObject();
-
-    auto* rb = new RigidBodyComponent(Vec2(data["x"].asFloat(), data["y"].asFloat()),
+    RigidBodyComponent* rb = new RigidBodyComponent(Vec2(data["x"].asFloat(), data["y"].asFloat()),
         Vec2(0.0f, 0.0f), Vec2(0.0f, 0.0f));
-
-    auto* draw = new DrawComponent(data["width"].asFloat(), data["height"].asFloat(),
-        rendererManager.GetRenderer(), rb, data["image"].asCString());
-
-    auto* gravity = new GravityComponent(rb, data["mass"].asFloat(), data["height"].asFloat());
-    auto* jump = new JumpComponent(rb, data["height"].asFloat());
-    auto* move = new MoveLeftRightComponent(rb, data["mass"].asFloat());
-
-    player->AddComponent(draw);
-    player->AddComponent(gravity);
-    player->AddComponent(jump);
-    player->AddComponent(move);
-
-    return player;
+    return rb;
 }
 
-GameObject* GameObjectFactory::CreateEnemyObject(RenderingManager& rendererManager, Json::Value& data)
+Components* GameObjectFactory::CreateDrawComponent(RenderingManager& rendererManager, RigidBodyComponent* rb, Json::Value& data)
 {
-    GameObject* enemy = new GameObject();
-
-    auto* rb = new RigidBodyComponent(Vec2(data["x"].asFloat(), data["y"].asFloat()),
-        Vec2(0.0f, 0.0f), Vec2(0.0f, 0.0f));
-
-    auto* draw = new DrawComponent(data["width"].asFloat(), data["height"].asFloat(),
+    Components* draw = new DrawComponent(data["width"].asFloat(), data["height"].asFloat(),
         rendererManager.GetRenderer(), rb, data["image"].asCString());
+    return draw;
+}
 
-    auto* gravity = new GravityComponent(rb, data["mass"].asFloat(), data["height"].asFloat());
-    auto* jump = new JumpComponent(rb, data["height"].asFloat());
-    auto* move = new MoveLeftRightComponent(rb, data["mass"].asFloat());
-    auto* fire = new FireBuletComponent();
+Components* GameObjectFactory::CreateGraviryComponent(RigidBodyComponent* rb, Json::Value& data)
+{
+    Components* gravity = new GravityComponent(rb, data["mass"].asFloat(), data["height"].asFloat());
+    return gravity;
+}
 
-    enemy->AddComponent(draw);
-    enemy->AddComponent(gravity);
-    enemy->AddComponent(jump);
-    enemy->AddComponent(move);
-    enemy->AddComponent(fire);
+Components* GameObjectFactory::CreateJumpComponent(RigidBodyComponent* rb, Json::Value& data)
+{
+    Components* jump = new JumpComponent(rb, data["height"].asFloat());
+    return jump;
+}
 
-    return enemy;
+Components* GameObjectFactory::CreateMoveComponent(RigidBodyComponent* rb, Json::Value& data)
+{
+    Components* move = new MoveLeftRightComponent(rb, data["mass"].asFloat());
+    return move;
+}
+
+Components* GameObjectFactory::CreateFireBuletComponent(RigidBodyComponent* rb)
+{
+    Components* fire = new FireBulletComponent(rb);
+    return fire;
 }

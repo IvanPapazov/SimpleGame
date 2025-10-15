@@ -9,6 +9,7 @@ private:
 public:
     GameObjectManager();
     void AddGameObject(GameObject* obj);
+    void CreateGameObject(std::unordered_map<std::string, Components*>);
     GameObject* GetGameObject(int id);
     void RemoveGameObject(int id);
     void UpdateComponents();

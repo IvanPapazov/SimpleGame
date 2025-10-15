@@ -1,5 +1,5 @@
 {
-  "player1": {
+  "player": {
     "x": 100,
     "y": 100,
     "width": 80,
@@ -7,7 +7,7 @@
     "mass": 7,
     "image": "images/preview.png"
   },
-  "enemy1": {
+  "enemy": {
     "x": 250,
     "y": 150,
     "width": 90,
@@ -15,15 +15,7 @@
     "mass": 5,
     "image": "images/AmongGun.png"
   },
-  "player2": {
-    "x": 400,
-    "y": 200,
-    "width": 80,
-    "height": 100,
-    "mass": 9,
-    "image": "images/preview.png"
-  },
-  "bullet1": {
+  "bullet": {
     "width": 50,
     "height": 25,
     "image": "images/bulet.png"
