@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "DrawComponent.h"
 #include "SDL_image.h"
-#include "GameObject.h"
 
 
 DrawComponent::DrawComponent(float width, float height, SDL_Renderer* renderer, RigidBodyComponent* rb, const char* filePath)
@@ -26,8 +25,6 @@ DrawComponent::~DrawComponent() {
 	}
 }
 
-void DrawComponent::HandleAllEvents() {
-}
 
 void DrawComponent::Draw()
 {

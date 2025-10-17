@@ -18,25 +18,25 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="system\RenderingManager.cpp">
+    <ClCompile Include="systemOld\RenderingManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="system\GameObject.cpp">
+    <ClCompile Include="systemOld\GameObjectOld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\GravityComponent.cpp">
+    <ClCompile Include="ComponentsOld\GravityComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\JumpComponent.cpp">
+    <ClCompile Include="ComponentsOld\JumpComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\MoveLeftRightComponent.cpp">
+    <ClCompile Include="ComponentsOld\MoveLeftRightComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\DrawComponent.cpp">
+    <ClCompile Include="ComponentsOld\DrawComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="system\GameObjectFactory.cpp">
+    <ClCompile Include="systemOld\ComponentFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
@@ -45,39 +45,48 @@
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\FireBulletComponent.cpp">
+    <ClCompile Include="ComponentsOld\FireBulletComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="system\GameObjectManager.cpp">
+    <ClCompile Include="systemOld\GameObjectManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\CollisionSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="system\RenderingManager.h">
+    <ClInclude Include="systemOld\RenderingManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="system\GameObject.h">
+    <ClInclude Include="systemOld\GameObjectOld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\Components.h">
+    <ClInclude Include="ComponentsOld\Components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\GravityComponent.h">
+    <ClInclude Include="ComponentsOld\GravityComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\RigidBodyComponent.h">
+    <ClInclude Include="ComponentsOld\RigidBodyComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\JumpComponent.h">
+    <ClInclude Include="ComponentsOld\JumpComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\MoveLeftRightComponent.h">
+    <ClInclude Include="ComponentsOld\MoveLeftRightComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\DrawComponent.h">
+    <ClInclude Include="ComponentsOld\DrawComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="system\GameObjectFactory.h">
+    <ClInclude Include="systemOld\ComponentFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -89,10 +98,43 @@
     <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\FireBulletComponent.h">
+    <ClInclude Include="ComponentsOld\FireBulletComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="system\GameObjectManager.h">
+    <ClInclude Include="systemOld\GameObjectManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RenderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\MovementComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\CollisionComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Vec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RigidBodyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\HealthComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\CollisionSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ComponentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

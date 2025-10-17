@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "GameObject.h"
 #include "JumpComponent.h"
 #include "RigidBodyComponent.h"
 
@@ -11,7 +10,7 @@ void JumpComponent::Update()
 	if (m_RigidBodyComponent->GetPosition().y + GetHeight() >= 500)
 	{
 		Vec2 velocity = m_RigidBodyComponent->GetVelocity();
-		velocity.y -= 1000.0f;
+		velocity.y -= 1.0f;
 		m_RigidBodyComponent->SetVelocity(velocity);
 	}
 }

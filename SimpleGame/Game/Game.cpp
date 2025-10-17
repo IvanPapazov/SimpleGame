@@ -1,19 +1,19 @@
 #include "stdafx.h"
-#include <SDL.h>
-#include <iostream>
-#include <RenderingManager.h>
+#include "Game.h"
+#include "iostream"
 
-RenderingManager& RenderingManager::getInstance()
+Game& Game::getInstance()
 {
-    static RenderingManager ms_Instance;
+    static Game ms_Instance;
     return ms_Instance;
 }
 
-bool RenderingManager::IsInitialized()
+bool Game::IsInitialized()
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+        isRunning = false;
         return false;
     }
 
@@ -21,6 +21,7 @@ bool RenderingManager::IsInitialized()
     if (m_Window == NULL)
     {
         std::cerr << "m_Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        isRunning = false;
         return false;
     }
 
@@ -28,13 +29,15 @@ bool RenderingManager::IsInitialized()
     if (m_Renderer == NULL)
     {
         std::cerr << "m_Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        isRunning = false;
         return false;
     }
 
+    isRunning = true;
     return true;
 }
 
-void RenderingManager::Close()
+void Game::Shutdown()
 {
     if (m_Renderer)
     {
@@ -46,5 +49,23 @@ void RenderingManager::Close()
     {
         SDL_DestroyWindow(m_Window);
         m_Window = NULL;
+    }
+
+    SDL_Quit();
+}
+
+void Game::Run()
+{
+    float deltaTime = 0.016f;
+
+    while (isRunning) {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) isRunning = false;
+        }
+
+
+        SDL_RenderClear(m_Renderer);
+        SDL_RenderPresent(m_Renderer);
     }
 }

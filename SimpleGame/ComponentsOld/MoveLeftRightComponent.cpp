@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "GameObject.h"
 #include "MoveLeftRightComponent.h"
 #include "RigidBodyComponent.h"
 

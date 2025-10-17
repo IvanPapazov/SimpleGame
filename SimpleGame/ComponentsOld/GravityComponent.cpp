@@ -1,15 +1,11 @@
 #include "stdafx.h"
-#include "GameObject.h"
 #include "GravityComponent.h"
 #include "RigidBodyComponent.h"
 
-constexpr float GROUND_Y = 500.0f;
+constexpr float GROUND_Y = 560.0f;
 
 GravityComponent::GravityComponent(RigidBodyComponent* rb,float mass,float height)
 	:m_RigidBodyComponent(rb), m_Mass(mass),m_Height(height) {}
-
-void GravityComponent::HandleAllEvents() {
-}
 
 void GravityComponent::Update()
 {

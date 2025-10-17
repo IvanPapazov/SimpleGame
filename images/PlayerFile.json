@@ -2,22 +2,164 @@
   "player": {
     "x": 100,
     "y": 100,
-    "width": 80,
-    "height": 100,
+    "width": 60,
+    "height": 80,
     "mass": 7,
-    "image": "images/preview.png"
+    "image": "images/King.png"
   },
   "enemy": {
-    "x": 250,
-    "y": 150,
-    "width": 90,
-    "height": 100,
-    "mass": 5,
-    "image": "images/AmongGun.png"
-  },
-  "bullet": {
+    "x": 450,
+    "y": 510,
     "width": 50,
-    "height": 25,
-    "image": "images/bulet.png"
+    "height": 50,
+    "mass": 5,
+    "image": "images/Pig.png"
+  },
+  "terrainWallLeft1": {
+    "x": 0,
+    "y": 0,
+    "width": 40,
+    "height": 100,
+    "image": "images/Wall.png"
+  },
+  "terrainWallLeft2": {
+    "x": 0,
+    "y": 100,
+    "width": 40,
+    "height": 100,
+    "image": "images/Wall.png"
+  },
+  "terrainWallLeft3": {
+    "x": 0,
+    "y": 200,
+    "width": 40,
+    "height": 100,
+    "image": "images/Wall.png"
+  },
+  "terrainWallLeft4": {
+    "x": 0,
+    "y": 300,
+    "width": 40,
+    "height": 100,
+    "image": "images/Wall.png"
+  },
+  "terrainWalLeftlLeft5": {
+    "x": 0,
+    "y": 400,
+    "width": 40,
+    "height": 100,
+    "image": "images/Wall.png"
+  },
+  "terrainWallLeft6": {
+    "x": 0,
+    "y": 500,
+    "width": 40,
+    "height": 60,
+    "image": "images/Wall.png"
+  },
+  "terrainWallRight1": {
+    "x": 760,
+    "y": 0,
+    "width": 40,
+    "height": 100,
+    "image": "images/Wall.png"
+  },
+  "terrainWallRight2": {
+    "x": 760,
+    "y": 100,
+    "width": 40,
+    "height": 100,
+    "image": "images/Wall.png"
+  },
+  "terrainWallRight3": {
+    "x": 760,
+    "y": 200,
+    "width": 40,
+    "height": 100,
+    "image": "images/Wall.png"
+  },
+  "terrainWallRight4": {
+    "x": 760,
+    "y": 300,
+    "width": 40,
+    "height": 100,
+    "image": "images/Wall.png"
+  },
+  "terrainWallRight5": {
+    "x": 760,
+    "y": 400,
+    "width": 40,
+    "height": 100,
+    "image": "images/Wall.png"
+  },
+  "terrainWallRight6": {
+    "x": 760,
+    "y": 500,
+    "width": 40,
+    "height": 60,
+    "image": "images/Wall.png"
+  },
+  "terrainGround1": {
+    "x": 0,
+    "y": 560,
+    "width": 100,
+    "height": 40,
+    "image": "images/Ground.png"
+  },
+  "terrainGround2": {
+    "x": 700,
+    "y": 560,
+    "width": 100,
+    "height": 40,
+    "image": "images/Ground.png"
+  },
+  "terrainGround3": {
+    "x": 100,
+    "y": 560,
+    "width": 100,
+    "height": 40,
+    "image": "images/Ground.png"
+  },
+  "terrainGround4": {
+    "x": 200,
+    "y": 560,
+    "width": 100,
+    "height": 40,
+    "image": "images/Ground.png"
+  },
+  "terrainGround5": {
+    "x": 300,
+    "y": 560,
+    "width": 100,
+    "height": 40,
+    "image": "images/Ground.png"
+  },
+  "terrainGround6": {
+    "x": 400,
+    "y": 560,
+    "width": 100,
+    "height": 40,
+    "image": "images/Ground.png"
+  },
+  "terrainGround7": {
+    "x": 500,
+    "y": 560,
+    "width": 100,
+    "height": 40,
+    "image": "images/Ground.png"
+  },
+  "terrainGround8": {
+    "x": 600,
+    "y": 560,
+    "width": 100,
+    "height": 40,
+    "image": "images/Ground.png"
+  },
+  "terrainCube": {
+    "x": 400,
+    "y": 510,
+    "width": 50,
+    "height": 50,
+    "image": "images/Cube.png"
   }
 }

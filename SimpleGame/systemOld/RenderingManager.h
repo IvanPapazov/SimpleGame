@@ -2,7 +2,6 @@
 #include <SDL.h>
 #include <iostream>
 #include <unordered_map>
-#include <GameObject.h>
 
 const int g_ScreenWidth = 800;
 const int g_ScreenHeight = 600;

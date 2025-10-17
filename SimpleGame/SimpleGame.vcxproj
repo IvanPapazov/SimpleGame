@@ -20,33 +20,47 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
-    <ClCompile Include="system\GameObjectFactory.cpp" />
-    <ClCompile Include="Components\JumpComponent.cpp" />
-    <ClCompile Include="Components\MoveLeftRightComponent.cpp" />
-    <ClCompile Include="Components\DrawComponent.cpp" />
-    <ClCompile Include="Components\FireBulletComponent.cpp" />
-    <ClCompile Include="system\GameObjectManager.cpp" />
+    <ClCompile Include="Game\GameObject.cpp" />
+    <ClCompile Include="Systems\CollisionSystem.cpp" />
+    <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="systemOld\ComponentFactory.cpp" />
+    <ClCompile Include="ComponentsOld\JumpComponent.cpp" />
+    <ClCompile Include="ComponentsOld\MoveLeftRightComponent.cpp" />
+    <ClCompile Include="ComponentsOld\DrawComponent.cpp" />
+    <ClCompile Include="ComponentsOld\FireBulletComponent.cpp" />
+    <ClCompile Include="systemOld\GameObjectManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="system\GameObject.cpp" />
-    <ClCompile Include="Components\GravityComponent.cpp" />
-    <ClCompile Include="system\RenderingManager.cpp" />
+    <ClCompile Include="systemOld\GameObjectOld.cpp" />
+    <ClCompile Include="ComponentsOld\GravityComponent.cpp" />
+    <ClCompile Include="systemOld\RenderingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h" />
     <ClInclude Include="..\externals\jsoncpp\json\json.h" />
-    <ClInclude Include="system\GameObjectFactory.h" />
-    <ClInclude Include="Components\JumpComponent.h" />
-    <ClInclude Include="Components\MoveLeftRightComponent.h" />
+    <ClInclude Include="Core\ComponentManager.h" />
+    <ClInclude Include="Systems\CollisionSystem.h" />
+    <ClInclude Include="Components\CollisionComponent.h" />
+    <ClInclude Include="Components\HealthComponent.h" />
+    <ClInclude Include="Components\RenderComponent.h" />
+    <ClInclude Include="Components\MovementComponent.h" />
     <ClInclude Include="Components\RigidBodyComponent.h" />
-    <ClInclude Include="Components\DrawComponent.h" />
-    <ClInclude Include="Components\Components.h" />
-    <ClInclude Include="Components\FireBulletComponent.h" />
-    <ClInclude Include="system\GameObjectManager.h" />
+    <ClInclude Include="Core\System.h" />
+    <ClInclude Include="Game\GameObject.h" />
+    <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="systemOld\ComponentFactory.h" />
+    <ClInclude Include="ComponentsOld\JumpComponent.h" />
+    <ClInclude Include="ComponentsOld\MoveLeftRightComponent.h" />
+    <ClInclude Include="ComponentsOld\RigidBodyComponent.h" />
+    <ClInclude Include="ComponentsOld\DrawComponent.h" />
+    <ClInclude Include="ComponentsOld\Components.h" />
+    <ClInclude Include="ComponentsOld\FireBulletComponent.h" />
+    <ClInclude Include="systemOld\GameObjectManager.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="system\GameObject.h" />
-    <ClInclude Include="Components\GravityComponent.h" />
-    <ClInclude Include="system\RenderingManager.h" />
+    <ClInclude Include="systemOld\GameObjectOld.h" />
+    <ClInclude Include="ComponentsOld\GravityComponent.h" />
+    <ClInclude Include="systemOld\RenderingManager.h" />
+    <ClInclude Include="Utils\Vec2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

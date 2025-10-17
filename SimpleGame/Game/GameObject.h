@@ -1,25 +1,19 @@
 #pragma once
-#include <SDL.h>
 #include <unordered_map>
-#include "Components/Components.h"
+#include <any>
 #include <typeindex>
-
-
-class GameObject  
+class GameObject
 {
 private:
 	int m_Id;
-	std::unordered_map<std::type_index, Components*> m_Components;
+	std::unordered_map<std::type_index, std::any*> m_Components;
 public:
 	GameObject();
 	~GameObject();
 
-	void UpdateComponents();
-	void HandleAllEvents();
-
-	int GetId() const {
+	/*int GetId() const {
 		return m_Id;
-	}
+	}*/
 
 	template<typename T>
 	void AddComponent(T* component) {
@@ -40,4 +34,9 @@ public:
 	bool HasComponent() {
 		return GetComponent<T>() != nullptr;
 	}
+
+	bool operator==(const GameObject& other) const {
+		return m_Id == other.m_Id;
+	}
 };
+

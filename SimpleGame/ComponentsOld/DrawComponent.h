@@ -16,11 +16,12 @@ private:
 public:
 	DrawComponent(float width, float height, SDL_Renderer* renderer, RigidBodyComponent* rigidBodyComponent, const char* filePath);
 	~DrawComponent();
-	DrawComponent* Clone() const override {
+	Components* Clone() const override {
 		return new DrawComponent(*this);
+		/*RigidBodyComponent* rbCopy = new RigidBodyComponent(*m_RigidBodyComponent);
+		return static_cast<Components*>(new DrawComponent(m_Width, m_Height, m_Renderer, rbCopy, m_FilePath));*/
 	}
 	void Update() override;
-	void HandleAllEvents() override;
 	void Draw();
 
 	float GetWidth() const { return m_Width; }
