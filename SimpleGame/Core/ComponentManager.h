@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include <Game/GameObject.h>
 #include <unordered_map>
 #include <memory>

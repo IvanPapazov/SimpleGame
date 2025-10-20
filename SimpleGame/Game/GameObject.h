@@ -1,23 +1,33 @@
 #pragma once
+#include "stdafx.h"
 #include <unordered_map>
 #include <any>
 #include <typeindex>
+#include "Core/System.h"
+
+static int g_Id = 1;
 class GameObject
 {
 private:
 	int m_Id;
-	std::unordered_map<std::type_index, std::any*> m_Components;
+	std::unordered_map<std::type_index, System*> m_Components;
 public:
-	GameObject();
+	GameObject(std::vector<System*> comps) {
+		m_Id = g_Id;
+		g_Id++;
+		for (System* comp : comps) {
+			AddComponent(comp);
+		}
+	}
 	~GameObject();
 
-	/*int GetId() const {
+	int GetId() const {
 		return m_Id;
-	}*/
+	}
 
 	template<typename T>
 	void AddComponent(T* component) {
-		static_assert(std::is_base_of<Components, T>::value);
+		static_assert(std::is_base_of<System, T>::value);
 		m_Components[typeid(T)] = component;
 	}
 

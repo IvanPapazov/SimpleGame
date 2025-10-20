@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "iostream"
+#include <Core/GameObjectManager.h>
+#include <Utils/ReadInfo.h>
 
 Game& Game::getInstance()
 {
@@ -13,7 +15,7 @@ bool Game::IsInitialized()
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
-        isRunning = false;
+        m_IsRunning = false;
         return false;
     }
 
@@ -21,7 +23,7 @@ bool Game::IsInitialized()
     if (m_Window == NULL)
     {
         std::cerr << "m_Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-        isRunning = false;
+        m_IsRunning = false;
         return false;
     }
 
@@ -29,11 +31,11 @@ bool Game::IsInitialized()
     if (m_Renderer == NULL)
     {
         std::cerr << "m_Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-        isRunning = false;
+        m_IsRunning = false;
         return false;
     }
 
-    isRunning = true;
+    m_IsRunning = true;
     return true;
 }
 
@@ -56,13 +58,20 @@ void Game::Shutdown()
 
 void Game::Run()
 {
-    float deltaTime = 0.016f;
-
-    while (isRunning) {
+    //float deltaTime = 0.016f;
+    GameObjectManager m_gameObjectManager;
+    ReadInfo info;
+    for (auto& [key, object] : info.ReadInfoPlayer(getInstance()))
+    {
+        m_gameObjectManager.AddGameObject(object);
+    }
+    while (m_IsRunning) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) isRunning = false;
+            if (event.type == SDL_QUIT) m_IsRunning = false;
         }
+
+
 
 
         SDL_RenderClear(m_Renderer);

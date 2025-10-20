@@ -1,7 +1,7 @@
 #pragma once
 #include <Utils/Vec2.h>
 
-class RigidBodyComponent
+class RigidBodyComponent : public System
 {
 private:
     Vec2 m_Position;
@@ -17,4 +17,12 @@ public:
         : m_Position(other.m_Position),
         m_Velocity(other.m_Velocity),
         m_Acceleration(other.m_Acceleration) {}
+
+    Vec2 getPosition() const { return m_Position; }
+    Vec2 getVelocity() const { return m_Velocity; }
+    Vec2 getAcceleration() const { return m_Acceleration; }
+
+    void setPosition(const Vec2& position) { m_Position = position; }
+    void setVelocity(const Vec2& velocity) { m_Velocity = velocity; }
+    void setAcceleration(const Vec2& acceleration) { m_Acceleration = acceleration; }
 };

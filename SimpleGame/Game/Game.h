@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include <SDL.h>
 
 const int g_ScreenHeight = 1000;
@@ -12,6 +13,14 @@ private:
 	SDL_Renderer* m_Renderer = nullptr;
 public:
 	static Game& getInstance();
+	SDL_Renderer* GetRenderer() const
+	{
+		return m_Renderer;
+	}
+	SDL_Window* GetWindow() const
+	{
+		return m_Window;
+	}
 
 	bool IsInitialized();
 	void Run();
@@ -19,7 +28,7 @@ public:
 
 	Game() = default;
 	~Game() = default;
-	Game(const Game& rm) = delete;
-	Game(Game&& rm) = delete;
+	Game(const Game& g) = delete;
+	Game(Game&& g) = delete;
 };
 

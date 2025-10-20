@@ -1,0 +1,10 @@
+{
+  "enemy": {
+    "x": 450,
+    "y": 510,
+    "width": 50,
+    "height": 50,
+    "mass": 5,
+    "image": "images/Pig.png"
+  }
+}

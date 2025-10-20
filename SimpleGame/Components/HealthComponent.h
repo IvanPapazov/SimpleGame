@@ -1,6 +1,6 @@
 #pragma once
-
-class HealthComponent
+#include "stdafx.h"
+class HealthComponent : public System
 {
 private:
 	bool m_IsActive = true;
@@ -8,4 +8,6 @@ private:
 public:
 	HealthComponent(int health)
 		:m_Health(health){}
+
+	void Update();
 };
