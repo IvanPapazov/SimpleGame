@@ -6,18 +6,19 @@
 #include <Components/CollisionComponent.h>
 #include <Components/HealthComponent.h>
 #include <Components/RenderComponent.h>
+#include <Components/MovementComponent.h>
 
 class ReadInfo
 {
 private:
 
-	RigidBodyComponent* CreateRigidBodyComponent(Json::Value& player);
-	RenderComponent* CreateRenderComponent(Game& ms_Game, Json::Value& data);
-	CollisionComponent* CreateCollisionComponent(Json::Value& player);
-	HealthComponent* CreateHealthComponent(Json::Value& player);
-	//MoveLeftRightComponent* CreateMoveComponent(RigidBodyComponent* rb, Json::Value& player);
-	//FireBulletComponent* CreateFireBuletComponent(RigidBodyComponent* rb);
+	RigidBodyComponent* CreateRigidBodyComponent(Json::Value& data);
+	RenderComponent* CreateRenderComponent(Json::Value& data);
+	CollisionComponent* CreateCollisionComponent(Json::Value& data);
+	HealthComponent* CreateHealthComponent(Json::Value& data);
+	MovementComponent* CreateMovementComponent(Json::Value& data);
 public:
-	//ComponentFactory();
-	std::unordered_map<int, GameObject*> ReadInfoPlayer(Game&  ms_Game);
+	std::unordered_map<int, GameObject*> ReadInfoPlayer();
+	std::unordered_map<int, GameObject*> ReadInfoEnemy();
+	std::unordered_map<int, GameObject*> ReadInfoTerrain();
 };

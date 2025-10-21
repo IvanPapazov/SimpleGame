@@ -7,6 +7,7 @@ private:
     Vec2 m_Position;
     Vec2 m_Velocity;
     Vec2 m_Acceleration;
+
 public:
     RigidBodyComponent() = default;
 
@@ -25,4 +26,5 @@ public:
     void setPosition(const Vec2& position) { m_Position = position; }
     void setVelocity(const Vec2& velocity) { m_Velocity = velocity; }
     void setAcceleration(const Vec2& acceleration) { m_Acceleration = acceleration; }
+
 };

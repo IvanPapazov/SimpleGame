@@ -35,5 +35,5 @@ public:
 		}
 	};
 
-	void Update() override;
+	void Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects) override;
 };

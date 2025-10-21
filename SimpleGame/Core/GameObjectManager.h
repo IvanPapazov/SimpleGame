@@ -9,6 +9,7 @@ public:
     GameObjectManager();  
 
     void AddGameObject(GameObject* obj);
+    void UpdateAllGameObject();
 
     std::unordered_map<int, GameObject*> m_gameObjects;
 };

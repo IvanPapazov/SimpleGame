@@ -3,6 +3,7 @@
 #include "iostream"
 #include <Core/GameObjectManager.h>
 #include <Utils/ReadInfo.h>
+#include <Core/SystemManager.h>
 
 Game& Game::getInstance()
 {
@@ -58,23 +59,32 @@ void Game::Shutdown()
 
 void Game::Run()
 {
-    //float deltaTime = 0.016f;
     GameObjectManager m_gameObjectManager;
+    SystemManager m_SystemManager;
     ReadInfo info;
-    for (auto& [key, object] : info.ReadInfoPlayer(getInstance()))
-    {
+
+    auto players = info.ReadInfoPlayer();
+    for (auto& [key, object] : players) {
         m_gameObjectManager.AddGameObject(object);
     }
+
+    auto terrains = info.ReadInfoTerrain();
+    for (auto& [key, object] : terrains) {
+        m_gameObjectManager.AddGameObject(object);
+    }
+
     while (m_IsRunning) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) m_IsRunning = false;
+            if (event.type == SDL_QUIT) {
+                m_IsRunning = false;
+            }
         }
 
-
-
-
         SDL_RenderClear(m_Renderer);
+
+        m_gameObjectManager.UpdateAllGameObject();  
+
         SDL_RenderPresent(m_Renderer);
     }
 }

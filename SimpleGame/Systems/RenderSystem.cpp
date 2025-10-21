@@ -5,9 +5,8 @@
 #include "Components/RenderComponent.h"
 #include "Components/RigidBodyComponent.h"
 
-void RenderComponent::Update()
+void RenderComponent::Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects)
 {
-    for (auto& [key,object] : gom->m_gameObjects) {
         RigidBodyComponent* rb = object->GetComponent<RigidBodyComponent>();
         RenderComponent* render = object->GetComponent<RenderComponent>();
 
@@ -16,5 +15,5 @@ void RenderComponent::Update()
             render->m_DestRect.y = static_cast<int>(rb->getPosition().y);
             SDL_RenderCopy(render->m_Renderer, render->m_Texture, nullptr, &render->m_DestRect);
         }
-    }
+  
 }

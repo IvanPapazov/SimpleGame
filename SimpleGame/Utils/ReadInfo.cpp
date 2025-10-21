@@ -3,8 +3,9 @@
 #include <fstream>
 #include <iostream>
 #include "Game/Player.h"
+#include "Game/Terrain.h"
 
-std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer(Game& ms_Game)
+std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer()
 {
 	std::ifstream file("images/PlayerFile.json", std::ios::binary);
 	Json::Value root;
@@ -27,18 +28,47 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer(Game& ms_Game)
 				CreateRigidBodyComponent(root[key]),
 				CreateCollisionComponent(root[key]),
 				CreateHealthComponent(root[key]),
-				CreateRenderComponent(ms_Game, root[key]) 
+				CreateRenderComponent(root[key]),
+				CreateMovementComponent(root[key])
 				});
 
-			/* if (key.find("player") != std::string::npos)
-			 {*/
-			 /* obj->AddComponent(CreateDrawComponent(rendererManager, rb, root[key]));
-			  obj->AddComponent(CreateGraviryComponent(rb, root[key]));
-			  obj->AddComponent(CreateMoveComponent(rb, root[key]));
-			  obj->AddComponent(CreateJumpComponent(rb, root[key]));*/
-			  // }
-			
-			   m_AllGameObject[obj->GetId()] = obj;
+			m_AllGameObject[obj->GetId()] = obj;
+		}
+	}
+	else
+	{
+		std::cerr << "Failed to parse JSON: " << errs << std::endl;
+	}
+
+	return m_AllGameObject;
+}
+
+std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
+{
+	std::ifstream file("images/TerrainFile.json", std::ios::binary);
+	Json::Value root;
+	Json::CharReaderBuilder builder;
+	std::string errs;
+
+	std::unordered_map<int, GameObject*> m_AllGameObject;
+
+	if (!file.is_open())
+	{
+		std::cerr << "Could not open TerrainFile.json\n";
+		return {};
+	}
+
+	if (Json::parseFromStream(builder, file, &root, &errs))
+	{
+		for (const auto& key : root.getMemberNames())
+		{
+			Terrain* obj = new Terrain({
+				CreateRigidBodyComponent(root[key]),
+				CreateCollisionComponent(root[key]),
+				CreateRenderComponent(root[key])
+				});
+
+			m_AllGameObject[obj->GetId()] = obj;
 		}
 	}
 	else
@@ -64,9 +94,14 @@ HealthComponent* ReadInfo::CreateHealthComponent(Json::Value& data)
 	HealthComponent* health = new HealthComponent(data["health"].asInt());
 	return health;
 }
-RenderComponent* ReadInfo::CreateRenderComponent(Game& game, Json::Value& data)
+MovementComponent* ReadInfo::CreateMovementComponent(Json::Value& data)
+{
+	MovementComponent* movement = new MovementComponent();
+	return movement;
+}
+RenderComponent* ReadInfo::CreateRenderComponent(Json::Value& data)
 {
 	RenderComponent* render = new RenderComponent(data["width"].asFloat(), data["height"].asFloat(),
-		game.GetRenderer(), data["image"].asCString());
+		Game::getInstance().GetRenderer(), data["image"].asCString());
 	return render;
 }

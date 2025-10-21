@@ -8,7 +8,7 @@
 static int g_Id = 1;
 class GameObject
 {
-private:
+protected:
 	int m_Id;
 	std::unordered_map<std::type_index, System*> m_Components;
 public:
@@ -21,14 +21,14 @@ public:
 	}
 	~GameObject();
 
+	virtual void UpdateComponents(GameObject* obj, std::unordered_map<int, GameObject*> gameObjects) = 0;
+
 	int GetId() const {
 		return m_Id;
 	}
 
-	template<typename T>
-	void AddComponent(T* component) {
-		static_assert(std::is_base_of<System, T>::value);
-		m_Components[typeid(T)] = component;
+	void AddComponent(System* component) {
+		m_Components[typeid(*component)] = component;
 	}
 
 	template<typename T>

@@ -9,8 +9,8 @@ class Game
 {
 private:
 	bool m_IsRunning = false;
-	SDL_Window* m_Window = nullptr;
-	SDL_Renderer* m_Renderer = nullptr;
+	SDL_Window* m_Window;
+	SDL_Renderer* m_Renderer;
 public:
 	static Game& getInstance();
 	SDL_Renderer* GetRenderer() const

@@ -9,5 +9,5 @@ public:
 	HealthComponent(int health)
 		:m_Health(health){}
 
-	void Update();
+	void Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects);
 };

@@ -1,13 +1,13 @@
 #pragma once
 #include "stdafx.h"
+#include <Components/CollisionComponent.h>
 class MovementComponent : public System
 {
 private:
 	float m_GravityScale = 9.8f;
-	float m_Mass, m_DeltaTime;
+	float m_Speed = 10;
+	float m_Jump = 50;
 public:
-	MovementComponent(float mass, float deltaTime)
-		: m_Mass(mass), m_DeltaTime(deltaTime) {};
-
-	void Update();
+	MovementComponent(){};
+	void Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects);
 };
