@@ -8,6 +8,7 @@ private:
 	float m_Speed = 10;
 	float m_Jump = 50;
 public:
+	~MovementComponent()=default;
 	MovementComponent(){};
 	void Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects);
 };

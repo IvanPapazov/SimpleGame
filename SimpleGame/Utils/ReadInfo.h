@@ -7,6 +7,7 @@
 #include <Components/HealthComponent.h>
 #include <Components/RenderComponent.h>
 #include <Components/MovementComponent.h>
+#include <Components/AIComponent.h>
 
 class ReadInfo
 {
@@ -17,6 +18,7 @@ private:
 	CollisionComponent* CreateCollisionComponent(Json::Value& data);
 	HealthComponent* CreateHealthComponent(Json::Value& data);
 	MovementComponent* CreateMovementComponent(Json::Value& data);
+	AIComponent* CreateAIComponent(Json::Value& data);
 public:
 	std::unordered_map<int, GameObject*> ReadInfoPlayer();
 	std::unordered_map<int, GameObject*> ReadInfoEnemy();

@@ -3,9 +3,9 @@
 #include "GameObject.h"
 #include "Components/MovementComponent.h"
 
-class Player : public GameObject {
+class Enemy : public GameObject {
 public:
     using GameObject::GameObject;
-    ~Player() = default;
+    ~Enemy() = default;
     void UpdateComponents(GameObject* obj, std::unordered_map<int, GameObject*> gameObjects) override;
 };

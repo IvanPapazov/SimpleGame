@@ -12,6 +12,7 @@ void MovementComponent::Update(GameObject* a, std::unordered_map<int, GameObject
 	CollisionComponent* result = a->GetComponent<CollisionComponent>();
 	float x;
 	float y;
+
 	//Left-Right-Jump
 	const Uint8* keys = SDL_GetKeyboardState(nullptr);
 	x = rbA->getVelocity().x;
@@ -29,7 +30,7 @@ void MovementComponent::Update(GameObject* a, std::unordered_map<int, GameObject
 		rbA->setVelocity(Vec2(x, y));
 		result->SetLeft(true);
 	}
-    if (keys[SDL_SCANCODE_UP] && !result->IsBottom())
+    if ((keys[SDL_SCANCODE_UP] && !result->IsBottom()) || result->IsHit())
 	{
 		y = y -m_Jump;
 		rbA->setVelocity(Vec2(x, y));

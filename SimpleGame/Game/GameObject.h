@@ -19,7 +19,17 @@ public:
 			AddComponent(comp);
 		}
 	}
-	~GameObject();
+	~GameObject()
+	{
+		for (auto& [id, comp] : m_Components)
+				{
+					if (comp)
+					{
+						delete comp;
+					}
+				}
+				m_Components.clear();
+	}
 
 	virtual void UpdateComponents(GameObject* obj, std::unordered_map<int, GameObject*> gameObjects) = 0;
 

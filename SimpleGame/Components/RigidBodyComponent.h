@@ -19,6 +19,8 @@ public:
         m_Velocity(other.m_Velocity),
         m_Acceleration(other.m_Acceleration) {}
 
+    ~RigidBodyComponent()=default;
+
     Vec2 getPosition() const { return m_Position; }
     Vec2 getVelocity() const { return m_Velocity; }
     Vec2 getAcceleration() const { return m_Acceleration; }

@@ -21,8 +21,10 @@
   <ItemGroup>
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="Core\GameObjectManager.cpp" />
+    <ClCompile Include="Game\Enemy.cpp" />
     <ClCompile Include="Game\Player.cpp" />
     <ClCompile Include="Game\Terrain.cpp" />
+    <ClCompile Include="Systems\EnemyRunAISystem.cpp" />
     <ClCompile Include="Utils\ReadInfo.cpp" />
     <ClCompile Include="Systems\CollisionSystem.cpp" />
     <ClCompile Include="Game\Game.cpp" />
@@ -35,6 +37,7 @@
   <ItemGroup>
     <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h" />
     <ClInclude Include="..\externals\jsoncpp\json\json.h" />
+    <ClInclude Include="Components\AIComponent.h" />
     <ClInclude Include="Core\ComponentManager.h" />
     <ClInclude Include="Components\CollisionComponent.h" />
     <ClInclude Include="Components\HealthComponent.h" />
@@ -44,6 +47,7 @@
     <ClInclude Include="Core\GameObjectManager.h" />
     <ClInclude Include="Core\System.h" />
     <ClInclude Include="Core\SystemManager.h" />
+    <ClInclude Include="Game\Enemy.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\Player.h" />

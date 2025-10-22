@@ -68,6 +68,11 @@ void Game::Run()
         m_gameObjectManager.AddGameObject(object);
     }
 
+    auto enemies = info.ReadInfoEnemy();
+    for (auto& [key, object] : enemies) {
+        m_gameObjectManager.AddGameObject(object);
+    }
+
     auto terrains = info.ReadInfoTerrain();
     for (auto& [key, object] : terrains) {
         m_gameObjectManager.AddGameObject(object);

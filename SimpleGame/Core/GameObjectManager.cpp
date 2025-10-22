@@ -19,10 +19,18 @@ void GameObjectManager::UpdateAllGameObject() {
     
 }
 
-//GameObject* GameObjectManager::GetGameObject(int id) const {
-//    auto it = m_gameObjects.find(id);
-//    if (it != m_gameObjects.end()) {
-//        return it->second;
-//    }
-//    return nullptr;
-//}
+void GameObjectManager::RemoveGameObject(int id) {
+    GameObject* obj = GetGameObject(id);
+    	
+    delete obj;
+    m_gameObjects.erase(obj->GetId());
+    	
+    }
+
+GameObject* GameObjectManager::GetGameObject(int id) const {
+    auto it = m_gameObjects.find(id);
+    if (it != m_gameObjects.end()) {
+        return it->second;
+    }
+    return nullptr;
+}

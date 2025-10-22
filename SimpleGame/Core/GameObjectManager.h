@@ -6,10 +6,13 @@
 class GameObject;
 class GameObjectManager {
 public:
-    GameObjectManager();  
+	GameObjectManager();
 
-    void AddGameObject(GameObject* obj);
-    void UpdateAllGameObject();
+	void AddGameObject(GameObject* obj);
+	void UpdateAllGameObject();
+	void RemoveGameObject(int id);
 
-    std::unordered_map<int, GameObject*> m_gameObjects;
+	GameObject* GetGameObject(int id) const;
+
+	std::unordered_map<int, GameObject*> m_gameObjects;
 };

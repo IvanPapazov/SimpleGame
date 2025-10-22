@@ -11,8 +11,9 @@ private:
 	bool left = true;
 	bool right = true;
 	bool bottom = true;
-	bool top = true;
+	bool hit = false;
 public:
+	~CollisionComponent() = default;
 	CollisionComponent(float x, float y, float w, float h)
 		: m_X(x), m_Y(y), m_Width(w), m_Height(h) {};
 
@@ -22,11 +23,11 @@ public:
 	bool IsLeft() const { return left; }
 	bool IsRight() const { return right; }
 	bool IsBottom() const { return bottom; }
-	bool IsTop() const { return top; }
+	bool IsHit() const { return hit; }
 
 	void SetLeft(bool value) { left = value; }
 	void SetRight(bool value) { right = value; }
 	void SetBottom(bool value) { bottom = value; }
-	void SetTop(bool value) { top = value; }
+	void SetHit(bool value) { hit = value; }
 };
 

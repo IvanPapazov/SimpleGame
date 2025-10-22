@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Game/Player.h"
 #include "Game/Terrain.h"
+#include "Game/Enemy.h"
 
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer()
 {
@@ -42,6 +43,44 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer()
 
 	return m_AllGameObject;
 }
+
+std::unordered_map<int, GameObject*> ReadInfo::ReadInfoEnemy()
+{
+	std::ifstream file("images/EnemyFile.json", std::ios::binary);
+	Json::Value root;
+	Json::CharReaderBuilder builder;
+	std::string errs;
+
+	std::unordered_map<int, GameObject*> m_AllGameObject;
+
+	if (!file.is_open())
+	{
+		std::cerr << "Could not open EnemyFile.json\n";
+		return {};
+	}
+
+	if (Json::parseFromStream(builder, file, &root, &errs))
+	{
+		for (const auto& key : root.getMemberNames())
+		{
+			Enemy* obj = new Enemy({
+				CreateRigidBodyComponent(root[key]),
+				CreateCollisionComponent(root[key]),
+				CreateRenderComponent(root[key]),
+				CreateAIComponent(root[key])
+				});
+
+			m_AllGameObject[obj->GetId()] = obj;
+		}
+	}
+	else
+	{
+		std::cerr << "Failed to parse JSON: " << errs << std::endl;
+	}
+
+	return m_AllGameObject;
+}
+
 
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
 {
@@ -104,4 +143,10 @@ RenderComponent* ReadInfo::CreateRenderComponent(Json::Value& data)
 	RenderComponent* render = new RenderComponent(data["width"].asFloat(), data["height"].asFloat(),
 		Game::getInstance().GetRenderer(), data["image"].asCString());
 	return render;
+}
+
+AIComponent* ReadInfo::CreateAIComponent(Json::Value& data)
+{
+	AIComponent* ai = new AIComponent(data["speed"].asInt());
+	return ai;
 }
