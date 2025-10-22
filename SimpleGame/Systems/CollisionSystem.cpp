@@ -34,47 +34,33 @@ void CollisionComponent::Update(GameObject* a, std::unordered_map<int, GameObjec
 			CollisionComponent* colB = b->GetComponent<CollisionComponent>();
 			if (CheckCollision(colA, colB))
 			{
-				//const float tolerance = 0.1f;
-				//float dx = (colA->m_X + colA->m_Width / 2.0f) - (colB->m_X + colB->m_Width / 2.0f);
-				//float dy = (colA->m_Y + colA->m_Height / 2.0f) - (colB->m_Y + colB->m_Height / 2.0f);
+				const float tolerance = 0.5f;
+				float dx = (colA->m_X + colA->m_Width / 2.0f) - (colB->m_X + colB->m_Width / 2.0f);
+				float dy = (colA->m_Y + colA->m_Height / 2.0f) - (colB->m_Y + colB->m_Height / 2.0f);
 
-				//float combinedHalfWidths = (colA->m_Width + colB->m_Width) / 2.0f;
-				//float combinedHalfHeights = (colA->m_Height + colB->m_Height) / 2.0f;
+				float combinedHalfWidths = (colA->m_Width + colB->m_Width) / 2.0f;
+				float combinedHalfHeights = (colA->m_Height + colB->m_Height) / 2.0f;
 
-				//float overlapX = combinedHalfWidths - std::abs(dx);
-				//float overlapY = combinedHalfHeights - std::abs(dy);
+				float overlapX = combinedHalfWidths - std::abs(dx);
+				float overlapY = combinedHalfHeights - std::abs(dy);
 
-				//if (overlapX > tolerance && overlapY > tolerance) {
-				//	if (overlapX < overlapY) {
-				//		// Horizontal collision
-				//		if (dx > 0)
-				//			left = false;   // A hit B on its left side
-				//		else
-				//			right = false;  // A hit B on its right side
-				//	}
-				//	else {
-				//		if (dy > 0)
-				//			top = false;    // A hit B from above
-				//		else
-				//			bottom = false; // A landed on B
-				//	}
-				//}
-
-				if (colA->m_X < colB->m_X + colB->m_Width)
+				if (overlapX < overlapY && overlapX > tolerance)
 				{
-					left = false;
+					if (dx > 0)
+					{
+						left = false;
+					}
+					else
+					{
+						right = false;
+					}
 				}
-				if (colA->m_X +colA->m_Width > colB->m_X)
+				else
 				{
-					right = false;
-				}
-				if (colA->m_Y < colB->m_Y + colB->m_Height)
-				{
-					bottom = false;
-				}
-				if (colA->m_Y + colA->m_Height > colB->m_Y)
-				{
-					top = false;
+					if (dy > 0)
+						top = false;
+					else
+						bottom = false;
 				}
 			}
 		}

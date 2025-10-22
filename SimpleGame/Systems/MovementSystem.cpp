@@ -23,13 +23,13 @@ void MovementComponent::Update(GameObject* a, std::unordered_map<int, GameObject
 		rbA->setVelocity(Vec2(x, y));
 		result->SetRight(true);
 	}
-	else if (keys[SDL_SCANCODE_RIGHT] && result->IsRight())
+    if (keys[SDL_SCANCODE_RIGHT] && result->IsRight())
 	{
 		x = rbA->getVelocity().x + m_Speed;
 		rbA->setVelocity(Vec2(x, y));
 		result->SetLeft(true);
 	}
-	if (keys[SDL_SCANCODE_UP] && !result->IsBottom())
+    if (keys[SDL_SCANCODE_UP] && !result->IsBottom())
 	{
 		y = y -m_Jump;
 		rbA->setVelocity(Vec2(x, y));
@@ -54,4 +54,5 @@ void MovementComponent::Update(GameObject* a, std::unordered_map<int, GameObject
 	rbA->setVelocity(rbA->getVelocity() + rbA->getAcceleration() * 0.016f);
 	rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * 0.016f);
 	rbA->setAcceleration(Vec2(0, 0));
+
 }
