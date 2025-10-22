@@ -25,16 +25,21 @@ void CollisionComponent::Update(GameObject* a, std::unordered_map<int, GameObjec
 
 	colA->m_X = rbA->getPosition().x;
 	colA->m_Y = rbA->getPosition().y;
-
+	bottom = true;
 	for (auto& [key, b] : gameObjects) {
 		{
 			if (a == b) continue;
 
-
+			
 			CollisionComponent* colB = b->GetComponent<CollisionComponent>();
 			if (CheckCollision(colA, colB))
 			{
-				const float tolerance = 0.5f;
+				SDL_Rect bounds;
+				bounds.x = colB->m_X;
+				bounds.y = colB->m_Y;
+				bounds.w = colB->m_Width;
+				bounds.h = colB->m_Height;
+				/*const float tolerance = 0.5f;
 				float dx = (colA->m_X + colA->m_Width / 2.0f) - (colB->m_X + colB->m_Width / 2.0f);
 				float dy = (colA->m_Y + colA->m_Height / 2.0f) - (colB->m_Y + colB->m_Height / 2.0f);
 
@@ -61,6 +66,45 @@ void CollisionComponent::Update(GameObject* a, std::unordered_map<int, GameObjec
 						top = false;
 					else
 						bottom = false;
+				}*/
+
+
+				SDL_Point bottomPointRight = {
+					colA->m_X + static_cast<int>(colA->m_Width * 0.99f),
+	                colA->m_Y + colA->m_Height
+				};
+
+				SDL_Point bottomPointMiddle = {
+					colA->m_X + static_cast<int>(colA->m_Width * 0.5f),
+					colA->m_Y + colA->m_Height
+				};
+
+				SDL_Point bottomPointLeft = {
+					colA->m_X + static_cast<int>(colA->m_Width * 0.01f),
+					colA->m_Y + colA->m_Height
+				};
+
+				SDL_Point pointRight = {
+					colA->m_X + colA->m_Width,
+					colA->m_Y + colA->m_Height * 0.99f
+				};
+
+				SDL_Point pointLeft = {
+					colA->m_X,
+					colA->m_Y + colA->m_Height * 0.99f
+				};
+				if (SDL_PointInRect(&bottomPointMiddle, &bounds) || SDL_PointInRect(&bottomPointRight, &bounds) || SDL_PointInRect(&bottomPointLeft, &bounds))
+				{
+					bottom = false;
+				}
+
+				if (SDL_PointInRect(&pointRight, &bounds))
+				{
+					right = false;		
+				}
+				else if (SDL_PointInRect(&pointLeft, &bounds))
+				{
+					left = false;
 				}
 			}
 		}
