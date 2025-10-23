@@ -5,10 +5,12 @@ class MovementComponent : public System
 {
 private:
 	float m_GravityScale = 9.8f;
-	float m_Speed = 10;
-	float m_Jump = 50;
+	float m_Speed = 3;
+	float m_Jump = 7;
+	float m_DeltaTimeLast = 0;
+	float m_DeltaTime;
 public:
 	~MovementComponent()=default;
 	MovementComponent(){};
-	void Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects);
+	void Update(GameObject* object);
 };

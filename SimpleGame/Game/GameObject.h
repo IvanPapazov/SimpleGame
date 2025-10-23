@@ -31,7 +31,7 @@ public:
 				m_Components.clear();
 	}
 
-	virtual void UpdateComponents(GameObject* obj, std::unordered_map<int, GameObject*> gameObjects) = 0;
+	virtual void UpdateComponents(GameObject* obj) = 0;
 
 	int GetId() const {
 		return m_Id;

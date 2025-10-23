@@ -13,27 +13,8 @@ private:
 	SDL_Texture* m_Texture;
 	SDL_Rect m_DestRect;
 public:
-	RenderComponent(int w, int h, SDL_Renderer* r, const char* path)
-		: m_Width(w), m_Height(h), m_Renderer(r), m_FilePath(path) {
-		m_DestRect = { 0, 0, w, h };
+	RenderComponent(int w, int h, SDL_Renderer* r, const char* path);
+	~RenderComponent();
 
-		SDL_Surface* surface = IMG_Load(m_FilePath);
-		if (!surface) {
-			return;
-		}
-
-		m_Texture = SDL_CreateTextureFromSurface(m_Renderer, surface);
-		SDL_FreeSurface(surface);
-
-		if (!m_Texture) {
-			return;
-		}
-	}
-	~RenderComponent() {
-		if (m_Texture) {
-			SDL_DestroyTexture(m_Texture);
-		}
-	};
-
-	void Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects) override;
+	void Update(GameObject* object) override;
 };

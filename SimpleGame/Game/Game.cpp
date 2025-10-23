@@ -59,25 +59,23 @@ void Game::Shutdown()
 
 void Game::Run()
 {
-    GameObjectManager m_gameObjectManager;
-    SystemManager m_SystemManager;
+    GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
+    //SystemManager m_SystemManager;
     ReadInfo info;
 
+    auto terrains = info.ReadInfoTerrain();
+    for (auto& [key, object] : terrains) {
+        gameObjectManager.AddGameObject(object);
+    }
     auto players = info.ReadInfoPlayer();
     for (auto& [key, object] : players) {
-        m_gameObjectManager.AddGameObject(object);
+        gameObjectManager.AddGameObject(object);
     }
 
     auto enemies = info.ReadInfoEnemy();
     for (auto& [key, object] : enemies) {
-        m_gameObjectManager.AddGameObject(object);
+        gameObjectManager.AddGameObject(object);
     }
-
-    auto terrains = info.ReadInfoTerrain();
-    for (auto& [key, object] : terrains) {
-        m_gameObjectManager.AddGameObject(object);
-    }
-
     while (m_IsRunning) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -88,7 +86,7 @@ void Game::Run()
 
         SDL_RenderClear(m_Renderer);
 
-        m_gameObjectManager.UpdateAllGameObject();  
+        gameObjectManager.UpdateAllGameObject();
 
         SDL_RenderPresent(m_Renderer);
     }

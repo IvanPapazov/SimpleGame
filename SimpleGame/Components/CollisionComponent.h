@@ -17,7 +17,7 @@ public:
 	CollisionComponent(float x, float y, float w, float h)
 		: m_X(x), m_Y(y), m_Width(w), m_Height(h) {};
 
-	void Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects);
+	void Update(GameObject* object);
 	bool CheckCollision(CollisionComponent* a, CollisionComponent* b);
 
 	bool IsLeft() const { return left; }

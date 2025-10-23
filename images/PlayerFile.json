@@ -1,10 +1,10 @@
 {
   "player": {
-    "x": 100,
-    "y": 100,
+    "x": 65,
+    "y": 850,
     "width": 60,
     "height": 80,
     "health": 3,
     "image": "images/King.png"
   }
-}
+} 

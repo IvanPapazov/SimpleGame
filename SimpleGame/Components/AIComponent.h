@@ -12,5 +12,5 @@ public:
 	~AIComponent() = default;
 	AIComponent(int health)
 		:m_Speed(health) {}
-	void Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects);
+	void Update(GameObject* object);
 };

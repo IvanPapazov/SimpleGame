@@ -6,7 +6,7 @@
 #include <Components/RigidBodyComponent.h>
 #include <Components/CollisionComponent.h>
 
-void HealthComponent::Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects)
+void HealthComponent::Update(GameObject* object)
 {
 	HealthComponent* health = object->GetComponent<HealthComponent>();
 	CollisionComponent * collision = object->GetComponent<CollisionComponent>();

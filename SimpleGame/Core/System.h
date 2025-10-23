@@ -9,5 +9,5 @@ class GameObject;
 class System {
 public:
     virtual ~System() = default;
-    virtual void Update(GameObject* obj, std::unordered_map<int, GameObject*> gameObjects) {}
+    virtual void Update(GameObject* obj) {}
 };

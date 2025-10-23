@@ -5,7 +5,7 @@
 #include <Components/CollisionComponent.h>
 #include <Components/RigidBodyComponent.h>
 
-void AIComponent::Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects)
+void AIComponent::Update(GameObject* object)
 {
 	RigidBodyComponent* rbA = object->GetComponent<RigidBodyComponent>();
 	CollisionComponent* result = object->GetComponent<CollisionComponent>();

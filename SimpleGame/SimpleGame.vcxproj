@@ -24,15 +24,15 @@
     <ClCompile Include="Game\Enemy.cpp" />
     <ClCompile Include="Game\Player.cpp" />
     <ClCompile Include="Game\Terrain.cpp" />
-    <ClCompile Include="Systems\EnemyRunAISystem.cpp" />
+    <ClCompile Include="Systems\EnemyRunAIComponent.cpp" />
     <ClCompile Include="Utils\ReadInfo.cpp" />
-    <ClCompile Include="Systems\CollisionSystem.cpp" />
+    <ClCompile Include="Systems\CollisionComponent.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Systems\HealthSystem.cpp" />
-    <ClCompile Include="Systems\MovementSystem.cpp" />
-    <ClCompile Include="Systems\RenderSystem.cpp" />
+    <ClCompile Include="Systems\HealthComponent.cpp" />
+    <ClCompile Include="Systems\MovementComponent.cpp" />
+    <ClCompile Include="Systems\RenderComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h" />

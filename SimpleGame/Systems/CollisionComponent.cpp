@@ -10,9 +10,9 @@
 #include <Game/Enemy.h>
 #include <Game/Terrain.h>
 
-void CollisionComponent::Update(GameObject* a, std::unordered_map<int, GameObject*> gameObjects)
+void CollisionComponent::Update(GameObject* a)
 {
-
+	GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
 	CollisionComponent* colA = a->GetComponent<CollisionComponent>();
 	RigidBodyComponent* rbA = a->GetComponent<RigidBodyComponent>();
 	if (!a->HasComponent<MovementComponent>() && !a->HasComponent<AIComponent>())
@@ -23,10 +23,13 @@ void CollisionComponent::Update(GameObject* a, std::unordered_map<int, GameObjec
 	colA->m_Y = rbA->getPosition().y;
 	bottom = true;
 	colA->hit = false;
-	for (auto& [key, b] : gameObjects) {
+	for (auto& [key, b] : gameObjectManager.m_gameObjects) {
 		{
 			if (a == b) continue;
-			
+			if (!b->HasComponent<CollisionComponent>())
+			{
+				continue;
+			}
 			CollisionComponent* colB = b->GetComponent<CollisionComponent>();
 			if (typeid(*b) == typeid(Terrain)) {
 				if (CheckCollision(colA, colB))
@@ -72,12 +75,14 @@ void CollisionComponent::Update(GameObject* a, std::unordered_map<int, GameObjec
 					{
 						colA->right = false;
 						colA->left = true;
+						rbA->setPosition(Vec2(rbA->getPosition().x - 1, rbA->getPosition().y));
 						
 					}
 					else if (SDL_PointInRect(&pointLeft, &bounds))
 					{
 						colA->left = false;
 						colA->right = true;
+						rbA->setPosition(Vec2(rbA->getPosition().x + 1, rbA->getPosition().y));
 						
 					}
 				}

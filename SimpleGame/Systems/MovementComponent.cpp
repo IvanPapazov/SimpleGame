@@ -6,12 +6,17 @@
 #include <Components/RigidBodyComponent.h>
 #include <SDL.h>
 
-void MovementComponent::Update(GameObject* a, std::unordered_map<int, GameObject*> gameObjects)
+void MovementComponent::Update(GameObject* a)
 {
 	RigidBodyComponent* rbA = a->GetComponent<RigidBodyComponent>();
 	CollisionComponent* result = a->GetComponent<CollisionComponent>();
 	float x;
 	float y;
+
+	//float NOW = SDL_GetPerformanceCounter();
+	
+	//m_DeltaTime = (float)((NOW - m_DeltaTimeLast) * 1000);
+	//m_DeltaTimeLast = m_DeltaTime;
 
 	//Left-Right-Jump
 	const Uint8* keys = SDL_GetKeyboardState(nullptr);
@@ -30,7 +35,7 @@ void MovementComponent::Update(GameObject* a, std::unordered_map<int, GameObject
 		rbA->setVelocity(Vec2(x, y));
 		result->SetLeft(true);
 	}
-    if ((keys[SDL_SCANCODE_UP] && !result->IsBottom()) || result->IsHit())
+    if (keys[SDL_SCANCODE_UP] && !result->IsBottom())
 	{
 		y = y -m_Jump;
 		rbA->setVelocity(Vec2(x, y));
@@ -40,7 +45,7 @@ void MovementComponent::Update(GameObject* a, std::unordered_map<int, GameObject
 	//Gravity
 	x = rbA->getAcceleration().x;
 	if (result->IsBottom()) {
-		y = rbA->getAcceleration().y + m_GravityScale*1.5;
+		y = rbA->getAcceleration().y + m_GravityScale* 0.032;
 		rbA->setAcceleration(Vec2(x, y));
 	}
 	else

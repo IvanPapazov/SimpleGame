@@ -27,16 +27,16 @@
     <ClCompile Include="Game\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\CollisionSystem.cpp">
+    <ClCompile Include="Systems\CollisionComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\RenderSystem.cpp">
+    <ClCompile Include="Systems\RenderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\HealthSystem.cpp">
+    <ClCompile Include="Systems\HealthComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\MovementSystem.cpp">
+    <ClCompile Include="Systems\MovementComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utils\ReadInfo.cpp">
@@ -51,7 +51,7 @@
     <ClCompile Include="Game\Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\EnemyRunAISystem.cpp">
+    <ClCompile Include="Systems\EnemyRunAIComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\Enemy.cpp">

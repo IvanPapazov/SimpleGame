@@ -7,5 +7,5 @@ class Player : public GameObject {
 public:
     using GameObject::GameObject;
     ~Player() = default;
-    void UpdateComponents(GameObject* obj, std::unordered_map<int, GameObject*> gameObjects) override;
+    void UpdateComponents(GameObject* obj) override;
 };

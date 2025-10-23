@@ -14,5 +14,5 @@ public:
 		return m_IsActive;
 	}
 
-	void Update(GameObject* object, std::unordered_map<int, GameObject*> gameObjects);
+	void Update(GameObject* object);
 };

@@ -3,10 +3,10 @@
 #include "iostream"
 #include <Components/HealthComponent.h>
 
-void Enemy::UpdateComponents(GameObject* obj, std::unordered_map<int, GameObject*> gameObjects)
+void Enemy::UpdateComponents(GameObject* obj)
 {
 	for (auto& [type, comp] : m_Components) {
-		comp->Update(obj, gameObjects);
+		comp->Update(obj);
 		/*HealthComponent* health = obj->GetComponent<HealthComponent>();
 		if (!health->IsActive())
 		{

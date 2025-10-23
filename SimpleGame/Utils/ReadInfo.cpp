@@ -101,11 +101,22 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
 	{
 		for (const auto& key : root.getMemberNames())
 		{
-			Terrain* obj = new Terrain({
-				CreateRigidBodyComponent(root[key]),
-				CreateCollisionComponent(root[key]),
-				CreateRenderComponent(root[key])
-				});
+			Terrain* obj;
+			if (key.find("Background") != std::string::npos)
+			{
+				obj = new Terrain({
+					CreateRigidBodyComponent(root[key]),
+					CreateRenderComponent(root[key])
+					});
+			}
+			else
+			{
+				obj = new Terrain({
+				   CreateRigidBodyComponent(root[key]),
+				   CreateCollisionComponent(root[key]),
+				   CreateRenderComponent(root[key])
+					});
+			}
 
 			m_AllGameObject[obj->GetId()] = obj;
 		}
