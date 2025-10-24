@@ -1,9 +1,8 @@
 #include "stdafx.h"
-#include "Enemy.h"
+#include "Heart.h"
 #include "iostream"
-#include <Components/HealthComponent.h>
 
-void Enemy::UpdateComponents(GameObject* obj)
+void Heart::UpdateComponents(GameObject* obj)
 {
 	for (auto& [type, comp] : m_Components) {
 		comp->Update(obj);

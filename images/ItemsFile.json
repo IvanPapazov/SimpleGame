@@ -1,0 +1,23 @@
+{
+  "heart1": {
+    "x": 105,
+    "y": 45,
+    "width": 22,
+    "height": 22,
+    "image": "images/Heart.png"
+  },
+  "heart2": {
+    "x": 135,
+    "y": 45,
+    "width": 22,
+    "height": 22,
+    "image": "images/Heart.png"
+  },
+  "heart3": {
+    "x": 165,
+    "y": 45,
+    "width": 22,
+    "height": 22,
+    "image": "images/Heart.png"
+  }
+} 

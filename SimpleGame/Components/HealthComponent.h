@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-class HealthComponent : public System
+class HealthComponent : public Component
 {
 private:
 	bool m_IsActive = true;
@@ -13,6 +13,9 @@ public:
 	bool IsActive() const {
 		return m_IsActive;
 	}
+
+	int GetHealth() const { return m_Health; }
+	void SetHealth(int health) { m_Health = health; }
 
 	void Update(GameObject* object);
 };

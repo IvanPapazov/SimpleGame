@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <Game/GameObject.h>
-#include <Core/System.h>
+#include <Core/Component.h>
 #include "Core/GameObjectManager.h"
 #include <Components/MovementComponent.h>
 #include <Components/RigidBodyComponent.h>
@@ -18,34 +18,11 @@ void MovementComponent::Update(GameObject* a)
 	//m_DeltaTime = (float)((NOW - m_DeltaTimeLast) * 1000);
 	//m_DeltaTimeLast = m_DeltaTime;
 
-	//Left-Right-Jump
-	const Uint8* keys = SDL_GetKeyboardState(nullptr);
-	x = rbA->getVelocity().x;
-	y = rbA->getVelocity().y;
-	rbA->setVelocity(Vec2(0, y));
-	if (keys[SDL_SCANCODE_LEFT] && result->IsLeft())
-	{
-		x = rbA->getVelocity().x - m_Speed;
-		rbA->setVelocity(Vec2(x, y));
-		result->SetRight(true);
-	}
-    if (keys[SDL_SCANCODE_RIGHT] && result->IsRight())
-	{
-		x = rbA->getVelocity().x + m_Speed;
-		rbA->setVelocity(Vec2(x, y));
-		result->SetLeft(true);
-	}
-    if (keys[SDL_SCANCODE_UP] && !result->IsBottom())
-	{
-		y = y -m_Jump;
-		rbA->setVelocity(Vec2(x, y));
-		result->SetBottom(true);
-	}
-
-	//Gravity
 	x = rbA->getAcceleration().x;
-	if (result->IsBottom()) {
-		y = rbA->getAcceleration().y + m_GravityScale* 0.032;
+	if (result->IsBottom())
+	{
+
+		y = rbA->getAcceleration().y + m_GravityScale * 0.032;
 		rbA->setAcceleration(Vec2(x, y));
 	}
 	else
@@ -57,6 +34,33 @@ void MovementComponent::Update(GameObject* a)
 		vel.y = 0;
 		rbA->setVelocity(vel);
 	}
+
+	//Left-Right-Jump
+	const Uint8* keys = SDL_GetKeyboardState(nullptr);
+	x = rbA->getVelocity().x;
+	y = rbA->getVelocity().y;
+	rbA->setVelocity(Vec2(0, y));
+
+
+	if (keys[SDL_SCANCODE_UP] && !result->IsBottom())
+	{
+		y = y - m_Jump;
+		result->SetBottom(true);
+		rbA->setVelocity(Vec2(x, y));
+	}
+	if (keys[SDL_SCANCODE_LEFT] && result->IsLeft())
+	{
+		x = rbA->getVelocity().x - m_Speed;
+		result->SetRight(true);
+		rbA->setVelocity(Vec2(x, y));
+	}
+    if (keys[SDL_SCANCODE_RIGHT] && result->IsRight())
+	{
+		x = rbA->getVelocity().x + m_Speed;
+		result->SetLeft(true);
+		rbA->setVelocity(Vec2(x, y));
+	}
+
 	rbA->setVelocity(rbA->getVelocity() + rbA->getAcceleration() * 0.016f);
 	rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * 0.016f);
 	rbA->setAcceleration(Vec2(0, 0));

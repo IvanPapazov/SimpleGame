@@ -3,7 +3,7 @@
 #include "iostream"
 #include <Core/GameObjectManager.h>
 #include <Utils/ReadInfo.h>
-#include <Core/SystemManager.h>
+#include <Components/RenderComponent.h>
 
 Game& Game::getInstance()
 {
@@ -63,6 +63,7 @@ void Game::Run()
     //SystemManager m_SystemManager;
     ReadInfo info;
 
+
     auto terrains = info.ReadInfoTerrain();
     for (auto& [key, object] : terrains) {
         gameObjectManager.AddGameObject(object);
@@ -71,7 +72,6 @@ void Game::Run()
     for (auto& [key, object] : players) {
         gameObjectManager.AddGameObject(object);
     }
-
     auto enemies = info.ReadInfoEnemy();
     for (auto& [key, object] : enemies) {
         gameObjectManager.AddGameObject(object);
@@ -85,9 +85,14 @@ void Game::Run()
         }
 
         SDL_RenderClear(m_Renderer);
-
+        RenderComponent* render;
+        if (render->GetOffScreenCombinedTexture())
+       {
+           SDL_Rect dst = { 0, 0, 1200, 1000 };
+           SDL_RenderCopy(m_Renderer, render->GetOffScreenCombinedTexture(), NULL, &dst);
+       }
         gameObjectManager.UpdateAllGameObject();
-
+        
         SDL_RenderPresent(m_Renderer);
     }
 }

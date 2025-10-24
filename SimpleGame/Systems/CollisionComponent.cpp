@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include "Core/GameObjectManager.h"
 #include <Game/GameObject.h>
-#include <Core/System.h>
+#include <Core/Component.h>
 #include <Components/CollisionComponent.h>
 #include <Components/RigidBodyComponent.h>
 #include <Components/MovementComponent.h>
@@ -12,6 +12,7 @@
 
 void CollisionComponent::Update(GameObject* a)
 {
+
 	GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
 	CollisionComponent* colA = a->GetComponent<CollisionComponent>();
 	RigidBodyComponent* rbA = a->GetComponent<RigidBodyComponent>();
@@ -25,6 +26,7 @@ void CollisionComponent::Update(GameObject* a)
 	colA->hit = false;
 	for (auto& [key, b] : gameObjectManager.m_gameObjects) {
 		{
+			const int id = b->GetId();
 			if (a == b) continue;
 			if (!b->HasComponent<CollisionComponent>())
 			{
@@ -69,6 +71,7 @@ void CollisionComponent::Update(GameObject* a)
 					if (SDL_PointInRect(&bottomPointMiddle, &bounds) || SDL_PointInRect(&bottomPointRight, &bounds) || SDL_PointInRect(&bottomPointLeft, &bounds))
 					{
 						colA->bottom = false;
+						rbA->setPosition(Vec2(rbA->getPosition().x , rbA->getPosition().y));
 					}
 
 					if (SDL_PointInRect(&pointRight, &bounds))

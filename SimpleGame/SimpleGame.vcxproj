@@ -22,8 +22,10 @@
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="Core\GameObjectManager.cpp" />
     <ClCompile Include="Game\Enemy.cpp" />
+    <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\Player.cpp" />
     <ClCompile Include="Game\Terrain.cpp" />
+    <ClCompile Include="Game\Heart.cpp" />
     <ClCompile Include="Systems\EnemyRunAIComponent.cpp" />
     <ClCompile Include="Utils\ReadInfo.cpp" />
     <ClCompile Include="Systems\CollisionComponent.cpp" />
@@ -45,13 +47,13 @@
     <ClInclude Include="Components\MovementComponent.h" />
     <ClInclude Include="Components\RigidBodyComponent.h" />
     <ClInclude Include="Core\GameObjectManager.h" />
-    <ClInclude Include="Core\System.h" />
-    <ClInclude Include="Core\SystemManager.h" />
+    <ClInclude Include="Core\Component.h" />
     <ClInclude Include="Game\Enemy.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\Player.h" />
     <ClInclude Include="Game\Terrain.h" />
+    <ClInclude Include="Game\Heart.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils\ReadInfo.h" />
     <ClInclude Include="Utils\Vec2.h" />

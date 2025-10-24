@@ -3,43 +3,22 @@
 #include <unordered_map>
 #include <any>
 #include <typeindex>
-#include "Core/System.h"
+#include "Core/Component.h"
 
-static int g_Id = 1;
 class GameObject
 {
 protected:
 	int m_Id;
-	std::unordered_map<std::type_index, System*> m_Components;
+	std::unordered_map<std::type_index, Component*> m_Components;
 public:
-	GameObject(std::vector<System*> comps) {
-		m_Id = g_Id;
-		g_Id++;
-		for (System* comp : comps) {
-			AddComponent(comp);
-		}
-	}
-	~GameObject()
-	{
-		for (auto& [id, comp] : m_Components)
-				{
-					if (comp)
-					{
-						delete comp;
-					}
-				}
-				m_Components.clear();
-	}
+	GameObject(std::vector<Component*> comps);
+	virtual ~GameObject();
 
 	virtual void UpdateComponents(GameObject* obj) = 0;
 
-	int GetId() const {
-		return m_Id;
-	}
+	int GetId() const;
 
-	void AddComponent(System* component) {
-		m_Components[typeid(*component)] = component;
-	}
+	void AddComponent(Component* component);
 
 	template<typename T>
 	T* GetComponent() {

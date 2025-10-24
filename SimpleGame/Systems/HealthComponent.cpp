@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <Game/GameObject.h>
-#include <Core/System.h>
+#include <Core/Component.h>
 #include <Components/HealthComponent.h>
 #include "Core/GameObjectManager.h"
 #include <Components/RigidBodyComponent.h>
@@ -12,7 +12,7 @@ void HealthComponent::Update(GameObject* object)
 	CollisionComponent * collision = object->GetComponent<CollisionComponent>();
 	if (collision->IsHit())
 	{
-		//collision->SetHit(false);
+		collision->SetHit(false);
 		health->m_Health--;
 	}
 	if (health->m_Health <= 0 && health->m_IsActive) {

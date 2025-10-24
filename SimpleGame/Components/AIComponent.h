@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <Game/GameObject.h>
 
-class AIComponent : public System
+class AIComponent : public Component
 {
 private:
 	float m_GravityScale = 9.8f;

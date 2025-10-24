@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include <Components/CollisionComponent.h>
-class MovementComponent : public System
+class MovementComponent : public Component
 {
 private:
 	float m_GravityScale = 9.8f;

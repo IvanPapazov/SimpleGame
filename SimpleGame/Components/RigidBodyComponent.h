@@ -1,7 +1,7 @@
 #pragma once
 #include <Utils/Vec2.h>
 
-class RigidBodyComponent : public System
+class RigidBodyComponent : public Component
 {
 private:
     Vec2 m_Position;

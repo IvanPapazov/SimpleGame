@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 
-class CollisionComponent : public System
+class CollisionComponent : public Component
 {
 private:
 	float m_X, m_Y;

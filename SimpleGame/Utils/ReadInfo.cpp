@@ -5,6 +5,7 @@
 #include "Game/Player.h"
 #include "Game/Terrain.h"
 #include "Game/Enemy.h"
+#include "Game/Heart.h"
 
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer()
 {
@@ -81,7 +82,6 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoEnemy()
 	return m_AllGameObject;
 }
 
-
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
 {
 	std::ifstream file("images/TerrainFile.json", std::ios::binary);
@@ -101,23 +101,22 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
 	{
 		for (const auto& key : root.getMemberNames())
 		{
-			Terrain* obj;
 			if (key.find("Background") != std::string::npos)
 			{
-				obj = new Terrain({
-					CreateRigidBodyComponent(root[key]),
-					CreateRenderComponent(root[key])
-					});
+				const Json::Value& node = root[key];
+
+				RenderComponent* comp = CreateRenderComponent(root[key]);
+				float x = node["x"].asFloat();
+				float y = node["y"].asFloat();
+				comp->CombineTextures(x,y);
+				continue;
 			}
-			else
-			{
-				obj = new Terrain({
+
+			Terrain* obj = new Terrain({
 				   CreateRigidBodyComponent(root[key]),
 				   CreateCollisionComponent(root[key]),
 				   CreateRenderComponent(root[key])
-					});
-			}
-
+				});
 			m_AllGameObject[obj->GetId()] = obj;
 		}
 	}
@@ -128,6 +127,41 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
 
 	return m_AllGameObject;
 }
+
+std::unordered_map<int, GameObject*> ReadInfo::ReadInfoItems()
+{
+	std::ifstream file("images/ItemsFile.json", std::ios::binary);
+	Json::Value root;
+	Json::CharReaderBuilder builder;
+	std::string errs;
+
+	std::unordered_map<int, GameObject*> m_AllGameObject;
+
+	if (!file.is_open())
+	{
+		std::cerr << "Could not open ItemsFile.json\n";
+		return {};
+	}
+
+	if (Json::parseFromStream(builder, file, &root, &errs))
+	{
+		for (const auto& key : root.getMemberNames())
+		{
+			Heart* obj = new Heart({
+				   CreateRigidBodyComponent(root[key]),
+				   CreateRenderComponent(root[key])
+				});
+			m_AllGameObject[obj->GetId()] = obj;
+		}
+	}
+	else
+	{
+		std::cerr << "Failed to parse JSON: " << errs << std::endl;
+	}
+
+	return m_AllGameObject;
+}
+
 
 RigidBodyComponent* ReadInfo::CreateRigidBodyComponent(Json::Value& data)
 {

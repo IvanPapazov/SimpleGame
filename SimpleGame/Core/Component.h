@@ -6,8 +6,8 @@
 #include "../Core/GameObjectManager.h"
 
 class GameObject;
-class System {
+class Component {
 public:
-    virtual ~System() = default;
+    virtual ~Component() = default;
     virtual void Update(GameObject* obj) {}
 };
