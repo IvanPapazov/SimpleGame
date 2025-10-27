@@ -18,7 +18,7 @@ public:
 	~RenderComponent();
 
 	void Update(GameObject* object) override;
-	void CombineTextures(float x, float y);
+	void CombineTextures(int x, int y);
 
 	static SDL_Texture* GetOffScreenCombinedTexture() {
 		return m_OffScreenCombinedTexture;

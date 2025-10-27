@@ -27,6 +27,7 @@
     <ClCompile Include="Game\Terrain.cpp" />
     <ClCompile Include="Game\Heart.cpp" />
     <ClCompile Include="Systems\EnemyRunAIComponent.cpp" />
+    <ClCompile Include="Systems\RampMovementComponent.cpp" />
     <ClCompile Include="Utils\ReadInfo.cpp" />
     <ClCompile Include="Systems\CollisionComponent.cpp" />
     <ClCompile Include="Game\Game.cpp" />
@@ -40,6 +41,8 @@
     <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h" />
     <ClInclude Include="..\externals\jsoncpp\json\json.h" />
     <ClInclude Include="Components\AIComponent.h" />
+    <ClInclude Include="Components\EnemyRunAIComponent.h" />
+    <ClInclude Include="Components\RampMovementComponent.h" />
     <ClInclude Include="Core\ComponentManager.h" />
     <ClInclude Include="Components\CollisionComponent.h" />
     <ClInclude Include="Components\HealthComponent.h" />

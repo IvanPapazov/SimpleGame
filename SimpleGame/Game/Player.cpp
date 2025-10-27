@@ -19,17 +19,19 @@ void Player::UpdateComponents(GameObject* obj)
 		comp->Update(obj);
 	}
 	HealthComponent* health = obj->GetComponent<HealthComponent>();
-	UpdateHearts(health->GetHealth());
+	int hearts = health->GetHealth();
+
+	UpdateHearts(hearts);
 }
 
 void Player::UpdateHearts(int hearts)
 {
-	for (auto& [type, comp] : m_Live) 
+	for (auto& [id, heart] : m_Live) 
 	{	
 		if (hearts != 0)
 		{
-			RenderComponent* render = comp->GetComponent<RenderComponent>();
-			render->Update(comp);
+			RenderComponent* render = heart->GetComponent<RenderComponent>();
+			render->Update(heart);
 			hearts--;
 		}
 	}

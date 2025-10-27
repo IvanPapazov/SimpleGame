@@ -35,18 +35,20 @@ void MovementComponent::Update(GameObject* a)
 		rbA->setVelocity(vel);
 	}
 
-	//Left-Right-Jump
+	//m_Left-m_Right-Jump
 	const Uint8* keys = SDL_GetKeyboardState(nullptr);
 	x = rbA->getVelocity().x;
 	y = rbA->getVelocity().y;
 	rbA->setVelocity(Vec2(0, y));
 
 
-	if (keys[SDL_SCANCODE_UP] && !result->IsBottom())
+	if ((keys[SDL_SCANCODE_UP] && !result->IsBottom())|| result->IsHit())
 	{
 		y = y - m_Jump;
 		result->SetBottom(true);
+		result->SetHit(false);
 		rbA->setVelocity(Vec2(x, y));
+		
 	}
 	if (keys[SDL_SCANCODE_LEFT] && result->IsLeft())
 	{

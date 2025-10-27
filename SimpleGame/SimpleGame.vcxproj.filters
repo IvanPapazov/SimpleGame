@@ -63,6 +63,9 @@
     <ClCompile Include="Game\GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\RampMovementComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -123,6 +126,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\Heart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RampMovementComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\EnemyRunAIComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

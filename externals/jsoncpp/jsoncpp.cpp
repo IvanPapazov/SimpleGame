@@ -69,7 +69,7 @@ license you like.
 // //////////////////////////////////////////////////////////////////////
 
 
-/// questionable tactic in my opition but if it works it works, right?
+/// questionable tactic in my opition but if it works it works, m_Right?
 #include "stdafx.h"
 
 
@@ -791,7 +791,7 @@ bool Reader::decodeNumber(Token& token, Value& decoded) {
       return decodeDouble(token, decoded);
     auto digit(static_cast<Value::UInt>(c - '0'));
     if (value >= threshold) {
-      // We've hit or exceeded the max value divided by 10 (rounded down). If
+      // We've m_Hit or exceeded the max value divided by 10 (rounded down). If
       // a) we've only just touched the limit, b) this is the last digit, and
       // c) it's small enough to fit in that rounding delta, we're okay.
       // Otherwise treat this number as a double to avoid overflow.
@@ -1821,7 +1821,7 @@ bool OurReader::decodeNumber(Token& token, Value& decoded) {
 
     const auto digit(static_cast<Value::UInt>(c - '0'));
     if (value >= threshold) {
-      // We've hit or exceeded the max value divided by 10 (rounded down). If
+      // We've m_Hit or exceeded the max value divided by 10 (rounded down). If
       // a) we've only just touched the limit, meaning value == threshold,
       // b) this is the last digit, or
       // c) it's small enough to fit in that rounding delta, we're okay.
@@ -3655,7 +3655,7 @@ bool Value::removeIndex(ArrayIndex index, Value* removed) {
   if (removed)
     *removed = std::move(it->second);
   ArrayIndex oldSize = size();
-  // shift left all items left, into the place of the "removed"
+  // shift m_Left all items m_Left, into the place of the "removed"
   for (ArrayIndex i = index; i < (oldSize - 1); ++i) {
     CZString keey(i);
     (*value_.map_)[keey] = (*this)[i + 1];
@@ -4264,7 +4264,7 @@ String valueToString(double value, bool useSpecialFloats,
     buffer += ".0";
   }
 
-  // strip the zero padding from the right
+  // strip the zero padding from the m_Right
   if (precisionType == PrecisionType::decimalPlaces) {
     buffer.erase(fixZerosInTheEnd(buffer.begin(), buffer.end(), precision),
                  buffer.end());

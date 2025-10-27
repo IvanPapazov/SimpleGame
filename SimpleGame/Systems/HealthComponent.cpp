@@ -12,7 +12,6 @@ void HealthComponent::Update(GameObject* object)
 	CollisionComponent * collision = object->GetComponent<CollisionComponent>();
 	if (collision->IsHit())
 	{
-		collision->SetHit(false);
 		health->m_Health--;
 	}
 	if (health->m_Health <= 0 && health->m_IsActive) {

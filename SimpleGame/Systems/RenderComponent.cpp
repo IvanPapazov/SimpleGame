@@ -36,21 +36,20 @@ RenderComponent::~RenderComponent() {
 }
 
 
-void RenderComponent::CombineTextures(float x, float y)
+void RenderComponent::CombineTextures(int x, int y)
 {
 
     if (!m_OffScreenCombinedTexture)
     {
         m_OffScreenCombinedTexture = SDL_CreateTexture(
             m_Renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1200, 1000);
-        SDL_SetTextureBlendMode(m_OffScreenCombinedTexture, SDL_BLENDMODE_BLEND);
+       
     }
 
     SDL_SetRenderTarget(m_Renderer, m_OffScreenCombinedTexture);
-    SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
-    SDL_SetTextureBlendMode(m_Texture, SDL_BLENDMODE_BLEND);
-    m_DestRect.x = static_cast<int>(x);
-    m_DestRect.y = static_cast<int>(y);
+
+    m_DestRect.x = x;
+    m_DestRect.y = y;
     SDL_RenderCopy(m_Renderer, m_Texture, nullptr, &m_DestRect);
 
 

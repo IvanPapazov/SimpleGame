@@ -60,8 +60,10 @@ void Game::Shutdown()
 void Game::Run()
 {
     GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
-    //SystemManager m_SystemManager;
     ReadInfo info;
+
+    // class/struct holding Json::Value members
+    // have getter for each Json::Value member which you can use
 
 
     auto terrains = info.ReadInfoTerrain();
@@ -76,6 +78,7 @@ void Game::Run()
     for (auto& [key, object] : enemies) {
         gameObjectManager.AddGameObject(object);
     }
+
     while (m_IsRunning) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {

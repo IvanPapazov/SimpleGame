@@ -5,12 +5,11 @@
 
 class AIComponent : public Component
 {
-private:
-	float m_GravityScale = 9.8f;
+protected:
 	int m_Speed;
 public:
 	~AIComponent() = default;
-	AIComponent(int health)
-		:m_Speed(health) {}
-	void Update(GameObject* object);
+	AIComponent(int speed) :m_Speed(speed) {}
+	void Update(GameObject* object)=0;
+	int GetSpeed() const { return m_Speed; };
 };

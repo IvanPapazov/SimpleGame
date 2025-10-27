@@ -4,26 +4,17 @@
 #include <Components/AIComponent.h>
 #include <Components/CollisionComponent.h>
 #include <Components/RigidBodyComponent.h>
+#include <Components/EnemyRunAIComponent.h>
 
-void AIComponent::Update(GameObject* object)
+EnemyRunAIComponent::EnemyRunAIComponent(int speed)
+	:AIComponent(speed) {}
+
+void EnemyRunAIComponent::Update(GameObject* object)
 {
 	RigidBodyComponent* rbA = object->GetComponent<RigidBodyComponent>();
 	CollisionComponent* result = object->GetComponent<CollisionComponent>();
 	float x;
 	float y;
-	x = rbA->getVelocity().x;
-	y = rbA->getVelocity().y;
-	rbA->setVelocity(Vec2(0, y));
-	if (result->IsLeft() && !result->IsRight())
-	{
-		x = rbA->getVelocity().x - m_Speed;
-		rbA->setVelocity(Vec2(x, y));
-	}
-	if (result->IsRight())
-	{
-		x = rbA->getVelocity().x + m_Speed;
-		rbA->setVelocity(Vec2(x, y));
-	}
 
 	x = rbA->getAcceleration().x;
 	if (result->IsBottom()) {
@@ -39,6 +30,21 @@ void AIComponent::Update(GameObject* object)
 		vel.y = 0;
 		rbA->setVelocity(vel);
 	}
+
+	x = rbA->getVelocity().x;
+	y = rbA->getVelocity().y;
+	rbA->setVelocity(Vec2(0, y));
+
+	if (result->IsLeft())
+	{
+		x = rbA->getVelocity().x - GetSpeed();
+	}
+	if (result->IsRight())
+	{
+		x = rbA->getVelocity().x + GetSpeed();
+	}
+	rbA->setVelocity(Vec2(x, y));
+
 	rbA->setVelocity(rbA->getVelocity() + rbA->getAcceleration() * 0.016f);
 	rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * 0.016f);
 	rbA->setAcceleration(Vec2(0, 0));

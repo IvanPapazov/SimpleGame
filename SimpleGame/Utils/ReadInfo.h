@@ -18,7 +18,8 @@ private:
 	CollisionComponent* CreateCollisionComponent(Json::Value& data);
 	HealthComponent* CreateHealthComponent(Json::Value& data);
 	MovementComponent* CreateMovementComponent(Json::Value& data);
-	AIComponent* CreateAIComponent(Json::Value& data);
+	AIComponent* CreateEnemyRunAIComponent(Json::Value& data);
+	AIComponent* CreateRampMovementComponent(Json::Value& data);
 public:
 	std::unordered_map<int, GameObject*> ReadInfoPlayer();
 	std::unordered_map<int, GameObject*> ReadInfoEnemy();

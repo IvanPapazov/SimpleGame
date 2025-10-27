@@ -1,7 +1,24 @@
 {
-  "enemy": {
+  "enemy1": {
     "x": 450,
     "y": 890,
+    "width": 50,
+    "height": 50,
+    "speed": 3,
+    "image": "images/Pig.png"
+  },
+
+  "enemy2": {
+    "x": 450,
+    "y": 590,
+    "width": 50,
+    "height": 50,
+    "speed": 3,
+    "image": "images/Pig.png"
+  },
+  "enemy3": {
+    "x": 500,
+    "y": 290,
     "width": 50,
     "height": 50,
     "speed": 3,

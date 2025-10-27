@@ -6,6 +6,8 @@
 #include "Game/Terrain.h"
 #include "Game/Enemy.h"
 #include "Game/Heart.h"
+#include <Components/EnemyRunAIComponent.h>
+#include <Components/RampMovementComponent.h>
 
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer()
 {
@@ -68,7 +70,7 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoEnemy()
 				CreateRigidBodyComponent(root[key]),
 				CreateCollisionComponent(root[key]),
 				CreateRenderComponent(root[key]),
-				CreateAIComponent(root[key])
+				CreateEnemyRunAIComponent(root[key])
 				});
 
 			m_AllGameObject[obj->GetId()] = obj;
@@ -101,22 +103,34 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
 	{
 		for (const auto& key : root.getMemberNames())
 		{
+			Terrain* obj;
 			if (key.find("Background") != std::string::npos)
 			{
 				const Json::Value& node = root[key];
-
+				std::cout << key << std::endl;
 				RenderComponent* comp = CreateRenderComponent(root[key]);
-				float x = node["x"].asFloat();
-				float y = node["y"].asFloat();
-				comp->CombineTextures(x,y);
+				float x = node["x"].asInt();
+				float y = node["y"].asInt();
+				comp->CombineTextures(x, y);
 				continue;
 			}
-
-			Terrain* obj = new Terrain({
-				   CreateRigidBodyComponent(root[key]),
-				   CreateCollisionComponent(root[key]),
-				   CreateRenderComponent(root[key])
-				});
+			else if (key.find("Mechanical") != std::string::npos)
+			{
+				obj = new Terrain({
+					  CreateRigidBodyComponent(root[key]),
+					  CreateCollisionComponent(root[key]),
+					  CreateRenderComponent(root[key]),
+					  CreateRampMovementComponent(root[key])
+					});
+			}
+			else
+			{
+				obj = new Terrain({
+					  CreateRigidBodyComponent(root[key]),
+					  CreateCollisionComponent(root[key]),
+					  CreateRenderComponent(root[key])
+					});
+			}
 			m_AllGameObject[obj->GetId()] = obj;
 		}
 	}
@@ -190,8 +204,12 @@ RenderComponent* ReadInfo::CreateRenderComponent(Json::Value& data)
 	return render;
 }
 
-AIComponent* ReadInfo::CreateAIComponent(Json::Value& data)
+AIComponent* ReadInfo::CreateEnemyRunAIComponent(Json::Value& data)
 {
-	AIComponent* ai = new AIComponent(data["speed"].asInt());
-	return ai;
+	return new EnemyRunAIComponent(data["speed"].asInt());
+}
+
+AIComponent* ReadInfo::CreateRampMovementComponent(Json::Value& data)
+{
+	return new RampMovementComponent(data["speed"].asInt());
 }
