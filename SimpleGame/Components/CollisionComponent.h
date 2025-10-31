@@ -12,6 +12,7 @@ private:
 	bool m_Right = true;
 	bool m_Bottom = true;
 	bool m_Top = true;
+	bool m_HitPast = false;
 	bool m_Hit = false;
 public:
 	~CollisionComponent() = default;
@@ -26,7 +27,9 @@ public:
 	bool IsBottom() const { return m_Bottom; }
 	bool IsHit() const { return m_Hit; }
 	bool IsTop() const { return m_Top; }
+	bool IsHitPast() const {return m_HitPast;}
 
+	void setHitPast(bool value) {m_HitPast = value;}
 	void SetLeft(bool value) { m_Left = value; }
 	void SetRight(bool value) { m_Right = value; }
 	void SetBottom(bool value) { m_Bottom = value; }

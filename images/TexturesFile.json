@@ -31,5 +31,8 @@
   },
   "11": {
     "image": "images/Heart.png"
+  },
+  "12": {
+    "image": "images/WallTop.png"
   }
 }

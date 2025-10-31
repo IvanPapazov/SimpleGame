@@ -53,6 +53,11 @@
         "startFrame": 30,
         "frameCount": 1,
         "frameSpeed": 100
+      },
+      "Hit": {
+        "startFrame": 31,
+        "frameCount": 2,
+        "frameSpeed": 50
       }
     }
   }

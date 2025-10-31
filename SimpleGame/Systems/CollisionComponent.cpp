@@ -73,51 +73,80 @@ void CollisionComponent::Update(GameObject* a)
 			};
 
 			//m_Left and m_Right collision
-			SDL_Point pointRight = {
+			SDL_Point pointBottomRight = {
 				colA->m_X + colA->m_Width,
 				colA->m_Y + colA->m_Height * 0.9f
 			};
 
-			SDL_Point pointLeft = {
+			SDL_Point pointBottomLeft = {
 				colA->m_X,
 				colA->m_Y + colA->m_Height * 0.9f
 			};
 
+			SDL_Point pointTopRight = {
+				colA->m_X + colA->m_Width,
+				colA->m_Y + colA->m_Height * 0.1f
+			};
+
+			SDL_Point pointTopLeft = {
+				colA->m_X,
+				colA->m_Y + colA->m_Height * 0.1f
+			};
 
 
 			if (CheckCollision(colA, colB))
 			{
 				if (typeid(*b) == typeid(Enemy)) {
 					colA->m_Hit = true;
+					//colA->m_HitPast = true;
 				}
+				if (colA->IsHit() || colB->IsHit())
+				{
+					continue;
+				}
+
 
 				if ((SDL_PointInRect(&bottomPointMiddle, &bounds) || SDL_PointInRect(&bottomPointRight, &bounds) || SDL_PointInRect(&bottomPointLeft, &bounds)) && typeid(*b) != typeid(Player))
 				{
+					if (!colA->IsTop()&& typeid(*a) == typeid(Player))
+					{
+						colA->m_Hit = true;
+						
+					}
 					colA->m_Bottom = false;
 					colA->m_Top = true;
 					rbA->setPosition(Vec2(rbA->getPosition().x, rbA->getPosition().y - 0.1));
 				}
-				if (SDL_PointInRect(&topPointRight, &bounds) || SDL_PointInRect(&topPointLeft, &bounds) && typeid(*b) != typeid(Player))
+
+				if ((SDL_PointInRect(&topPointRight, &bounds) || SDL_PointInRect(&topPointLeft, &bounds)) && typeid(*b) != typeid(Player))
 				{
 					colA->m_Top = false;
 					colA->m_Bottom = true;
 					rbA->setPosition(Vec2(rbA->getPosition().x, rbA->getPosition().y + 0.1));
 				}
-				if (SDL_PointInRect(&pointLeft, &bounds) && typeid(*b) != typeid(Player))
+
+
+				if ((SDL_PointInRect(&pointTopLeft, &bounds) || SDL_PointInRect(&pointBottomLeft, &bounds)) && typeid(*b) != typeid(Player))
 				{
 					colA->m_Left = false;
 					colA->m_Right = true;
-					rbA->setPosition(Vec2(rbA->getPosition().x + 1, rbA->getPosition().y));
-
+					rbA->setPosition(Vec2(rbA->getPosition().x+1, rbA->getPosition().y));
 				}
-				if (SDL_PointInRect(&pointRight, &bounds) && typeid(*b) != typeid(Player))
+
+				if ((SDL_PointInRect(&pointBottomRight, &bounds) || SDL_PointInRect(&pointTopRight, &bounds)) && typeid(*b) != typeid(Player))
 				{
 					colA->m_Right = false;
 					colA->m_Left = true;
-					rbA->setPosition(Vec2(rbA->getPosition().x - 1, rbA->getPosition().y));
+					rbA->setPosition(Vec2(rbA->getPosition().x-1, rbA->getPosition().y));
 				}
+
 				
 			}
+			/*if (colA->IsHit() && typeid(*b) == typeid(Enemy) && !CheckCollision(colA, colB))
+			{
+				colA->m_Hit = false;
+				colA->m_HitPast = true;
+			}*/
 		}
 	}
 }

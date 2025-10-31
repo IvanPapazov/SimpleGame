@@ -22,71 +22,86 @@ void MovementComponent::Update(GameObject* a)
 
 	//m_DeltaTime = (float)((NOW - m_DeltaTimeLast) * 1000);
 	//m_DeltaTimeLast = m_DeltaTime;
-	rm.setCurrentState(render->GetTextureId(), "Idle");
-	const Uint8* keys = SDL_GetKeyboardState(nullptr);\
-
-	x = rbA->getAcceleration().x;
-	if (result->IsBottom())
+	if (!result->IsHit())
 	{
+		rm.setCurrentState(render->GetTextureId(), "Idle");
+		const Uint8* keys = SDL_GetKeyboardState(nullptr); \
 
-		y = rbA->getAcceleration().y + m_GravityScale * 0.032;
-		rbA->setAcceleration(Vec2(x, y));
-		if (keys[SDL_SCANCODE_LEFT])
+			x = rbA->getAcceleration().x;
+		if (result->IsBottom())
 		{
-			rm.setCurrentState(render->GetTextureId(), "FallLeft");
+
+			y = rbA->getAcceleration().y + m_GravityScale * 0.032;
+			rbA->setAcceleration(Vec2(x, y));
+			if (keys[SDL_SCANCODE_LEFT])
+			{
+				rm.setCurrentState(render->GetTextureId(), "FallLeft");
+			}
+			else if (keys[SDL_SCANCODE_RIGHT])
+			{
+				rm.setCurrentState(render->GetTextureId(), "FallRight");
+			}
 		}
-		else if (keys[SDL_SCANCODE_RIGHT])
+		else
 		{
-			rm.setCurrentState(render->GetTextureId(), "FallRight");
+			y = 0;
+			rbA->setAcceleration(Vec2(x, y));
+
+			Vec2 vel = rbA->getVelocity();
+			vel.y = 0;
+			rbA->setVelocity(vel);
 		}
+
+		//m_Left-m_Right-Jump
+		x = rbA->getVelocity().x;
+		y = rbA->getVelocity().y;
+		rbA->setVelocity(Vec2(0, y));
+
+		if (keys[SDL_SCANCODE_UP] && !result->IsBottom() && result->IsTop())
+		{
+			y = y - m_Jump;
+			result->SetBottom(true);
+			result->SetHit(false);
+			//rbA->setVelocity(Vec2(x, y));
+			
+			
+			if (keys[SDL_SCANCODE_LEFT])
+			{
+				rm.setCurrentState(render->GetTextureId(), "JumpLeft");
+			}
+			else if (keys[SDL_SCANCODE_RIGHT])
+			{
+				rm.setCurrentState(render->GetTextureId(), "JumpRight");
+			}
+			
+		}
+		if (keys[SDL_SCANCODE_LEFT] && result->IsLeft())
+		{
+			x = rbA->getVelocity().x - m_Speed;
+			result->SetRight(true);
+			//rbA->setVelocity(Vec2(x, y));
+			rm.setCurrentState(render->GetTextureId(), "RunLeft");
+		}
+		if (keys[SDL_SCANCODE_RIGHT] && result->IsRight())
+		{
+			x = rbA->getVelocity().x + m_Speed;
+			result->SetLeft(true);
+			//rbA->setVelocity(Vec2(x, y));
+			rm.setCurrentState(render->GetTextureId(), "RunRight");		
+		}
+
+		if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_UP])
+		{
+			rbA->setVelocity(Vec2(x, y));
+		}
+		
+
+		rbA->setVelocity(rbA->getVelocity() + rbA->getAcceleration() * 0.016f);
+		rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * 0.016f);
+		rbA->setAcceleration(Vec2(0, 0));
 	}
 	else
 	{
-		y = 0;
-		rbA->setAcceleration(Vec2(x, y));
-
-		Vec2 vel = rbA->getVelocity();
-		vel.y = 0;
-		rbA->setVelocity(vel);
+		rm.setCurrentState(render->GetTextureId(), "Hit");
 	}
-
-	//m_Left-m_Right-Jump
-	x = rbA->getVelocity().x;
-	y = rbA->getVelocity().y;
-	rbA->setVelocity(Vec2(0, y));
-
-	if (keys[SDL_SCANCODE_UP] && !result->IsBottom() && result->IsTop())
-	{
-		y = y - m_Jump;
-		result->SetBottom(true);
-		result->SetHit(false);
-		rbA->setVelocity(Vec2(x, y));
-		if (keys[SDL_SCANCODE_LEFT])
-		{
-			rm.setCurrentState(render->GetTextureId(), "JumpLeft");
-		}
-		else if (keys[SDL_SCANCODE_RIGHT])
-		{
-			rm.setCurrentState(render->GetTextureId(), "JumpRight");
-		}
-	}
-	if (keys[SDL_SCANCODE_LEFT] && result->IsLeft())
-	{
-		x = rbA->getVelocity().x - m_Speed;
-		result->SetRight(true);
-		rbA->setVelocity(Vec2(x, y));
-		rm.setCurrentState(render->GetTextureId(), "RunLeft");
-	}
-	if (keys[SDL_SCANCODE_RIGHT] && result->IsRight())
-	{
-		x = rbA->getVelocity().x + m_Speed;
-		result->SetLeft(true);
-		rbA->setVelocity(Vec2(x, y));
-		rm.setCurrentState(render->GetTextureId(), "RunRight");
-	}
-
-	rbA->setVelocity(rbA->getVelocity() + rbA->getAcceleration() * 0.016f);
-	rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * 0.016f);
-	rbA->setAcceleration(Vec2(0, 0));
-
 }

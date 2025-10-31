@@ -22,8 +22,8 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer()
 	{
 		Player* obj = new Player({
 			CreateRigidBodyComponent(playerData[key]),
-			CreateCollisionComponent(playerData[key]),
 			CreateHealthComponent(playerData[key]),
+			CreateCollisionComponent(playerData[key]),
 			CreateMovementComponent(playerData[key]),
 			CreateRenderComponent(playerData[key])
 			});
@@ -60,41 +60,50 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
 
 	std::unordered_map<int, GameObject*> m_AllGameObject;
 
-	for (const auto& key : terrainData.getMemberNames())
+	for (const auto& groupKey : terrainData.getMemberNames())
 	{
-		Terrain* obj;
-		if (key.find("Background") != std::string::npos)
+		 Json::Value& group = terrainData[groupKey];
+
+		for (const auto& key : group.getMemberNames())
 		{
-			const Json::Value& node = terrainData[key];
-			std::cout << key << std::endl;
-			RenderComponent* comp = CreateRenderComponent(terrainData[key]);
-			float x = node["x"].asInt();
-			float y = node["y"].asInt();
-			comp->CombineTextures(x, y);
-			continue;
+			Json::Value& node = group[key];
+			Terrain* obj = nullptr;
+
+			int id = node["id"].asInt();
+			float x = node["x"].asFloat();
+			float y = node["y"].asFloat();
+
+			if (key.find("Background") != std::string::npos)
+			{
+				RenderComponent* comp = CreateRenderComponent(node);
+				comp->CombineTextures(x, y);
+				continue;
+			}
+			else if (key.find("Mechanical") != std::string::npos)
+			{
+				obj = new Terrain({
+					CreateRigidBodyComponent(node),
+					CreateCollisionComponent(node),
+					CreateRenderComponent(node),
+					CreateRampMovementComponent(node)
+					});
+			}
+			else
+			{
+				obj = new Terrain({
+					CreateRigidBodyComponent(node),
+					CreateCollisionComponent(node),
+					CreateRenderComponent(node)
+					});
+			}
+
+			m_AllGameObject[obj->GetId()] = obj;
 		}
-		else if (key.find("Mechanical") != std::string::npos)
-		{
-			obj = new Terrain({
-				  CreateRigidBodyComponent(terrainData[key]),
-				  CreateCollisionComponent(terrainData[key]),
-				  CreateRenderComponent(terrainData[key]),
-				  CreateRampMovementComponent(terrainData[key])
-				});
-		}
-		else
-		{
-			obj = new Terrain({
-				  CreateRigidBodyComponent(terrainData[key]),
-				  CreateCollisionComponent(terrainData[key]),
-				  CreateRenderComponent(terrainData[key])
-				});
-		}
-		m_AllGameObject[obj->GetId()] = obj;
 	}
 
 	return m_AllGameObject;
 }
+
 
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoItems()
 {
