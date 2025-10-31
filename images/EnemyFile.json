@@ -1,27 +1,27 @@
 {
   "enemy1": {
+    "id": 10,
     "x": 450,
     "y": 890,
     "width": 50,
     "height": 50,
-    "speed": 3,
-    "image": "images/Pig.png"
+    "speed": 3
   },
 
   "enemy2": {
+    "id": 10,
     "x": 450,
-    "y": 590,
+    "y": 630,
     "width": 50,
     "height": 50,
-    "speed": 3,
-    "image": "images/Pig.png"
+    "speed": 3
   },
   "enemy3": {
+    "id": 10,
     "x": 500,
-    "y": 290,
+    "y": 370,
     "width": 50,
     "height": 50,
-    "speed": 3,
-    "image": "images/Pig.png"
+    "speed": 3
   }
 }

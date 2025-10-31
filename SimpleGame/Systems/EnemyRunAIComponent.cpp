@@ -5,12 +5,17 @@
 #include <Components/CollisionComponent.h>
 #include <Components/RigidBodyComponent.h>
 #include <Components/EnemyRunAIComponent.h>
+#include <Core/ResourceManager.h>
+#include <Components/RenderComponent.h>
+
+extern ResourceManager& rm;
 
 EnemyRunAIComponent::EnemyRunAIComponent(int speed)
 	:AIComponent(speed) {}
 
 void EnemyRunAIComponent::Update(GameObject* object)
 {
+	RenderComponent* render = object->GetComponent<RenderComponent>();
 	RigidBodyComponent* rbA = object->GetComponent<RigidBodyComponent>();
 	CollisionComponent* result = object->GetComponent<CollisionComponent>();
 	float x;
@@ -38,10 +43,12 @@ void EnemyRunAIComponent::Update(GameObject* object)
 	if (result->IsLeft())
 	{
 		x = rbA->getVelocity().x - GetSpeed();
+		rm.setCurrentState(render->GetTextureId(), "RunLeft");
 	}
 	if (result->IsRight())
 	{
 		x = rbA->getVelocity().x + GetSpeed();
+		rm.setCurrentState(render->GetTextureId(), "RunRight");
 	}
 	rbA->setVelocity(Vec2(x, y));
 

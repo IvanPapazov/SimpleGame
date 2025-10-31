@@ -25,4 +25,6 @@ public:
 	std::unordered_map<int, GameObject*> ReadInfoEnemy();
 	std::unordered_map<int, GameObject*> ReadInfoTerrain();
 	std::unordered_map<int, GameObject*> ReadInfoItems();
+	void ReadTextures();
+	void ReadSpriteData();
 };

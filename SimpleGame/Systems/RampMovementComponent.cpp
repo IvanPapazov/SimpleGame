@@ -19,17 +19,9 @@ void RampMovementComponent::Update(GameObject* object)
 	{
 		y = rbA->getPosition().y + GetSpeed()*0.016;		
 	}
-	/*else
-	{
-		result->SetTop(true);
-	}*/
 	if (result->IsTop())
 	{
 		y = rbA->getPosition().y - GetSpeed()*0.016;
 	}
-	/*else
-	{
-		result->SetBottom(true);
-	}*/
 	rbA->setPosition(Vec2(x, y));
 }

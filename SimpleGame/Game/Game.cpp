@@ -62,10 +62,8 @@ void Game::Run()
     GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
     ReadInfo info;
 
-    // class/struct holding Json::Value members
-    // have getter for each Json::Value member which you can use
-
-
+    info.ReadTextures();
+    info.ReadSpriteData();
     auto terrains = info.ReadInfoTerrain();
     for (auto& [key, object] : terrains) {
         gameObjectManager.AddGameObject(object);
@@ -88,11 +86,10 @@ void Game::Run()
         }
 
         SDL_RenderClear(m_Renderer);
-        RenderComponent* render;
-        if (render->GetOffScreenCombinedTexture())
+        if (RenderComponent::GetOffScreenCombinedTexture())
        {
            SDL_Rect dst = { 0, 0, 1200, 1000 };
-           SDL_RenderCopy(m_Renderer, render->GetOffScreenCombinedTexture(), NULL, &dst);
+           SDL_RenderCopy(m_Renderer, RenderComponent::GetOffScreenCombinedTexture(), NULL, &dst);
        }
         gameObjectManager.UpdateAllGameObject();
         

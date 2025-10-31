@@ -1,0 +1,59 @@
+{
+  "10": {
+    "frameWidth": 18,
+    "frameHeight": 18,
+    "animations": {
+      "RunRight": {
+        "startFrame": 0,
+        "frameCount": 6,
+        "frameSpeed": 100
+      },
+      "RunLeft": {
+        "startFrame": 6,
+        "frameCount": 6,
+        "frameSpeed": 100
+      }
+    }
+  },
+  "9": {
+    "frameWidth": 37,
+    "frameHeight": 29,
+    "animations": {
+      "Idle": {
+        "startFrame": 0,
+        "frameCount": 11,
+        "frameSpeed": 100
+      },
+      "RunRight": {
+        "startFrame": 11,
+        "frameCount": 8,
+        "frameSpeed": 100
+      },
+      "RunLeft": {
+        "startFrame": 19,
+        "frameCount": 8,
+        "frameSpeed": 100
+      },
+      "JumpRight": {
+        "startFrame": 27,
+        "frameCount": 1,
+        "frameSpeed": 100
+      },
+      "JumpLeft": {
+        "startFrame": 28,
+        "frameCount": 1,
+        "frameSpeed": 100
+      },
+      "FallRight": {
+        "startFrame": 29,
+        "frameCount": 1,
+        "frameSpeed": 100
+      },
+      "FallLeft": {
+        "startFrame": 30,
+        "frameCount": 1,
+        "frameSpeed": 100
+      }
+    }
+  }
+}

@@ -9,6 +9,7 @@ class GameObject
 {
 protected:
 	int m_Id;
+	
 	std::unordered_map<std::type_index, Component*> m_Components;
 public:
 	GameObject(std::vector<Component*> comps);

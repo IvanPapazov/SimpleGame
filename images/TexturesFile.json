@@ -1,0 +1,35 @@
+{
+  "1": {
+    "image": "images/WallLeft.png"
+  },
+  "2": {
+    "image": "images/WallRight.png"
+  },
+  "3": {
+    "image": "images/WallDown.png"
+  },
+  "4": {
+    "image": "images/Ground2.png"
+  },
+  "5": {
+    "image": "images/Cube.png"
+  },
+  "6": {
+    "image": "images/Ramp.png"
+  },
+  "7": {
+    "image": "images/Background.png"
+  },
+  "8": {
+    "image": "images/LiveBar.png"
+  },
+  "9": {
+    "image": "images/King.png"
+  },
+  "10": {
+    "image": "images/PigRun.png"
+  },
+  "11": {
+    "image": "images/Heart.png"
+  }
+}

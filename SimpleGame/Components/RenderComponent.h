@@ -7,18 +7,21 @@
 class RenderComponent : public Component
 {
 private:
+	int m_TextureId;
 	float m_Width, m_Height;
-	const char* m_FilePath;
 	SDL_Renderer* m_Renderer;
-	SDL_Texture* m_Texture;
 	SDL_Rect m_DestRect;
 	static SDL_Texture* m_OffScreenCombinedTexture;
 public:
-	RenderComponent(int w, int h, SDL_Renderer* r, const char* path);
+	RenderComponent(int id, int w, int h, SDL_Renderer* r);
 	~RenderComponent();
 
 	void Update(GameObject* object) override;
 	void CombineTextures(int x, int y);
+
+	int GetTextureId() const {
+		return m_TextureId;
+	}
 
 	static SDL_Texture* GetOffScreenCombinedTexture() {
 		return m_OffScreenCombinedTexture;
