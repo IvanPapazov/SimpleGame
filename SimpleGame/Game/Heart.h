@@ -5,7 +5,7 @@
 class Heart : public GameObject {
 public:
     using GameObject::GameObject;
-    void UpdateComponents(GameObject* obj) override;
+    void UpdateComponents() override;
 };
 
 

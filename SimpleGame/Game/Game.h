@@ -9,6 +9,9 @@ class Game
 {
 private:
 	bool m_IsRunning = false;
+	std::string m_RequestedLevel;
+	bool m_LevelChangeRequested = false;
+
 	SDL_Window* m_Window;
 	SDL_Renderer* m_Renderer;
 public:
@@ -25,6 +28,8 @@ public:
 	bool IsInitialized();
 	void Run();
 	void Shutdown();
+	void LoadLevel(const std::string& levelName);
+	void RequestLevelChange(const std::string& levelName);
 
 	Game() = default;
 	~Game() = default;

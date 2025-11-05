@@ -34,5 +34,8 @@
   },
   "12": {
     "image": "images/WallTop.png"
+  },
+  "13": {
+    "image": "images/Door.png"
   }
 }

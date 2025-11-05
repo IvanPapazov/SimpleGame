@@ -6,12 +6,11 @@
 #include <Components/RigidBodyComponent.h>
 #include <Components/CollisionComponent.h>
 
-void HealthComponent::Update(GameObject* object)
+void HealthComponent::Update()
 {
-	HealthComponent* health = object->GetComponent<HealthComponent>();
-	CollisionComponent * collision = object->GetComponent<CollisionComponent>();
-	if (collision->IsHitPast())
-	{
+	HealthComponent* health = GetOwner()->GetComponent<HealthComponent>();
+	CollisionComponent * collision = GetOwner()->GetComponent<CollisionComponent>();
+	if (collision->IsHitPast()) {
 		health->m_Health--;
 		collision->setHitPast(false);
 	}

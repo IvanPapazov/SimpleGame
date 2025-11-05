@@ -10,15 +10,15 @@ Player::Player(std::vector<Component*> comps)
 	: GameObject(comps) 
 {
 	ReadInfo info;
-	m_Live = info.ReadInfoItems();
+	m_Live = info.ReadInfoHearts();
 }
 
-void Player::UpdateComponents(GameObject* obj)
+void Player::UpdateComponents()
 {
 	for (auto& [type, comp] : m_Components) {
-		comp->Update(obj);
+		comp->Update();
 	}
-	HealthComponent* health = obj->GetComponent<HealthComponent>();
+	HealthComponent* health = GetComponent<HealthComponent>();
 	int hearts = health->GetHealth();
 
 	UpdateHearts(hearts);
@@ -31,7 +31,7 @@ void Player::UpdateHearts(int hearts)
 		if (hearts != 0)
 		{
 			RenderComponent* render = heart->GetComponent<RenderComponent>();
-			render->Update(heart);
+			render->Update();
 			hearts--;
 		}
 	}

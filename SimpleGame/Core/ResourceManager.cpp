@@ -13,6 +13,20 @@ ResourceManager& ResourceManager::getInstance()
     return ms_Instance;
 }
 
+std::string ResourceManager::getCurrentState(int id) const {
+    SpriteData* it = m_SpriteData.at(id);
+
+    return it->m_CurrentState;
+}
+
+void ResourceManager::setCurrentState(int id, const std::string& state) {
+    if (m_SpriteData.count(id)) {
+        m_SpriteData.at(id)->m_CurrentState = state;
+
+    }
+}
+
+
 bool ResourceManager::loadJson(const std::string& id, const std::string& filePath)
 {
     std::ifstream file(filePath, std::ios::binary);
@@ -33,6 +47,11 @@ bool ResourceManager::loadJson(const std::string& id, const std::string& filePat
 
     m_JsonFiles[id] = root;
     return true;
+}
+
+Json::Value ResourceManager::getJson(const std::string& id)
+{
+    return m_JsonFiles.count(id) ? m_JsonFiles[id] : Json::Value();
 }
 
 bool ResourceManager::loadTexture(const int& id, const std::string& filePath)
@@ -60,21 +79,15 @@ bool ResourceManager::loadTexture(const int& id, const std::string& filePath)
     }
 }
 
-void ResourceManager::loadSpriteData(const int& id, SpriteData* spriteData)
-{
-    m_SpriteData[id] = spriteData;
-}
-
-Json::Value ResourceManager::getJson(const std::string& id)
-{
-    return m_JsonFiles.count(id) ? m_JsonFiles[id] : Json::Value();
-}
-
 SDL_Texture* ResourceManager::getTexture(const int& id)
 {
     return m_Textures.count(id) ? m_Textures[id] : nullptr;
 }
 
+void ResourceManager::loadSpriteData(const int& id, SpriteData* spriteData)
+{
+    m_SpriteData[id] = spriteData;
+}
 
 SDL_Rect* ResourceManager::getSrcRect(const int& id) const
 {    
@@ -85,7 +98,7 @@ SDL_Rect* ResourceManager::getSrcRect(const int& id) const
         rect->w = data->m_FrameWidth;
         rect->h = data->m_FrameHeight;
 
-        const Animation& anim = data->m_Animations.at(data->currentState);
+        const Animation& anim = data->m_Animations.at(data->m_CurrentState);
         int frameIndex = static_cast<int>((SDL_GetTicks() / anim.m_FrameSpeed) % anim.m_FrameCount);
         frameIndex += anim.m_StartFrame;
         rect->x = rect->w * frameIndex;

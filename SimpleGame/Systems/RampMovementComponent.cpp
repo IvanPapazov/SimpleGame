@@ -7,19 +7,18 @@
 RampMovementComponent::RampMovementComponent(int speed)
     : AIComponent(speed){}
 
-// Update method
-void RampMovementComponent::Update(GameObject* object)
+void RampMovementComponent::Update()
 {
-	RigidBodyComponent* rbA = object->GetComponent<RigidBodyComponent>();
-	CollisionComponent* result = object->GetComponent<CollisionComponent>();
+	RigidBodyComponent* rbA = GetOwner()->GetComponent<RigidBodyComponent>();
+	CollisionComponent* result = GetOwner()->GetComponent<CollisionComponent>();
 	float x = rbA->getPosition().x;
 	float y = rbA->getPosition().y;
 	
-	if (result->IsBottom())
+	if (result->BottomCollision())
 	{
 		y = rbA->getPosition().y + GetSpeed()*0.016;		
 	}
-	if (result->IsTop())
+	if (result->TopCollision())
 	{
 		y = rbA->getPosition().y - GetSpeed()*0.016;
 	}

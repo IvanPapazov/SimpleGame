@@ -21,10 +21,11 @@ private:
 	AIComponent* CreateEnemyRunAIComponent(Json::Value& data);
 	AIComponent* CreateRampMovementComponent(Json::Value& data);
 public:
-	std::unordered_map<int, GameObject*> ReadInfoPlayer();
-	std::unordered_map<int, GameObject*> ReadInfoEnemy();
-	std::unordered_map<int, GameObject*> ReadInfoTerrain();
-	std::unordered_map<int, GameObject*> ReadInfoItems();
+	std::unordered_map<int, GameObject*> ReadInfoPlayer(const std::string& levelName);
+	std::unordered_map<int, GameObject*> ReadInfoEnemy(const std::string& levelName);
+	std::unordered_map<int, GameObject*> ReadInfoTerrain(const std::string& levelName);
+	std::unordered_map<int, GameObject*> ReadInfoHearts();
+	std::unordered_map<int, GameObject*> ReadInfoPathways(const std::string& levelName);
 	void ReadTextures();
 	void ReadSpriteData();
 };

@@ -7,5 +7,5 @@ class RampMovementComponent : public AIComponent
 public:
 	~RampMovementComponent() = default;
 	RampMovementComponent(int speed);
-	void Update(GameObject * object);
+	void Update();
 };

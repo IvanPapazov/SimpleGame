@@ -11,6 +11,6 @@ public:
     //using GameObject::GameObject;
     Player(std::vector<Component*> comps);
     ~Player() = default;
-    void UpdateComponents(GameObject* obj) override;
+    void UpdateComponents() override;
     void UpdateHearts(int hearts);
 };

@@ -42,10 +42,10 @@ void RenderComponent::CombineTextures(int x, int y)
 
 
 
-void RenderComponent::Update(GameObject* object)
+void RenderComponent::Update()
 {
-	RigidBodyComponent* rb = object->GetComponent<RigidBodyComponent>();
-	RenderComponent* render = object->GetComponent<RenderComponent>();
+	RigidBodyComponent* rb = GetOwner()->GetComponent<RigidBodyComponent>();
+	RenderComponent* render = GetOwner()->GetComponent<RenderComponent>();
 
 	if (rb && render) {
 		render->m_DestRect.x = static_cast<int>(rb->getPosition().x);

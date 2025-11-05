@@ -17,5 +17,5 @@ public:
 	int GetHealth() const { return m_Health; }
 	void SetHealth(int health) { m_Health = health; }
 
-	void Update(GameObject* object);
+	void Update();
 };

@@ -3,6 +3,11 @@
     "frameWidth": 18,
     "frameHeight": 18,
     "animations": {
+      "Idle": {
+        "startFrame": 0,
+        "frameCount": 1,
+        "frameSpeed": 100
+      },
       "RunRight": {
         "startFrame": 0,
         "frameCount": 6,
@@ -58,6 +63,32 @@
         "startFrame": 31,
         "frameCount": 2,
         "frameSpeed": 50
+      }
+    }
+  },
+  "13": {
+    "frameWidth": 46,
+    "frameHeight": 56,
+    "animations": {
+      "Idle": {
+        "startFrame": 0,
+        "frameCount": 1,
+        "frameSpeed": 100
+      },
+      "Close": {
+        "startFrame": 1,
+        "frameCount": 3,
+        "frameSpeed": 100
+      },
+      "Open": {
+        "startFrame": 3,
+        "frameCount": 5,
+        "frameSpeed": 100
+      },
+      "StayOpen": {
+        "startFrame": 8,
+        "frameCount": 1,
+        "frameSpeed": 100
       }
     }
   }

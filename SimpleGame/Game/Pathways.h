@@ -1,10 +1,11 @@
 #pragma once
 #include "stdafx.h"
-#include "GameObject.h"
-#include "Components/MovementComponent.h"
+#include <Game/GameObject.h>
 
-class Terrain : public GameObject {
+class Pathways : public GameObject {
 public:
     using GameObject::GameObject;
+    ~Pathways() = default;
     void UpdateComponents() override;
 };
+

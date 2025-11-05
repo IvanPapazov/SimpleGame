@@ -13,16 +13,16 @@ extern ResourceManager& rm;
 EnemyRunAIComponent::EnemyRunAIComponent(int speed)
 	:AIComponent(speed) {}
 
-void EnemyRunAIComponent::Update(GameObject* object)
+void EnemyRunAIComponent::Update()
 {
-	RenderComponent* render = object->GetComponent<RenderComponent>();
-	RigidBodyComponent* rbA = object->GetComponent<RigidBodyComponent>();
-	CollisionComponent* result = object->GetComponent<CollisionComponent>();
+	RenderComponent* render = GetOwner()->GetComponent<RenderComponent>();
+	RigidBodyComponent* rbA = GetOwner()->GetComponent<RigidBodyComponent>();
+	CollisionComponent* result = GetOwner()->GetComponent<CollisionComponent>();
 	float x;
 	float y;
 
 	x = rbA->getAcceleration().x;
-	if (result->IsBottom()) {
+	if (result->BottomCollision()) {
 		y = rbA->getAcceleration().y + m_GravityScale * 1.5;
 		rbA->setAcceleration(Vec2(x, y));
 	}
@@ -40,12 +40,12 @@ void EnemyRunAIComponent::Update(GameObject* object)
 	y = rbA->getVelocity().y;
 	rbA->setVelocity(Vec2(0, y));
 
-	if (result->IsLeft())
+	if (result->LeftCollision())
 	{
 		x = rbA->getVelocity().x - GetSpeed();
 		rm.setCurrentState(render->GetTextureId(), "RunLeft");
 	}
-	if (result->IsRight())
+	if (result->RightCollision())
 	{
 		x = rbA->getVelocity().x + GetSpeed();
 		rm.setCurrentState(render->GetTextureId(), "RunRight");

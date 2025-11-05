@@ -10,6 +10,6 @@ protected:
 public:
 	~AIComponent() = default;
 	AIComponent(int speed) :m_Speed(speed) {}
-	void Update(GameObject* object)=0;
+	void Update()=0;
 	int GetSpeed() const { return m_Speed; };
 };

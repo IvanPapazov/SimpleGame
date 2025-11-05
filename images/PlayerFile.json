@@ -1,10 +1,22 @@
 {
-  "player": {
-    "id": 9,
-    "x": 65,
-    "y": 850,
-    "width": 60,
-    "height": 80,
-    "health": 3
+  "level_1": {
+    "player": {
+      "id": 9,
+      "x": 450,
+      "y": 50,
+      "width": 60,
+      "height": 80,
+      "health": 3
+    }
+  },
+  "level_2": {
+    "player": {
+      "id": 9,
+      "x": 815,
+      "y": 850,
+      "width": 60,
+      "height": 80,
+      "health": 3
+    }
   }
 } 

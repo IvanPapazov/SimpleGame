@@ -21,14 +21,17 @@
   <ItemGroup>
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="Core\GameObjectManager.cpp" />
+    <ClCompile Include="Game\Pathways.cpp" />
     <ClCompile Include="Game\Enemy.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\Player.cpp" />
     <ClCompile Include="Game\Terrain.cpp" />
     <ClCompile Include="Game\Heart.cpp" />
     <ClCompile Include="Core\ResourceManager.cpp" />
+    <ClCompile Include="Systems\LevelTransitionComponent.cpp" />
     <ClCompile Include="Systems\EnemyRunAIComponent.cpp" />
     <ClCompile Include="Systems\RampMovementComponent.cpp" />
+    <ClCompile Include="Utils\Timer.cpp" />
     <ClCompile Include="Utils\ReadInfo.cpp" />
     <ClCompile Include="Systems\CollisionComponent.cpp" />
     <ClCompile Include="Game\Game.cpp" />
@@ -52,6 +55,7 @@
     <ClInclude Include="Components\RigidBodyComponent.h" />
     <ClInclude Include="Core\GameObjectManager.h" />
     <ClInclude Include="Core\Component.h" />
+    <ClInclude Include="Game\Pathways.h" />
     <ClInclude Include="Game\Enemy.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\Game.h" />
@@ -59,7 +63,9 @@
     <ClInclude Include="Game\Terrain.h" />
     <ClInclude Include="Game\Heart.h" />
     <ClInclude Include="Core\ResourceManager.h" />
+    <ClInclude Include="Components\LevelTransitionComponent.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Utils\Timer.h" />
     <ClInclude Include="Utils\ReadInfo.h" />
     <ClInclude Include="Utils\Vec2.h" />
   </ItemGroup>

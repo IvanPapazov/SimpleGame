@@ -10,147 +10,53 @@
 #include <Game/Enemy.h>
 #include <Game/Terrain.h>
 #include <Game/Player.h>
+#include <Game/Pathways.h>
+#include <Components/LevelTransitionComponent.h>
 
-void CollisionComponent::Update(GameObject* a)
+void CollisionComponent::SetHit(bool value) {
+	if (value && !m_Hit) {
+		m_HitPast = true;
+	}
+	else if (!value) {
+		m_HitPast = false;
+	}
+	m_Hit = value;
+}
+void CollisionComponent::Update()
 {
-
 	GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
-	CollisionComponent* colA = a->GetComponent<CollisionComponent>();
-	RigidBodyComponent* rbA = a->GetComponent<RigidBodyComponent>();
-	if (!a->HasComponent<MovementComponent>() && !a->HasComponent<AIComponent>())
+	CollisionComponent* colA = GetOwner()->GetComponent<CollisionComponent>();
+	RigidBodyComponent* rbA = GetOwner()->GetComponent<RigidBodyComponent>();
+
+	if (typeid(*GetOwner()) == typeid(Terrain))
 	{
 		return;
 	}
 	colA->m_X = rbA->getPosition().x;
 	colA->m_Y = rbA->getPosition().y;
-	colA->m_Bottom = true;
-	colA->m_Hit = false;
-	for (auto& [key, b] : gameObjectManager.m_gameObjects) {
+	colA->m_BottomCollision = true;
+	m_HitDetected = false;
+	for (auto& [key, b] : gameObjectManager.m_gameObjects)
+	{
+		if (GetOwner() == b || !b->HasComponent<CollisionComponent>())
+			continue;
+
+		CollisionComponent* colB = b->GetComponent<CollisionComponent>();
+
+		if (CheckCollision(colA, colB))
 		{
-			const int id = b->GetId();
-			if (a == b) continue;
-			if (!b->HasComponent<CollisionComponent>())
-			{
-				continue;
+			if (typeid(*GetOwner()) == typeid(Player) && typeid(*b) == typeid(Pathways) && b->HasComponent<LevelTransitionComponent>()) {
+				colB->SetDoorCollision(true);
+				return;
 			}
-			CollisionComponent* colB = b->GetComponent<CollisionComponent>();
-			SDL_Rect bounds;
-			bounds.x = colB->m_X;
-			bounds.y = colB->m_Y;
-			bounds.w = colB->m_Width;
-			bounds.h = colB->m_Height;
-
-			//Ground collision
-			SDL_Point bottomPointRight = {
-				colA->m_X + static_cast<int>(colA->m_Width * 0.99f),
-				colA->m_Y + colA->m_Height
-			};
-
-			SDL_Point bottomPointMiddle = {
-				colA->m_X + static_cast<int>(colA->m_Width * 0.5f),
-				colA->m_Y + colA->m_Height
-			};
-
-			SDL_Point bottomPointLeft = {
-				colA->m_X + static_cast<int>(colA->m_Width * 0.01f),
-				colA->m_Y + colA->m_Height
-			};
-
-			//m_Top collision
-			SDL_Point topPointRight = {
-				colA->m_X + static_cast<int>(colA->m_Width * 0.99f),
-				colA->m_Y
-			};
-
-			SDL_Point topPointMiddle = {
-				colA->m_X + static_cast<int>(colA->m_Width * 0.5f),
-				colA->m_Y
-			};
-
-			SDL_Point topPointLeft = {
-				colA->m_X + static_cast<int>(colA->m_Width * 0.01f),
-				colA->m_Y
-			};
-
-			//m_Left and m_Right collision
-			SDL_Point pointBottomRight = {
-				colA->m_X + colA->m_Width,
-				colA->m_Y + colA->m_Height * 0.9f
-			};
-
-			SDL_Point pointBottomLeft = {
-				colA->m_X,
-				colA->m_Y + colA->m_Height * 0.9f
-			};
-
-			SDL_Point pointTopRight = {
-				colA->m_X + colA->m_Width,
-				colA->m_Y + colA->m_Height * 0.1f
-			};
-
-			SDL_Point pointTopLeft = {
-				colA->m_X,
-				colA->m_Y + colA->m_Height * 0.1f
-			};
-
-
-			if (CheckCollision(colA, colB))
-			{
-				if (typeid(*b) == typeid(Enemy)) {
-					colA->m_Hit = true;
-					//colA->m_HitPast = true;
-				}
-				if (colA->IsHit() || colB->IsHit())
-				{
-					continue;
-				}
-
-
-				if ((SDL_PointInRect(&bottomPointMiddle, &bounds) || SDL_PointInRect(&bottomPointRight, &bounds) || SDL_PointInRect(&bottomPointLeft, &bounds)) && typeid(*b) != typeid(Player))
-				{
-					if (!colA->IsTop()&& typeid(*a) == typeid(Player))
-					{
-						colA->m_Hit = true;
-						
-					}
-					colA->m_Bottom = false;
-					colA->m_Top = true;
-					rbA->setPosition(Vec2(rbA->getPosition().x, rbA->getPosition().y - 0.1));
-				}
-
-				if ((SDL_PointInRect(&topPointRight, &bounds) || SDL_PointInRect(&topPointLeft, &bounds)) && typeid(*b) != typeid(Player))
-				{
-					colA->m_Top = false;
-					colA->m_Bottom = true;
-					rbA->setPosition(Vec2(rbA->getPosition().x, rbA->getPosition().y + 0.1));
-				}
-
-
-				if ((SDL_PointInRect(&pointTopLeft, &bounds) || SDL_PointInRect(&pointBottomLeft, &bounds)) && typeid(*b) != typeid(Player))
-				{
-					colA->m_Left = false;
-					colA->m_Right = true;
-					rbA->setPosition(Vec2(rbA->getPosition().x+1, rbA->getPosition().y));
-				}
-
-				if ((SDL_PointInRect(&pointBottomRight, &bounds) || SDL_PointInRect(&pointTopRight, &bounds)) && typeid(*b) != typeid(Player))
-				{
-					colA->m_Right = false;
-					colA->m_Left = true;
-					rbA->setPosition(Vec2(rbA->getPosition().x-1, rbA->getPosition().y));
-				}
-
-				
-			}
-			/*if (colA->IsHit() && typeid(*b) == typeid(Enemy) && !CheckCollision(colA, colB))
-			{
-				colA->m_Hit = false;
-				colA->m_HitPast = true;
-			}*/
+			HandleCollision(b, colA, colB);
 		}
 	}
+	if (!m_HitDetected)
+	{
+		colA->SetHit(false);
+	}
 }
-
 
 bool CollisionComponent::CheckCollision(CollisionComponent* a, CollisionComponent* b)
 {
@@ -158,4 +64,76 @@ bool CollisionComponent::CheckCollision(CollisionComponent* a, CollisionComponen
 		a->m_X + a->m_Width > b->m_X &&
 		a->m_Y < b->m_Y + b->m_Height &&
 		a->m_Y + a->m_Height > b->m_Y);
+}
+
+void CollisionComponent::HandleCollision(GameObject* b,
+	CollisionComponent* colA, CollisionComponent* colB)
+{
+	SDL_Rect bounds = { colB->m_X, colB->m_Y, colB->m_Width, colB->m_Height };
+
+
+	if (typeid(*b) == typeid(Enemy)) {
+		colA->SetHit(true);
+		m_HitDetected = true;
+		return;
+	}
+
+	CheckBottomCollision(b, colA, bounds);
+	CheckTopCollision(b, colA, colB, bounds);
+	CheckLeftCollision(b, colA, bounds);
+	CheckRightCollision(b, colA, bounds);
+}
+
+void CollisionComponent::CheckBottomCollision(GameObject* b,
+	CollisionComponent* colA, const SDL_Rect& bounds)
+{
+	for (int x = 1; x < static_cast<int>(colA->m_Width) - 1; ++x) {
+		SDL_Point pt = { colA->m_X + x, colA->m_Y + static_cast<int>(colA->m_Height) };
+		if (SDL_PointInRect(&pt, &bounds) && typeid(*b) != typeid(Player)) {
+			colA->m_BottomCollision = false;
+			colA->m_TopCollision = true;
+			break;
+		}
+	}
+}
+
+void CollisionComponent::CheckTopCollision(GameObject* b,
+	CollisionComponent* colA, CollisionComponent* colB, const SDL_Rect& bounds)
+{
+	for (int x = 1; x < static_cast<int>(colA->m_Width) - 1; ++x) {
+		SDL_Point pt = { colA->m_X + x, colA->m_Y };
+		if (SDL_PointInRect(&pt, &bounds) && typeid(*b) != typeid(Player))
+		{
+			colA->m_TopCollision = false;
+			 //colA->m_BottomCollision = true;
+			break;
+		}
+
+	}
+}
+
+void CollisionComponent::CheckLeftCollision(GameObject* b,
+	CollisionComponent* colA, const SDL_Rect& bounds)
+{
+	for (int y = 1; y < static_cast<int>(colA->m_Height) - 1; ++y) {
+		SDL_Point pt = { colA->m_X, colA->m_Y + y };
+		if (SDL_PointInRect(&pt, &bounds) && typeid(*b) != typeid(Player)) {
+			colA->m_LeftCollision = false;
+			colA->m_RightCollision = true;
+			break;
+		}
+	}
+}
+
+void CollisionComponent::CheckRightCollision(GameObject* b,
+	CollisionComponent* colA, const SDL_Rect& bounds)
+{
+	for (int y = 1; y < static_cast<int>(colA->m_Height) - 1; ++y) {
+		SDL_Point pt = { colA->m_X + static_cast<int>(colA->m_Width), colA->m_Y + y };
+		if (SDL_PointInRect(&pt, &bounds) && typeid(*b) != typeid(Player)) {
+			colA->m_RightCollision = false;
+			colA->m_LeftCollision = true;
+			break;
+		}
+	}
 }

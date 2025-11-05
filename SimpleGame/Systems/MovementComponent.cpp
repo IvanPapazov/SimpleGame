@@ -10,98 +10,129 @@
 
 extern ResourceManager& rm;
 
-void MovementComponent::Update(GameObject* a)
+void MovementComponent::Update()
 {
-	RigidBodyComponent* rbA = a->GetComponent<RigidBodyComponent>();
-	CollisionComponent* result = a->GetComponent<CollisionComponent>();
-	RenderComponent* render = a->GetComponent<RenderComponent>();
-	float x;
+	RigidBodyComponent* rb = GetOwner()->GetComponent<RigidBodyComponent>();
+	CollisionComponent* col = GetOwner()->GetComponent<CollisionComponent>();
+	RenderComponent* render = GetOwner()->GetComponent<RenderComponent>();
+
+	const Uint8* keys = SDL_GetKeyboardState(nullptr);
+
+	if (col->IsHit()) {
+		rm.setCurrentState(render->GetTextureId(), "Hit");
+		return;
+	}
+
+	ApplyGravity(rb, col);
+	ApplyJump(rb, col, keys);
+	ApplyHorizontalMovement(rb, col, keys);
+	UpdateAnimation(col, render, keys);
+
+	rb->setVelocity(rb->getVelocity() + rb->getAcceleration() * 0.016f);
+	rb->setPosition(rb->getPosition() + rb->getVelocity() * 0.016f);
+	rb->setAcceleration(Vec2(0, 0));
+}
+
+void MovementComponent::ApplyGravity(RigidBodyComponent* rb, CollisionComponent* col)
+{
+	float x = rb->getAcceleration().x;
 	float y;
 
-	//float NOW = SDL_GetPerformanceCounter();
-
-	//m_DeltaTime = (float)((NOW - m_DeltaTimeLast) * 1000);
-	//m_DeltaTimeLast = m_DeltaTime;
-	if (!result->IsHit())
+	if (col->BottomCollision())
 	{
-		rm.setCurrentState(render->GetTextureId(), "Idle");
-		const Uint8* keys = SDL_GetKeyboardState(nullptr); \
-
-			x = rbA->getAcceleration().x;
-		if (result->IsBottom())
-		{
-
-			y = rbA->getAcceleration().y + m_GravityScale * 0.032;
-			rbA->setAcceleration(Vec2(x, y));
-			if (keys[SDL_SCANCODE_LEFT])
-			{
-				rm.setCurrentState(render->GetTextureId(), "FallLeft");
-			}
-			else if (keys[SDL_SCANCODE_RIGHT])
-			{
-				rm.setCurrentState(render->GetTextureId(), "FallRight");
-			}
-		}
-		else
-		{
-			y = 0;
-			rbA->setAcceleration(Vec2(x, y));
-
-			Vec2 vel = rbA->getVelocity();
-			vel.y = 0;
-			rbA->setVelocity(vel);
-		}
-
-		//m_Left-m_Right-Jump
-		x = rbA->getVelocity().x;
-		y = rbA->getVelocity().y;
-		rbA->setVelocity(Vec2(0, y));
-
-		if (keys[SDL_SCANCODE_UP] && !result->IsBottom() && result->IsTop())
-		{
-			y = y - m_Jump;
-			result->SetBottom(true);
-			result->SetHit(false);
-			//rbA->setVelocity(Vec2(x, y));
-			
-			
-			if (keys[SDL_SCANCODE_LEFT])
-			{
-				rm.setCurrentState(render->GetTextureId(), "JumpLeft");
-			}
-			else if (keys[SDL_SCANCODE_RIGHT])
-			{
-				rm.setCurrentState(render->GetTextureId(), "JumpRight");
-			}
-			
-		}
-		if (keys[SDL_SCANCODE_LEFT] && result->IsLeft())
-		{
-			x = rbA->getVelocity().x - m_Speed;
-			result->SetRight(true);
-			//rbA->setVelocity(Vec2(x, y));
-			rm.setCurrentState(render->GetTextureId(), "RunLeft");
-		}
-		if (keys[SDL_SCANCODE_RIGHT] && result->IsRight())
-		{
-			x = rbA->getVelocity().x + m_Speed;
-			result->SetLeft(true);
-			//rbA->setVelocity(Vec2(x, y));
-			rm.setCurrentState(render->GetTextureId(), "RunRight");		
-		}
-
-		if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_UP])
-		{
-			rbA->setVelocity(Vec2(x, y));
-		}
-		
-
-		rbA->setVelocity(rbA->getVelocity() + rbA->getAcceleration() * 0.016f);
-		rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * 0.016f);
-		rbA->setAcceleration(Vec2(0, 0));
+		y = rb->getAcceleration().y + m_GravityScale * 0.032;
+		rb->setAcceleration(Vec2(x, y));
 	}
 	else
 	{
-		rm.setCurrentState(render->GetTextureId(), "Hit");
+		y = 0;
+		rb->setAcceleration(Vec2(x, y));
+		Vec2 vel = rb->getVelocity();
+		vel.y = 0;
+		rb->setVelocity(vel);
+		rb->setPosition(rb->getPosition() - Vec2(0, 1));;
+
+	}
+}
+
+void MovementComponent::ApplyHorizontalMovement(RigidBodyComponent* rb, CollisionComponent* col, const Uint8* keys)
+{
+	float x = 0;
+	float y = rb->getVelocity().y;
+	rb->setVelocity(Vec2(0, y));
+
+	if (keys[SDL_SCANCODE_LEFT]) {
+		if (!col->LeftCollision()) {
+			rb->setVelocity(Vec2(0, y));
+		}
+		else {
+			x -= m_Speed;
+			col->SetRightCollision(true);
+		}
+	}
+	if (keys[SDL_SCANCODE_RIGHT]) {
+		if (!col->RightCollision()) {
+			rb->setVelocity(Vec2(0, y));
+		}
+		else {
+			x += m_Speed;
+			col->SetLeftCollision(true);
+		}
+	}
+
+	if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_RIGHT]) {
+		rb->setVelocity(Vec2(x, y));
+	}
+
+}
+
+void MovementComponent::ApplyJump(RigidBodyComponent* rb, CollisionComponent* col, const Uint8* keys)
+{
+	float y = rb->getVelocity().y;
+	if (keys[SDL_SCANCODE_UP] && !col->BottomCollision() && col->TopCollision()) {
+		float y = rb->getVelocity().y - m_Jump;
+		rb->setVelocity(Vec2(rb->getVelocity().x, y));
+		col->SetBottomCollision(true);
+	}
+	else if (!col->TopCollision())
+	{
+		Vec2 vel = rb->getVelocity();
+		if (vel.y < 0) {
+			vel.y = 0;
+			rb->setVelocity(vel);
+		}
+
+	}
+}
+
+void MovementComponent::UpdateAnimation(CollisionComponent* col, RenderComponent* render, const Uint8* keys)
+{
+	int texId = render->GetTextureId();
+
+	if (keys[SDL_SCANCODE_UP] && !col->BottomCollision() && col->TopCollision()) {
+		if (keys[SDL_SCANCODE_LEFT]) {
+			rm.setCurrentState(texId, "JumpLeft");
+		}
+		else if (keys[SDL_SCANCODE_RIGHT]) {
+			rm.setCurrentState(texId, "JumpRight");
+		}
+	}
+	else if (col->BottomCollision()) {
+		if (keys[SDL_SCANCODE_LEFT]) {
+			rm.setCurrentState(texId, "FallLeft");
+		}
+		else if (keys[SDL_SCANCODE_RIGHT]) {
+			rm.setCurrentState(texId, "FallRight");
+		}
+	}
+
+	if (keys[SDL_SCANCODE_LEFT] && col->LeftCollision()) {
+		rm.setCurrentState(texId, "RunLeft");
+	}
+	else if (keys[SDL_SCANCODE_RIGHT] && col->RightCollision()) {
+		rm.setCurrentState(texId, "RunRight");
+	}
+	else {
+		rm.setCurrentState(texId, "Idle");
 	}
 }

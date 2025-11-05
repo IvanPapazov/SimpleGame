@@ -6,15 +6,18 @@
 #include "Game/Terrain.h"
 #include "Game/Enemy.h"
 #include "Game/Heart.h"
+#include "Game/Pathways.h"
 #include <Components/EnemyRunAIComponent.h>
 #include <Components/RampMovementComponent.h>
+#include <Components/LevelTransitionComponent.h>
 #include <Core/ResourceManager.h>
 
 ResourceManager& rm = ResourceManager::getInstance();
-std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer()
+std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer(const std::string& levelName)
 {
 	rm.loadJson("player", "images/PlayerFile.json");
-	Json::Value playerData = rm.getJson("player");
+	Json::Value root = rm.getJson("player");
+	Json::Value playerData = root[levelName];
 
 	std::unordered_map<int, GameObject*> m_AllGameObject;
 
@@ -22,9 +25,9 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer()
 	{
 		Player* obj = new Player({
 			CreateRigidBodyComponent(playerData[key]),
-			CreateHealthComponent(playerData[key]),
 			CreateCollisionComponent(playerData[key]),
 			CreateMovementComponent(playerData[key]),
+			CreateHealthComponent(playerData[key]),
 			CreateRenderComponent(playerData[key])
 			});
 
@@ -33,10 +36,11 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer()
 	return m_AllGameObject;
 }
 
-std::unordered_map<int, GameObject*> ReadInfo::ReadInfoEnemy()
+std::unordered_map<int, GameObject*> ReadInfo::ReadInfoEnemy(const std::string& levelName)
 {
 	rm.loadJson("enemy", "images/EnemyFile.json");
-	Json::Value enemyData = rm.getJson("enemy");
+	Json::Value root = rm.getJson("enemy");
+	Json::Value enemyData = root[levelName];
 
 	std::unordered_map<int, GameObject*> m_AllGameObject;
 	for (const auto& key : enemyData.getMemberNames())
@@ -53,16 +57,17 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoEnemy()
 	return m_AllGameObject;
 }
 
-std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
+std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain(const std::string& levelName)
 {
 	rm.loadJson("terrain", "images/TerrainFile.json");
-	Json::Value terrainData = rm.getJson("terrain");
+	Json::Value root = rm.getJson("terrain");
+	Json::Value terrainData = root[levelName];
 
 	std::unordered_map<int, GameObject*> m_AllGameObject;
 
 	for (const auto& groupKey : terrainData.getMemberNames())
 	{
-		 Json::Value& group = terrainData[groupKey];
+		Json::Value& group = terrainData[groupKey];
 
 		for (const auto& key : group.getMemberNames())
 		{
@@ -79,23 +84,11 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
 				comp->CombineTextures(x, y);
 				continue;
 			}
-			else if (key.find("Mechanical") != std::string::npos)
-			{
-				obj = new Terrain({
-					CreateRigidBodyComponent(node),
-					CreateCollisionComponent(node),
-					CreateRenderComponent(node),
-					CreateRampMovementComponent(node)
-					});
-			}
-			else
-			{
-				obj = new Terrain({
-					CreateRigidBodyComponent(node),
-					CreateCollisionComponent(node),
-					CreateRenderComponent(node)
-					});
-			}
+			obj = new Terrain({
+				CreateRigidBodyComponent(node),
+				CreateCollisionComponent(node),
+				CreateRenderComponent(node)
+				});
 
 			m_AllGameObject[obj->GetId()] = obj;
 		}
@@ -104,11 +97,43 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain()
 	return m_AllGameObject;
 }
 
-
-std::unordered_map<int, GameObject*> ReadInfo::ReadInfoItems()
+std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPathways(const std::string& levelName)
 {
-	rm.loadJson("items", "images/ItemsFile.json");
-	Json::Value itemsData = rm.getJson("items");
+	rm.loadJson("pathways", "images/PathwaysFile.json");
+	Json::Value root = rm.getJson("pathways");
+	Json::Value pathwaysData = root[levelName];
+
+	std::unordered_map<int, GameObject*> m_AllGameObject;
+
+	for (const auto& key : pathwaysData.getMemberNames())
+	{
+		Pathways* obj = nullptr;
+		if (key.find("Ramp") != std::string::npos)
+		{
+			obj = new Pathways({
+			CreateRigidBodyComponent(pathwaysData[key]),
+			CreateCollisionComponent(pathwaysData[key]),
+			CreateRenderComponent(pathwaysData[key]),
+			CreateRampMovementComponent(pathwaysData[key])});
+		}
+		else if (key.find("Door") != std::string::npos)
+		{
+			obj = new Pathways({
+			CreateRigidBodyComponent(pathwaysData[key]),
+			CreateCollisionComponent(pathwaysData[key]),
+			CreateRenderComponent(pathwaysData[key]),
+			new LevelTransitionComponent()});
+		}
+		m_AllGameObject[obj->GetId()] = obj;
+	}
+	return m_AllGameObject;
+
+}
+
+std::unordered_map<int, GameObject*> ReadInfo::ReadInfoHearts()
+{
+	rm.loadJson("hearts", "images/HeartsFile.json");
+	Json::Value itemsData = rm.getJson("hearts");
 
 	std::unordered_map<int, GameObject*> m_AllGameObject;
 
@@ -191,7 +216,7 @@ MovementComponent* ReadInfo::CreateMovementComponent(Json::Value& data)
 }
 RenderComponent* ReadInfo::CreateRenderComponent(Json::Value& data)
 {
-	RenderComponent* render = new RenderComponent(data["id"].asInt(),data["width"].asFloat(), data["height"].asFloat(),
+	RenderComponent* render = new RenderComponent(data["id"].asInt(), data["width"].asFloat(), data["height"].asFloat(),
 		Game::getInstance().GetRenderer());
 	return render;
 }

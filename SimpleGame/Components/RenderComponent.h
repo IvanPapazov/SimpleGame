@@ -16,7 +16,7 @@ public:
 	RenderComponent(int id, int w, int h, SDL_Renderer* r);
 	~RenderComponent();
 
-	void Update(GameObject* object) override;
+	void Update() override;
 	void CombineTextures(int x, int y);
 
 	int GetTextureId() const {

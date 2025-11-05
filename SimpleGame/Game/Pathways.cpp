@@ -1,8 +1,7 @@
 #include "stdafx.h"
-#include "Terrain.h"
-#include "iostream"
+#include "Pathways.h"
 
-void Terrain::UpdateComponents()
+void Pathways::UpdateComponents()
 {
 	for (auto& [type, comp] : m_Components) {
 		comp->Update();

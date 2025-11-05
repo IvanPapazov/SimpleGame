@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameObjectManager.h"
+#include <Game/Player.h>
 
 
 GameObjectManager& GameObjectManager::getInstance()
@@ -19,7 +20,7 @@ void GameObjectManager::UpdateAllGameObject()
 {
 	for (auto& [key, object] : m_gameObjects)
 	{
-		object->UpdateComponents(object);
+		object->UpdateComponents();
 	}
 
 }
@@ -27,8 +28,16 @@ void GameObjectManager::UpdateAllGameObject()
 void GameObjectManager::RemoveGameObject(int id)
 {
 	GameObject* obj = GetGameObject(id);
-	m_gameObjects.erase(obj->GetId());
+	m_gameObjects.erase(id);
 	delete obj;
+}
+
+void GameObjectManager::RemoveAllGameObject()
+{
+	for (auto& [key, object] : m_gameObjects) {
+		delete object;
+	}
+	m_gameObjects.clear();
 }
 
 GameObject* GameObjectManager::GetGameObject(int id) const 
@@ -40,3 +49,13 @@ GameObject* GameObjectManager::GetGameObject(int id) const
 	}
 	return nullptr;
 }
+
+GameObject* GameObjectManager::GetPlayer() const {
+	for (const auto& [id, obj] : m_gameObjects) {
+		if (dynamic_cast<Player*>(obj)) {
+			return obj;
+		}
+	}
+	return nullptr;
+}
+

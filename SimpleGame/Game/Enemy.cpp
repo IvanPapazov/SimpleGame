@@ -3,9 +3,9 @@
 #include "iostream"
 #include <Components/HealthComponent.h>
 
-void Enemy::UpdateComponents(GameObject* obj)
+void Enemy::UpdateComponents()
 {
 	for (auto& [type, comp] : m_Components) {
-		comp->Update(obj);
+		comp->Update();
 	}
 }

@@ -8,5 +8,5 @@ private:
 public:
 	~EnemyRunAIComponent() = default;
 	EnemyRunAIComponent(int speed);
-	void Update(GameObject * object);
+	void Update();
 };

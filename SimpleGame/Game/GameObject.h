@@ -4,7 +4,7 @@
 #include <any>
 #include <typeindex>
 #include "Core/Component.h"
-
+class Component;
 class GameObject
 {
 protected:
@@ -15,10 +15,11 @@ public:
 	GameObject(std::vector<Component*> comps);
 	virtual ~GameObject();
 
-	virtual void UpdateComponents(GameObject* obj) = 0;
+	virtual void UpdateComponents() = 0;
 
 	int GetId() const;
 
+	void ClearComponents();
 	void AddComponent(Component* component);
 
 	template<typename T>

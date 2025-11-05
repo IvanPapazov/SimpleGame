@@ -3655,7 +3655,7 @@ bool Value::removeIndex(ArrayIndex index, Value* removed) {
   if (removed)
     *removed = std::move(it->second);
   ArrayIndex oldSize = size();
-  // shift m_Left all items m_Left, into the place of the "removed"
+  // shift m_LeftCollision all items m_LeftCollision, into the place of the "removed"
   for (ArrayIndex i = index; i < (oldSize - 1); ++i) {
     CZString keey(i);
     (*value_.map_)[keey] = (*this)[i + 1];

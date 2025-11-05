@@ -12,7 +12,7 @@ struct Animation {
 };
 
 struct SpriteData {
-    std::string currentState = "RunLeft";
+    std::string m_CurrentState = "Idle";
     int m_FrameWidth;
     int m_FrameHeight;
     std::unordered_map<std::string, Animation> m_Animations;
@@ -43,8 +43,7 @@ public:
     void loadSpriteData(const int& id, SpriteData* spriteData);
     SDL_Rect* getSrcRect(const int& id) const;
 
-    void setCurrentState(int id, const std::string& state) {
-        if (m_SpriteData.count(id)) m_SpriteData.at(id)->currentState = state;
-    }
+    std::string getCurrentState(int id) const;
+    void setCurrentState(int id, const std::string& state);
 
 };

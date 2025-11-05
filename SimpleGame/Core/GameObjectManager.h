@@ -6,6 +6,8 @@
 class GameObject;
 class GameObjectManager {
 public:
+	static GameObjectManager& getInstance();
+
 	GameObjectManager() = default;
 	~GameObjectManager() = default;
 	GameObjectManager(const GameObjectManager& g) = delete;
@@ -14,8 +16,9 @@ public:
 	void AddGameObject(GameObject* obj);
 	void UpdateAllGameObject();
 	void RemoveGameObject(int id);
-	static GameObjectManager& getInstance();
+	void RemoveAllGameObject();
 
+	GameObject* GetPlayer() const;
 	GameObject* GetGameObject(int id) const;
 
 	std::unordered_map<int, GameObject*> m_gameObjects;
