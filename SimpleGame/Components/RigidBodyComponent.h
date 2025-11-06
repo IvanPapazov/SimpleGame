@@ -1,5 +1,6 @@
 #pragma once
 #include <Utils/Vec2.h>
+#include "Core/Component.h"
 
 class RigidBodyComponent : public Component
 {
@@ -11,13 +12,9 @@ private:
 public:
     RigidBodyComponent() = default;
 
-    RigidBodyComponent(const Vec2& pos)
-        : m_Position(pos), m_Velocity(0, 0), m_Acceleration(0, 0) {}
+    RigidBodyComponent(const Vec2& pos);
 
-    RigidBodyComponent(const RigidBodyComponent& other)
-        : m_Position(other.m_Position),
-        m_Velocity(other.m_Velocity),
-        m_Acceleration(other.m_Acceleration) {}
+    RigidBodyComponent(const RigidBodyComponent& other);
 
     ~RigidBodyComponent()=default;
 
@@ -29,4 +26,5 @@ public:
     void setVelocity(const Vec2& velocity) { m_Velocity = velocity; }
     void setAcceleration(const Vec2& acceleration) { m_Acceleration = acceleration; }
 
+    float DistanceTo(const Vec2& other) const;
 };

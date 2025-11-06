@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include <SDL.h>
+#include "Core/QuadTree.h"
 
 const int g_ScreenHeight = 1000;
 const int g_ScreenWidth = 1200;
@@ -11,6 +12,7 @@ private:
 	bool m_IsRunning = false;
 	std::string m_RequestedLevel;
 	bool m_LevelChangeRequested = false;
+	QuadTree* qt;
 
 	SDL_Window* m_Window;
 	SDL_Renderer* m_Renderer;
@@ -24,6 +26,9 @@ public:
 	{
 		return m_Window;
 	}
+	QuadTree* GetQuadTree() const { return qt; }
+	void SetQuadTree(QuadTree* newQT) { qt = newQT; }
+
 
 	bool IsInitialized();
 	void Run();

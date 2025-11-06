@@ -27,4 +27,5 @@ public:
 		y += other.y;
 		return *this;
 	}
+
 };

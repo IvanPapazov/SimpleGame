@@ -5,6 +5,7 @@
 #include <Utils/ReadInfo.h>
 #include <Components/RenderComponent.h>
 #include <Core/ResourceManager.h>
+#include <Core/QuadTree.h>
 
 Game& Game::getInstance()
 {
@@ -38,6 +39,9 @@ bool Game::IsInitialized()
 		m_IsRunning = false;
 		return false;
 	}
+
+	Rect worldBounds = { 0,0,g_ScreenWidth, g_ScreenHeight };
+	qt = new QuadTree(worldBounds);
 
 	m_IsRunning = true;
 	return true;
@@ -102,13 +106,19 @@ void Game::Run()
 				m_IsRunning = false;
 			}
 		}
-
 		SDL_RenderClear(m_Renderer);
+
+		
 		if (RenderComponent::GetOffScreenCombinedTexture())
 		{
-			SDL_Rect dst = { 0, 0, 1200, 1000 };
+			SDL_Rect dst = { 0, 0, g_ScreenWidth, g_ScreenHeight };
 			SDL_RenderCopy(m_Renderer, RenderComponent::GetOffScreenCombinedTexture(), NULL, &dst);
 		}
+		GetQuadTree()->Clear();
+		for (auto& [key, obj] : gameObjectManager.m_gameObjects) {
+			GetQuadTree()->Insert(obj);
+		}
+
 		gameObjectManager.UpdateAllGameObject();
 
 		if (m_LevelChangeRequested) {

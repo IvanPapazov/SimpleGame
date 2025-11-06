@@ -12,6 +12,11 @@
 #include <Game/Player.h>
 #include <Game/Pathways.h>
 #include <Components/LevelTransitionComponent.h>
+#include <Core/QuadTree.h>
+#include <Game/Game.h>
+
+
+extern Game& game;
 
 void CollisionComponent::SetHit(bool value) {
 	if (value && !m_Hit) {
@@ -24,22 +29,37 @@ void CollisionComponent::SetHit(bool value) {
 }
 void CollisionComponent::Update()
 {
-	GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
-	CollisionComponent* colA = GetOwner()->GetComponent<CollisionComponent>();
-	RigidBodyComponent* rbA = GetOwner()->GetComponent<RigidBodyComponent>();
-
 	if (typeid(*GetOwner()) == typeid(Terrain))
 	{
 		return;
 	}
+	GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
+	CollisionComponent* colA = GetOwner()->GetComponent<CollisionComponent>();
+	RigidBodyComponent* rbA = GetOwner()->GetComponent<RigidBodyComponent>();
+
 	colA->m_X = rbA->getPosition().x;
 	colA->m_Y = rbA->getPosition().y;
 	colA->m_BottomCollision = true;
 	m_HitDetected = false;
-	for (auto& [key, b] : gameObjectManager.m_gameObjects)
-	{
-		if (GetOwner() == b || !b->HasComponent<CollisionComponent>())
+
+	Rect searchArea{
+	colA->m_X - 100,
+	colA->m_Y - 100,
+	colA->m_Width + 200,
+	colA->m_Height + 200
+	};
+	std::vector<GameObject*> nearby;
+	game.GetQuadTree()->Query(searchArea, nearby);
+
+	
+	for (GameObject* b : nearby) {
+
+	/*for (auto& [key, b] : gameObjectManager.m_gameObjects)
+	{*/
+		if (GetOwner() == b)
+		{
 			continue;
+		}
 
 		CollisionComponent* colB = b->GetComponent<CollisionComponent>();
 		colB->SetDoorCollision(false);
@@ -50,6 +70,7 @@ void CollisionComponent::Update()
 				colB->SetDoorCollision(true);
 				return;
 			}
+			
 			HandleCollision(b, colA, colB);
 		}
 	}

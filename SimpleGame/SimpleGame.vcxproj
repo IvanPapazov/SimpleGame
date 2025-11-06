@@ -28,9 +28,11 @@
     <ClCompile Include="Game\Terrain.cpp" />
     <ClCompile Include="Game\Heart.cpp" />
     <ClCompile Include="Core\ResourceManager.cpp" />
+    <ClCompile Include="Core\QuadTree.cpp" />
     <ClCompile Include="Systems\LevelTransitionComponent.cpp" />
     <ClCompile Include="Systems\EnemyRunAIComponent.cpp" />
     <ClCompile Include="Systems\RampMovementComponent.cpp" />
+    <ClCompile Include="Systems\RigidBodyComponent.cpp" />
     <ClCompile Include="Utils\Timer.cpp" />
     <ClCompile Include="Utils\ReadInfo.cpp" />
     <ClCompile Include="Systems\CollisionComponent.cpp" />
@@ -64,6 +66,7 @@
     <ClInclude Include="Game\Heart.h" />
     <ClInclude Include="Core\ResourceManager.h" />
     <ClInclude Include="Components\LevelTransitionComponent.h" />
+    <ClInclude Include="Core\QuadTree.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils\Timer.h" />
     <ClInclude Include="Utils\ReadInfo.h" />

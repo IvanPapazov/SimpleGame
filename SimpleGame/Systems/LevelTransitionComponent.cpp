@@ -11,6 +11,8 @@
 
 LevelTransitionComponent::LevelTransitionComponent(std::string level):
 m_Level( level){}
+
+extern Game& game;
 extern ResourceManager& rm;
 extern GameObjectManager& gameObjectManager;
 
@@ -28,8 +30,8 @@ void LevelTransitionComponent::Update() {
         rm.setCurrentState(renderOwner->GetTextureId(), "StayOpen");
         if (rm.getCurrentState(render->GetTextureId()) == "Idle" && !col->BottomCollision())
         {
-            m_TransitionTimer.Update(3000, [&]() {
-                Game::getInstance().RequestLevelChange(GetLevel());
+            m_TransitionTimer.Update(1500, [&]() {
+                game.RequestLevelChange(GetLevel());
                 });
         }
        

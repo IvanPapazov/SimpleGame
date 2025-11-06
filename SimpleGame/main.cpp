@@ -2,10 +2,10 @@
 #include <SDL.h>
 #include <Game/Game.h>
 
+Game& game = Game::getInstance();
 
 int main(int argc, char* argv[])
 {
-	Game& game = Game::getInstance();
 
 	if (!game.IsInitialized()) {
 		return -1;

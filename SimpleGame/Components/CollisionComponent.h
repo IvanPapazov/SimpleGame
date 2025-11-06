@@ -50,4 +50,9 @@ public:
     void setHitPast(bool value) { m_HitPast = value; }
     void SetHit(bool value);
     void SetDoorCollision(bool value) { m_DoorCollision = value; }
+
+    float getX() const { return m_X; }
+    float getY() const { return m_Y; }
+    float getWidth() const { return m_Width; }
+    float getHeight() const { return m_Height; }
 };
