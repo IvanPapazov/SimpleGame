@@ -1,22 +1,20 @@
 #pragma once
 #include <SDL.h>
+#include <functional>
 
 class Timer {
-private:
-    Uint32 m_StartTime = 0;
-    Uint32 m_PausedTime = 0;
-    bool m_Running = false;
-    bool m_Paused = false;
-
 public:
-    Timer() = default;
+    using Callback = std::function<void()>;
 
-    void Start();
+    Timer();
+
+    void Update(Uint32 durationMs, Callback callback);
     void Stop();
-    void Pause();
-    void Resume();
+    bool IsRunning() const;
 
-    Uint32 GetElapsed() const;
-    bool IsRunning() const { return m_Running; }
-    bool IsPaused() const { return m_Paused; }
+private:
+    Uint32 m_StartTime;
+    Uint32 m_Duration;
+    bool m_Running;
+    Callback m_Callback;
 };

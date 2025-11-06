@@ -78,12 +78,12 @@
       "Close": {
         "startFrame": 1,
         "frameCount": 3,
-        "frameSpeed": 100
+        "frameSpeed": 500
       },
       "Open": {
         "startFrame": 3,
         "frameCount": 5,
-        "frameSpeed": 100
+        "frameSpeed": 500
       },
       "StayOpen": {
         "startFrame": 8,

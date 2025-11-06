@@ -1146,42 +1146,42 @@
       "terrainWallDown1": {
         "id": 3,
         "x": 0,
-        "y": 740,
+        "y": 940,
         "width": 200,
         "height": 60
       },
       "terrainWallDown2": {
         "id": 3,
         "x": 200,
-        "y": 770,
+        "y": 940,
         "width": 200,
         "height": 60
       },
       "terrainWallDown3": {
         "id": 3,
         "x": 400,
-        "y": 790,
+        "y": 940,
         "width": 200,
         "height": 60
       },
       "terrainWallDown4": {
         "id": 3,
         "x": 600,
-        "y": 810,
+        "y": 940,
         "width": 200,
         "height": 60
       },
       "terrainWallDown5": {
         "id": 3,
         "x": 800,
-        "y": 830,
+        "y": 940,
         "width": 200,
         "height": 60
       },
       "terrainWallDown6": {
         "id": 3,
         "x": 1000,
-        "y": 850,
+        "y": 940,
         "width": 200,
         "height": 60
       }

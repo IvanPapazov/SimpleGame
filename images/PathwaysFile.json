@@ -28,9 +28,22 @@
     },
 
     "Door1": {
+      //"previousLevel": "level_1",
+      "level": "level_2",
       "id": 13,
       "x": 70,
       "y": 145,
+      "width": 120,
+      "height": 120
+    }
+  },
+  "level_2": {
+    "Door1": {
+      "level": "level_1",
+      //"nextLevel": "level_1",
+      "id": 13,
+      "x": 70,
+      "y": 820,
       "width": 120,
       "height": 120
     }

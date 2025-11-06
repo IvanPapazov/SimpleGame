@@ -7,12 +7,13 @@
 
 class LevelTransitionComponent : public Component {
 private:
+    std::string m_Level;
     Timer m_TransitionTimer;
-    bool m_TimerStarted = false;
-
 public:
-    LevelTransitionComponent();
+    LevelTransitionComponent(std::string level);
     ~LevelTransitionComponent() = default;
+
+    const std::string& GetLevel() const { return m_Level; }
     void Update();
 
 };

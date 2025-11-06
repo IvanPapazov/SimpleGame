@@ -1,37 +1,32 @@
 #include "stdafx.h"
 #include "Timer.h"
 
-void Timer::Start() {
-    m_Running = true;
-    m_Paused = false;
-    m_StartTime = SDL_GetTicks();
-    m_PausedTime = 0;
+Timer::Timer()
+	: m_StartTime(0), m_Duration(0), m_Running(false), m_Callback(nullptr) {}
+
+
+void Timer::Update(Uint32 durationMs, Callback callback) {
+    Uint32 now = SDL_GetTicks();
+
+    if (!m_Running) {
+        m_StartTime = now;
+        m_Duration = durationMs;
+        m_Callback = callback;
+        m_Running = true;
+        return;
+    }
+
+    if (now - m_StartTime >= m_Duration) {
+        if (m_Callback) m_Callback();
+        Stop();
+    }
 }
 
 void Timer::Stop() {
-    m_Running = false;
-    m_Paused = false;
-    m_StartTime = 0;
-    m_PausedTime = 0;
+	m_Running = false;
+	m_Callback = nullptr;
 }
 
-void Timer::Pause() {
-    if (m_Running && !m_Paused) {
-        m_Paused = true;
-        m_PausedTime = SDL_GetTicks() - m_StartTime;
-    }
-}
-
-void Timer::Resume() {
-    if (m_Running && m_Paused) {
-        m_Paused = false;
-        m_StartTime = SDL_GetTicks() - m_PausedTime;
-        m_PausedTime = 0;
-    }
-}
-
-Uint32 Timer::GetElapsed() const {
-    if (!m_Running) return 0;
-    if (m_Paused) return m_PausedTime;
-    return SDL_GetTicks() - m_StartTime;
+bool Timer::IsRunning() const {
+	return m_Running;
 }

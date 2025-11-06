@@ -9,7 +9,6 @@
 #include "Game/Pathways.h"
 #include <Components/EnemyRunAIComponent.h>
 #include <Components/RampMovementComponent.h>
-#include <Components/LevelTransitionComponent.h>
 #include <Core/ResourceManager.h>
 
 ResourceManager& rm = ResourceManager::getInstance();
@@ -122,7 +121,8 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPathways(const std::strin
 			CreateRigidBodyComponent(pathwaysData[key]),
 			CreateCollisionComponent(pathwaysData[key]),
 			CreateRenderComponent(pathwaysData[key]),
-			new LevelTransitionComponent()});
+			CreateLevelTransitionComponent(pathwaysData[key])
+			});
 		}
 		m_AllGameObject[obj->GetId()] = obj;
 	}
@@ -219,6 +219,11 @@ RenderComponent* ReadInfo::CreateRenderComponent(Json::Value& data)
 	RenderComponent* render = new RenderComponent(data["id"].asInt(), data["width"].asFloat(), data["height"].asFloat(),
 		Game::getInstance().GetRenderer());
 	return render;
+}
+LevelTransitionComponent* ReadInfo::CreateLevelTransitionComponent(Json::Value& data)
+{
+	LevelTransitionComponent* transition = new LevelTransitionComponent(data["level"].asString());
+	return transition;
 }
 AIComponent* ReadInfo::CreateEnemyRunAIComponent(Json::Value& data)
 {

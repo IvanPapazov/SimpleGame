@@ -7,6 +7,7 @@
 #include <Components/HealthComponent.h>
 #include <Components/RenderComponent.h>
 #include <Components/MovementComponent.h>
+#include <Components/LevelTransitionComponent.h>
 #include <Components/AIComponent.h>
 
 class ReadInfo
@@ -18,6 +19,7 @@ private:
 	CollisionComponent* CreateCollisionComponent(Json::Value& data);
 	HealthComponent* CreateHealthComponent(Json::Value& data);
 	MovementComponent* CreateMovementComponent(Json::Value& data);
+	LevelTransitionComponent* CreateLevelTransitionComponent(Json::Value& data);
 	AIComponent* CreateEnemyRunAIComponent(Json::Value& data);
 	AIComponent* CreateRampMovementComponent(Json::Value& data);
 public:

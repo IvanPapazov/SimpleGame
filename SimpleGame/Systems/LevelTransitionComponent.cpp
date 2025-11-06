@@ -6,44 +6,33 @@
 #include <Core/ResourceManager.h>
 #include "Game/Game.h"
 #include <Components/RenderComponent.h>
+#include <iostream>
 
 
-LevelTransitionComponent::LevelTransitionComponent(){}
+LevelTransitionComponent::LevelTransitionComponent(std::string level):
+m_Level( level){}
 extern ResourceManager& rm;
 extern GameObjectManager& gameObjectManager;
 
 void LevelTransitionComponent::Update() {
-    CollisionComponent* doorCollider = GetOwner()->GetComponent<CollisionComponent>();
-
     GameObject* player = gameObjectManager.GetPlayer();
+    CollisionComponent* doorCollider = GetOwner()->GetComponent<CollisionComponent>();
+    RenderComponent* renderOwner = GetOwner()->GetComponent<RenderComponent>();
     CollisionComponent* col = player->GetComponent<CollisionComponent>();
     RenderComponent* render = player->GetComponent<RenderComponent>();
-    RenderComponent* renderOwner = GetOwner()->GetComponent<RenderComponent>();
-    
+
+    rm.setCurrentState(renderOwner->GetTextureId(), "Idle");
 
     if (doorCollider->DoorCollision()) {
-        rm.setCurrentState(renderOwner->GetTextureId(), "Open");
 
-        if (rm.getCurrentState(render->GetTextureId()) == "Idle" && !col->BottomCollision()) {
-            if (!m_TimerStarted) {
-                m_TransitionTimer.Start();
-                m_TimerStarted = true;
-            }
-
-            if (m_TransitionTimer.GetElapsed() > 5000) {
-                rm.setCurrentState(renderOwner->GetTextureId(), "StayOpen");
-                Game::getInstance().RequestLevelChange("level_2");
-                m_TransitionTimer.Stop();
-                m_TimerStarted = false;
-            }
+        rm.setCurrentState(renderOwner->GetTextureId(), "StayOpen");
+        if (rm.getCurrentState(render->GetTextureId()) == "Idle" && !col->BottomCollision())
+        {
+            m_TransitionTimer.Update(3000, [&]() {
+                Game::getInstance().RequestLevelChange(GetLevel());
+                });
         }
-    }
-    else 
-    {
-        m_TransitionTimer.Stop();
-        m_TimerStarted = false;
-        rm.setCurrentState(renderOwner->GetTextureId(), "Close");
-        return;
+       
     }
     
 }

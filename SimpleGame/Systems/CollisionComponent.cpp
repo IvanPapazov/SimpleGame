@@ -42,6 +42,7 @@ void CollisionComponent::Update()
 			continue;
 
 		CollisionComponent* colB = b->GetComponent<CollisionComponent>();
+		colB->SetDoorCollision(false);
 
 		if (CheckCollision(colA, colB))
 		{
