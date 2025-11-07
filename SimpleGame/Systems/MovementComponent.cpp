@@ -22,7 +22,7 @@ void MovementComponent::Update()
 
 	if (col->IsHit()) {
 		rm.setCurrentState(render->GetTextureId(), "Hit");
-		return;
+		return; 
 	}
 
 	ApplyGravity(rb, col);
