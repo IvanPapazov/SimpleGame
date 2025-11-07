@@ -6,10 +6,10 @@
 class AIComponent : public Component
 {
 protected:
-	int m_Speed;
+	float m_Speed;
 public:
 	~AIComponent() = default;
-	AIComponent(int speed) :m_Speed(speed) {}
+	AIComponent(float speed) :m_Speed(speed) {}
 	void Update()=0;
-	int GetSpeed() const { return m_Speed; };
+	float GetSpeed() const { return m_Speed; };
 };

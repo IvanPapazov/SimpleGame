@@ -14,6 +14,9 @@ private:
 	bool m_LevelChangeRequested = false;
 	QuadTree* qt;
 
+	Uint64 m_LastFrameTime;
+	float m_dt;
+
 	SDL_Window* m_Window;
 	SDL_Renderer* m_Renderer;
 public:
@@ -28,7 +31,7 @@ public:
 	}
 	QuadTree* GetQuadTree() const { return qt; }
 	void SetQuadTree(QuadTree* newQT) { qt = newQT; }
-
+	float GetDeltaTime() const { return m_dt; }
 
 	bool IsInitialized();
 	void Run();

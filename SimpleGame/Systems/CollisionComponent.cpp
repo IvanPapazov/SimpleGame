@@ -50,10 +50,14 @@ void CollisionComponent::Update()
 	};
 	std::vector<GameObject*> nearby;
 	game.GetQuadTree()->Query(searchArea, nearby);
-
+	if (typeid(*GetOwner()) == typeid(Enemy))
+	{
+		
+	}
 	
-	for (GameObject* b : nearby) {
-
+	for (GameObject* b : nearby) 
+	{
+		
 	/*for (auto& [key, b] : gameObjectManager.m_gameObjects)
 	{*/
 		if (GetOwner() == b)
@@ -63,7 +67,6 @@ void CollisionComponent::Update()
 
 		CollisionComponent* colB = b->GetComponent<CollisionComponent>();
 		colB->SetDoorCollision(false);
-
 		if (CheckCollision(colA, colB))
 		{
 			if (typeid(*GetOwner()) == typeid(Player) && typeid(*b) == typeid(Pathways) && b->HasComponent<LevelTransitionComponent>()) {
@@ -127,7 +130,7 @@ void CollisionComponent::CheckTopCollision(GameObject* b,
 		if (SDL_PointInRect(&pt, &bounds) && typeid(*b) != typeid(Player))
 		{
 			colA->m_TopCollision = false;
-			 //colA->m_BottomCollision = true;
+			 colA->m_BottomCollision = true;
 			break;
 		}
 

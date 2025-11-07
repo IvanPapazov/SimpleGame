@@ -10,9 +10,9 @@
 class MovementComponent : public Component
 {
 private:
-	float m_GravityScale = 10.8f;
+	float m_GravityScale = 0.3f;
 	float m_Speed = 3;
-	float m_Jump = 7.5;
+	float m_Jump = 7.0f;
 
 	void ApplyGravity(RigidBodyComponent* rb, CollisionComponent* col);
 	void ApplyHorizontalMovement( RigidBodyComponent* rb, CollisionComponent* col, const Uint8* keys);

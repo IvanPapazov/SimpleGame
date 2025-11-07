@@ -6,6 +6,6 @@ class RampMovementComponent : public AIComponent
 {
 public:
 	~RampMovementComponent() = default;
-	RampMovementComponent(int speed);
+	RampMovementComponent(float speed);
 	void Update();
 };

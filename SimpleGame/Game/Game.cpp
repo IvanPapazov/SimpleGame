@@ -7,6 +7,11 @@
 #include <Core/ResourceManager.h>
 #include <Core/QuadTree.h>
 
+//#include <boost/log/trivial.hpp>
+//#include <boost/log/utility/setup/file.hpp>
+//#include <boost/log/utility/setup/common_attributes.hpp>
+
+
 Game& Game::getInstance()
 {
 	static Game ms_Instance;
@@ -98,6 +103,10 @@ void Game::Run()
 	info.ReadTextures();
 	info.ReadSpriteData();
 	LoadLevel("level_1");
+	m_LastFrameTime = SDL_GetPerformanceCounter();
+
+	/*boost::log::add_file_log("boost_logs.txt");
+	boost::log::add_common_attributes();*/
 
 	while (m_IsRunning) {
 		SDL_Event event;
@@ -108,12 +117,17 @@ void Game::Run()
 		}
 		SDL_RenderClear(m_Renderer);
 
-		
+		Uint64 start = SDL_GetPerformanceCounter();
+		Uint64 frameTime = start - m_LastFrameTime;
+		m_dt = (frameTime / (float)SDL_GetPerformanceFrequency()) * 100.0f;
+		m_LastFrameTime = start;
+
 		if (RenderComponent::GetOffScreenCombinedTexture())
 		{
 			SDL_Rect dst = { 0, 0, g_ScreenWidth, g_ScreenHeight };
 			SDL_RenderCopy(m_Renderer, RenderComponent::GetOffScreenCombinedTexture(), NULL, &dst);
 		}
+
 		GetQuadTree()->Clear();
 		for (auto& [key, obj] : gameObjectManager.m_gameObjects) {
 			GetQuadTree()->Insert(obj);

@@ -7,7 +7,9 @@
 #include <SDL.h>
 #include <Core/ResourceManager.h>
 #include <Components/RenderComponent.h>
+#include <Game/Game.h>
 
+extern Game& game;
 extern ResourceManager& rm;
 
 void MovementComponent::Update()
@@ -24,34 +26,32 @@ void MovementComponent::Update()
 	}
 
 	ApplyGravity(rb, col);
-	ApplyJump(rb, col, keys);
 	ApplyHorizontalMovement(rb, col, keys);
+	ApplyJump(rb, col, keys);
+	
 	UpdateAnimation(col, render, keys);
 
-	rb->setVelocity(rb->getVelocity() + rb->getAcceleration() * 0.016f);
-	rb->setPosition(rb->getPosition() + rb->getVelocity() * 0.016f);
+
+	rb->setVelocity(rb->getVelocity() + rb->getAcceleration() * game.GetDeltaTime());
+	rb->setPosition(rb->getPosition() + rb->getVelocity() * game.GetDeltaTime());
 	rb->setAcceleration(Vec2(0, 0));
 }
 
 void MovementComponent::ApplyGravity(RigidBodyComponent* rb, CollisionComponent* col)
 {
-	float x = rb->getAcceleration().x;
-	float y;
-
 	if (col->BottomCollision())
 	{
-		y = rb->getAcceleration().y + m_GravityScale * 0.032;
-		rb->setAcceleration(Vec2(x, y));
+		Vec2 accel = rb->getAcceleration();
+		accel.y = m_GravityScale;
+		rb->setAcceleration(accel);
 	}
 	else
 	{
-		y = 0;
-		rb->setAcceleration(Vec2(x, y));
+		
 		Vec2 vel = rb->getVelocity();
 		vel.y = 0;
 		rb->setVelocity(vel);
-		rb->setPosition(rb->getPosition() - Vec2(0, 1));;
-
+		rb->setPosition(rb->getPosition() - Vec2(0, 0.1));
 	}
 }
 
@@ -80,7 +80,7 @@ void MovementComponent::ApplyHorizontalMovement(RigidBodyComponent* rb, Collisio
 		}
 	}
 
-	if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_RIGHT]) {
+	if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_RIGHT] ) {
 		rb->setVelocity(Vec2(x, y));
 	}
 
@@ -88,20 +88,18 @@ void MovementComponent::ApplyHorizontalMovement(RigidBodyComponent* rb, Collisio
 
 void MovementComponent::ApplyJump(RigidBodyComponent* rb, CollisionComponent* col, const Uint8* keys)
 {
-	float y = rb->getVelocity().y;
-	if (keys[SDL_SCANCODE_UP] && !col->BottomCollision() && col->TopCollision()) {
-		float y = rb->getVelocity().y - m_Jump;
-		rb->setVelocity(Vec2(rb->getVelocity().x, y));
-		col->SetBottomCollision(true);
-	}
-	else if (!col->TopCollision())
+	if (keys[SDL_SCANCODE_UP] && !col->BottomCollision() && col->TopCollision())
 	{
 		Vec2 vel = rb->getVelocity();
-		if (vel.y < 0) {
-			vel.y = 0;
-			rb->setVelocity(vel);
-		}
+		vel.y = -m_Jump; 
+		rb->setVelocity(vel);
+		col->SetBottomCollision(true); 
+	}
 
+	if (!col->TopCollision()) {
+		Vec2 vel = rb->getVelocity();
+		if (vel.y < 0) vel.y = 0;
+		rb->setVelocity(vel);
 	}
 }
 

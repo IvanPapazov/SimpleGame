@@ -48,6 +48,7 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoEnemy(const std::string& 
 			CreateRigidBodyComponent(enemyData[key]),
 			CreateCollisionComponent(enemyData[key]),
 			CreateEnemyRunAIComponent(enemyData[key]),
+			
 			CreateRenderComponent(enemyData[key])
 			});
 
@@ -227,9 +228,9 @@ LevelTransitionComponent* ReadInfo::CreateLevelTransitionComponent(Json::Value& 
 }
 AIComponent* ReadInfo::CreateEnemyRunAIComponent(Json::Value& data)
 {
-	return new EnemyRunAIComponent(data["speed"].asInt());
+	return new EnemyRunAIComponent(data["speed"].asFloat());
 }
 AIComponent* ReadInfo::CreateRampMovementComponent(Json::Value& data)
 {
-	return new RampMovementComponent(data["speed"].asInt());
+	return new RampMovementComponent(data["speed"].asFloat());
 }

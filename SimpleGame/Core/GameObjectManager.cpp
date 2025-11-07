@@ -35,7 +35,6 @@ void GameObjectManager::RemoveGameObject(int id)
 void GameObjectManager::RemoveAllGameObject()
 {
 	for (auto& [key, object] : m_gameObjects) {
-		//if()
 		delete object;
 	}
 	m_gameObjects.clear();

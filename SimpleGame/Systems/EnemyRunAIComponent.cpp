@@ -7,10 +7,12 @@
 #include <Components/EnemyRunAIComponent.h>
 #include <Core/ResourceManager.h>
 #include <Components/RenderComponent.h>
+#include <Game/Game.h>
 
+extern Game& game;
 extern ResourceManager& rm;
 
-EnemyRunAIComponent::EnemyRunAIComponent(int speed)
+EnemyRunAIComponent::EnemyRunAIComponent(float speed)
 	:AIComponent(speed) {}
 
 void EnemyRunAIComponent::Update()
@@ -22,15 +24,14 @@ void EnemyRunAIComponent::Update()
 	float y;
 
 	x = rbA->getAcceleration().x;
-	if (result->BottomCollision()) {
-		y = rbA->getAcceleration().y + m_GravityScale * 1.5;
-		rbA->setAcceleration(Vec2(x, y));
+	if (result->BottomCollision())
+	{
+		Vec2 accel = rbA->getAcceleration();
+		accel.y = m_GravityScale;
+		rbA->setAcceleration(accel);
 	}
 	else
 	{
-		y = 0;
-		rbA->setAcceleration(Vec2(x, y));
-
 		Vec2 vel = rbA->getVelocity();
 		vel.y = 0;
 		rbA->setVelocity(vel);
@@ -52,7 +53,7 @@ void EnemyRunAIComponent::Update()
 	}
 	rbA->setVelocity(Vec2(x, y));
 
-	rbA->setVelocity(rbA->getVelocity() + rbA->getAcceleration() * 0.016f);
-	rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * 0.016f);
+	rbA->setVelocity(rbA->getVelocity() + rbA->getAcceleration() * game.GetDeltaTime());
+	rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * game.GetDeltaTime());
 	rbA->setAcceleration(Vec2(0, 0));
 }

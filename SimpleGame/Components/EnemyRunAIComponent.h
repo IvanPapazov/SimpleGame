@@ -7,6 +7,6 @@ private:
 	float m_GravityScale = 9.8f;
 public:
 	~EnemyRunAIComponent() = default;
-	EnemyRunAIComponent(int speed);
+	EnemyRunAIComponent(float speed);
 	void Update();
 };
