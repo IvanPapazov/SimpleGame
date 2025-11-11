@@ -17,6 +17,7 @@
 
 
 extern Game& game;
+extern GameObjectManager& gameObjectManager;
 
 void CollisionComponent::SetHit(bool value) {
 	if (value && !m_Hit) {
@@ -33,47 +34,57 @@ void CollisionComponent::Update()
 	{
 		return;
 	}
-	GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
+	
 	CollisionComponent* colA = GetOwner()->GetComponent<CollisionComponent>();
 	RigidBodyComponent* rbA = GetOwner()->GetComponent<RigidBodyComponent>();
 
 	colA->m_X = rbA->getPosition().x;
 	colA->m_Y = rbA->getPosition().y;
-	colA->m_BottomCollision = true;
-	m_HitDetected = false;
+	if (typeid(*GetOwner()) == typeid(Player))
+	{
+		colA->m_BottomCollision = true;
+		colA->m_LeftCollision = true;
+		colA->m_RightCollision = true;
+		colA->m_HitDetected = false;
+	}
 
 	Rect searchArea{
-	colA->m_X - 100,
-	colA->m_Y - 100,
-	colA->m_Width + 200,
-	colA->m_Height + 200
+	colA->m_X - 200,
+	colA->m_Y - 200,
+	colA->m_Width + 400,
+	colA->m_Height + 400
 	};
 	std::vector<GameObject*> nearby;
 	game.GetQuadTree()->Query(searchArea, nearby);
-	if (typeid(*GetOwner()) == typeid(Enemy))
-	{
-		
-	}
 	
 	for (GameObject* b : nearby) 
 	{
-		
-	/*for (auto& [key, b] : gameObjectManager.m_gameObjects)
-	{*/
 		if (GetOwner() == b)
 		{
 			continue;
 		}
 
 		CollisionComponent* colB = b->GetComponent<CollisionComponent>();
-		colB->SetDoorCollision(false);
+		if (typeid(*GetOwner()) == typeid(Player))
+		{
+			colB->SetDoorCollision(false);
+		}
+
 		if (CheckCollision(colA, colB))
 		{
+			if (typeid(*b) == typeid(Enemy)) {
+				colA->SetHit(true);
+				m_HitDetected = true;
+				if (!b->HasComponent<AIComponent>())
+				{
+					b->SetIsActive(false);
+				}
+				return;
+			}
 			if (typeid(*GetOwner()) == typeid(Player) && typeid(*b) == typeid(Pathways) && b->HasComponent<LevelTransitionComponent>()) {
 				colB->SetDoorCollision(true);
 				return;
 			}
-			
 			HandleCollision(b, colA, colB);
 		}
 	}
@@ -95,13 +106,6 @@ void CollisionComponent::HandleCollision(GameObject* b,
 	CollisionComponent* colA, CollisionComponent* colB)
 {
 	SDL_Rect bounds = { colB->m_X, colB->m_Y, colB->m_Width, colB->m_Height };
-
-
-	if (typeid(*b) == typeid(Enemy)) {
-		colA->SetHit(true);
-		m_HitDetected = true;
-		return;
-	}
 
 	CheckBottomCollision(b, colA, bounds);
 	CheckTopCollision(b, colA, colB, bounds);

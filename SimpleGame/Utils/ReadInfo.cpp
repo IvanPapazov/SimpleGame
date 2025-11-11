@@ -14,7 +14,7 @@
 ResourceManager& rm = ResourceManager::getInstance();
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer(const std::string& levelName)
 {
-	rm.loadJson("player", "images/PlayerFile.json");
+	rm.loadJson("player", "jsons/PlayerFile.json");
 	Json::Value root = rm.getJson("player");
 	Json::Value playerData = root[levelName];
 
@@ -37,29 +37,41 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPlayer(const std::string&
 
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoEnemy(const std::string& levelName)
 {
-	rm.loadJson("enemy", "images/EnemyFile.json");
+	rm.loadJson("enemy", "jsons/EnemyFile.json");
 	Json::Value root = rm.getJson("enemy");
 	Json::Value enemyData = root[levelName];
 
 	std::unordered_map<int, GameObject*> m_AllGameObject;
+
 	for (const auto& key : enemyData.getMemberNames())
 	{
-		Enemy* obj = new Enemy({
+		if (key.find("pig") != std::string::npos)
+		{
+			Enemy* obj = new Enemy({
 			CreateRigidBodyComponent(enemyData[key]),
 			CreateCollisionComponent(enemyData[key]),
 			CreateEnemyRunAIComponent(enemyData[key]),
-			
 			CreateRenderComponent(enemyData[key])
-			});
-
-		m_AllGameObject[obj->GetId()] = obj;
+				});
+			m_AllGameObject[obj->GetId()] = obj;
+		}
+		else if (key.find("Cannon") != std::string::npos)
+		{
+			Enemy* obj = new Enemy({
+			CreateRigidBodyComponent(enemyData[key]),
+			//CreateCollisionComponent(enemyData[key]),
+			CreateCannonFireAIComponent(enemyData[key]),
+			CreateRenderComponent(enemyData[key])
+				});
+			m_AllGameObject[obj->GetId()] = obj;
+		}
 	}
 	return m_AllGameObject;
 }
 
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain(const std::string& levelName)
 {
-	rm.loadJson("terrain", "images/TerrainFile.json");
+	rm.loadJson("terrain", "jsons/TerrainFile.json");
 	Json::Value root = rm.getJson("terrain");
 	Json::Value terrainData = root[levelName];
 
@@ -99,7 +111,7 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoTerrain(const std::string
 
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPathways(const std::string& levelName)
 {
-	rm.loadJson("pathways", "images/PathwaysFile.json");
+	rm.loadJson("pathways", "jsons/PathwaysFile.json");
 	Json::Value root = rm.getJson("pathways");
 	Json::Value pathwaysData = root[levelName];
 
@@ -114,16 +126,16 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPathways(const std::strin
 			CreateRigidBodyComponent(pathwaysData[key]),
 			CreateCollisionComponent(pathwaysData[key]),
 			CreateRenderComponent(pathwaysData[key]),
-			CreateRampMovementComponent(pathwaysData[key])});
+			CreateRampMovementComponent(pathwaysData[key]) });
 		}
 		else if (key.find("Door") != std::string::npos)
 		{
 			obj = new Pathways({
 			CreateRigidBodyComponent(pathwaysData[key]),
 			CreateCollisionComponent(pathwaysData[key]),
-			CreateRenderComponent(pathwaysData[key]),
-			CreateLevelTransitionComponent(pathwaysData[key])
-			});
+			CreateLevelTransitionComponent(pathwaysData[key]),
+			CreateRenderComponent(pathwaysData[key])
+				});
 		}
 		m_AllGameObject[obj->GetId()] = obj;
 	}
@@ -133,7 +145,7 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoPathways(const std::strin
 
 std::unordered_map<int, GameObject*> ReadInfo::ReadInfoHearts()
 {
-	rm.loadJson("hearts", "images/HeartsFile.json");
+	rm.loadJson("hearts", "jsons/HeartsFile.json");
 	Json::Value itemsData = rm.getJson("hearts");
 
 	std::unordered_map<int, GameObject*> m_AllGameObject;
@@ -153,7 +165,7 @@ std::unordered_map<int, GameObject*> ReadInfo::ReadInfoHearts()
 
 void ReadInfo::ReadTextures()
 {
-	rm.loadJson("textures", "images/TexturesFile.json");
+	rm.loadJson("textures", "jsons/TexturesFile.json");
 	Json::Value texturesData = rm.getJson("textures");
 
 	for (const auto& key : texturesData.getMemberNames())
@@ -168,7 +180,7 @@ void ReadInfo::ReadTextures()
 
 void ReadInfo::ReadSpriteData()
 {
-	rm.loadJson("sprite", "images/SpriteDataFile.json");
+	rm.loadJson("sprite", "jsons/SpriteDataFile.json");
 	Json::Value spriteData = rm.getJson("sprite");
 
 	for (const auto& key : spriteData.getMemberNames())
@@ -230,6 +242,12 @@ AIComponent* ReadInfo::CreateEnemyRunAIComponent(Json::Value& data)
 {
 	return new EnemyRunAIComponent(data["speed"].asFloat());
 }
+
+AIComponent* ReadInfo::CreateCannonFireAIComponent(Json::Value& data)
+{
+	return new CannonFireAIComponent(data["speed"].asFloat());
+}
+
 AIComponent* ReadInfo::CreateRampMovementComponent(Json::Value& data)
 {
 	return new RampMovementComponent(data["speed"].asFloat());

@@ -12,8 +12,8 @@
   "level_2": {
     "player": {
       "id": 9,
-      "x": 815,
-      "y": 850,
+      "x": 460,
+      "y": 175,
       "width": 60,
       "height": 80,
       "health": 3

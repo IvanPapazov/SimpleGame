@@ -19,10 +19,9 @@ public:
 	void Update() override;
 	void CombineTextures(int x, int y);
 
-	int GetTextureId() const {
-		return m_TextureId;
-	}
-
+	int GetTextureId() const { return m_TextureId; }
+	float GetWidth() const { return m_Width; }
+	float GetHeight() const { return m_Height; }
 	static SDL_Texture* GetOffScreenCombinedTexture() {
 		return m_OffScreenCombinedTexture;
 	}

@@ -91,5 +91,37 @@
         "frameSpeed": 100
       }
     }
+  },
+  "15": {
+    "frameWidth": 41,
+    "frameHeight": 28,
+    "animations": {
+      "Idle": {
+        "startFrame": 4,
+        "frameCount": 1,
+        "frameSpeed": 100
+      },
+      "Fire": {
+        "startFrame": 0,
+        "frameCount": 4,
+        "frameSpeed": 200
+      }
+    }
+  },
+  "16": {
+    "frameWidth": 41,
+    "frameHeight": 28,
+    "animations": {
+      "Idle": {
+        "startFrame": 4,
+        "frameCount": 1,
+        "frameSpeed": 100
+      },
+      "Fire": {
+        "startFrame": 0,
+        "frameCount": 4,
+        "frameSpeed": 200
+      }
+    }
   }
 }

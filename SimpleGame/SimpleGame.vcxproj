@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
+    <ClCompile Include="Systems\CannonFireAIComponent.cpp" />
     <ClCompile Include="Core\GameObjectManager.cpp" />
     <ClCompile Include="Game\Pathways.cpp" />
     <ClCompile Include="Game\Enemy.cpp" />
@@ -46,6 +47,7 @@
   <ItemGroup>
     <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h" />
     <ClInclude Include="..\externals\jsoncpp\json\json.h" />
+    <ClInclude Include="Components\CannonFireAIComponent.h" />
     <ClInclude Include="Components\AIComponent.h" />
     <ClInclude Include="Components\EnemyRunAIComponent.h" />
     <ClInclude Include="Components\RampMovementComponent.h" />

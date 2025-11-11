@@ -7,11 +7,6 @@
 #include <Core/ResourceManager.h>
 #include <Core/QuadTree.h>
 
-//#include <boost/log/trivial.hpp>
-//#include <boost/log/utility/setup/file.hpp>
-//#include <boost/log/utility/setup/common_attributes.hpp>
-
-
 Game& Game::getInstance()
 {
 	static Game ms_Instance;
@@ -105,11 +100,10 @@ void Game::Run()
 	LoadLevel("level_1");
 	m_LastFrameTime = SDL_GetPerformanceCounter();
 
-	/*boost::log::add_file_log("boost_logs.txt");
-	boost::log::add_common_attributes();*/
-
 	while (m_IsRunning) {
 		SDL_Event event;
+		std::vector<int> toRemove;
+
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
 				m_IsRunning = false;
@@ -128,19 +122,31 @@ void Game::Run()
 			SDL_RenderCopy(m_Renderer, RenderComponent::GetOffScreenCombinedTexture(), NULL, &dst);
 		}
 
-		GetQuadTree()->Clear();
-		for (auto& [key, obj] : gameObjectManager.m_gameObjects) {
-			GetQuadTree()->Insert(obj);
-		}
+		
 
 		gameObjectManager.UpdateAllGameObject();
 
+
+		for (const auto& [key, obj] : gameObjectManager.m_gameObjects) {
+			if (obj && !obj->GetIsActive()) {
+				toRemove.push_back(obj->GetId());
+			}
+		}
+		for (int id : toRemove) {
+			gameObjectManager.RemoveGameObject(id);
+		}
+		
 		if (m_LevelChangeRequested) {
 			gameObjectManager.RemoveAllGameObject();
 			LoadLevel(m_RequestedLevel);
 			m_LevelChangeRequested = false;
 		}
 
+
+		GetQuadTree()->Clear();
+		for (auto& [key, obj] : gameObjectManager.m_gameObjects) {
+			GetQuadTree()->Insert(obj);
+		}
 		SDL_RenderPresent(m_Renderer);
 	}
 }

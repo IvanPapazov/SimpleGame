@@ -9,7 +9,6 @@ class GameObject;
 class Component {
 protected:
     GameObject* m_Owner = nullptr;
-
 public:
     virtual ~Component() = default;
     virtual void Update() {}

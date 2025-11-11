@@ -37,5 +37,17 @@
   },
   "13": {
     "image": "images/Door.png"
+  },
+  "14": {
+    "image": "images/Wall.png"
+  },
+  "15": {
+    "image": "images/CannonLeft.png"
+  },
+  "16": {
+    "image": "images/CannonRight.png"
+  },
+  "17": {
+    "image": "images/CannonBall.png"
   }
 }

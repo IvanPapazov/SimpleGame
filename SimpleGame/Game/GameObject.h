@@ -9,7 +9,8 @@ class GameObject
 {
 protected:
 	int m_Id;
-	
+	bool m_IsActive = true;
+
 	std::unordered_map<std::type_index, Component*> m_Components;
 public:
 	GameObject(std::vector<Component*> comps);
@@ -39,5 +40,8 @@ public:
 	bool operator==(const GameObject& other) const {
 		return m_Id == other.m_Id;
 	}
+
+	bool GetIsActive() const { return m_IsActive; }
+	void SetIsActive(bool isActive) { m_IsActive = isActive; }
 };
 

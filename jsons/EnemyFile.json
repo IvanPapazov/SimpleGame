@@ -1,0 +1,79 @@
+{
+  "level_1": {
+    "pig1": {
+      "id": 10,
+      "x": 450,
+      "y": 890,
+      "width": 50,
+      "height": 50,
+      "speed": 3
+    },
+
+    "pig2": {
+      "id": 10,
+      "x": 450,
+      "y": 630,
+      "width": 50,
+      "height": 50,
+      "speed": 3
+    },
+    "pig3": {
+      "id": 10,
+      "x": 450,
+      "y": 360,
+      "width": 50,
+      "height": 50,
+      "speed": 3
+    }
+  },
+  "level_2": {
+    "Cannon1": {
+      "id": 16,
+      "x": 60,
+      "y": 190,
+      "width": 80,
+      "height": 80,
+      "speed": 3
+    },
+    "Cannon2": {
+      "id": 15,
+      "x": 490,
+      "y": 390,
+      "width": 80,
+      "height": 80,
+      "speed": 3
+    },
+    "Cannon3": {
+      "id": 16,
+      "x": 60,
+      "y": 590,
+      "width": 80,
+      "height": 80,
+      "speed": 3
+    },
+    "Cannon4": {
+      "id": 15,
+      "x": 1060,
+      "y": 190,
+      "width": 80,
+      "height": 80,
+      "speed": 3
+    },
+    "Cannon5": {
+      "id": 16,
+      "x": 630,
+      "y": 390,
+      "width": 80,
+      "height": 80,
+      "speed": 3
+    },
+    "Cannon6": {
+      "id": 15,
+      "x": 1060,
+      "y": 590,
+      "width": 80,
+      "height": 80,
+      "speed": 3
+    }
+  }
+}

@@ -8,6 +8,7 @@
 #include <Components/RenderComponent.h>
 #include <Components/MovementComponent.h>
 #include <Components/LevelTransitionComponent.h>
+#include <Components/CannonFireAIComponent.h>
 #include <Components/AIComponent.h>
 
 class ReadInfo
@@ -21,6 +22,7 @@ private:
 	MovementComponent* CreateMovementComponent(Json::Value& data);
 	LevelTransitionComponent* CreateLevelTransitionComponent(Json::Value& data);
 	AIComponent* CreateEnemyRunAIComponent(Json::Value& data);
+	AIComponent* CreateCannonFireAIComponent(Json::Value& data);
 	AIComponent* CreateRampMovementComponent(Json::Value& data);
 public:
 	std::unordered_map<int, GameObject*> ReadInfoPlayer(const std::string& levelName);

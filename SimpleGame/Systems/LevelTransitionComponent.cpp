@@ -9,32 +9,39 @@
 #include <iostream>
 
 
-LevelTransitionComponent::LevelTransitionComponent(std::string level):
-m_Level( level){}
+LevelTransitionComponent::LevelTransitionComponent(std::string level) :
+	m_Level(level) {}
 
 extern Game& game;
 extern ResourceManager& rm;
 extern GameObjectManager& gameObjectManager;
 
 void LevelTransitionComponent::Update() {
-    GameObject* player = gameObjectManager.GetPlayer();
-    CollisionComponent* doorCollider = GetOwner()->GetComponent<CollisionComponent>();
-    RenderComponent* renderOwner = GetOwner()->GetComponent<RenderComponent>();
-    CollisionComponent* col = player->GetComponent<CollisionComponent>();
-    RenderComponent* render = player->GetComponent<RenderComponent>();
+	GameObject* player = gameObjectManager.GetPlayer();
+	CollisionComponent* doorCollider = GetOwner()->GetComponent<CollisionComponent>();
+	RenderComponent* renderOwner = GetOwner()->GetComponent<RenderComponent>();
+	CollisionComponent* col = player->GetComponent<CollisionComponent>();
+	RenderComponent* render = player->GetComponent<RenderComponent>();
 
-    rm.setCurrentState(renderOwner->GetTextureId(), "Idle");
+	rm.setCurrentState(renderOwner->GetTextureId(), "Idle");
 
-    if (doorCollider->DoorCollision()) {
 
-        rm.setCurrentState(renderOwner->GetTextureId(), "StayOpen");
-        if (rm.getCurrentState(render->GetTextureId()) == "Idle" && !col->BottomCollision())
-        {
-            m_TransitionTimer.Update(1500, [&]() {
-                game.RequestLevelChange(GetLevel());
-                });
-        }
-       
-    }
-    
+	if (doorCollider->DoorCollision()) {
+
+		rm.setCurrentState(renderOwner->GetTextureId(), "StayOpen");
+		if (rm.getCurrentState(render->GetTextureId()) == "Idle")
+		{
+			m_TransitionTimer.Update(1500, [&]() {
+				game.RequestLevelChange(GetLevel());
+				});
+			return;
+		}
+		else
+		{
+			m_TransitionTimer.Stop();
+
+		}
+
+	}
+
 }

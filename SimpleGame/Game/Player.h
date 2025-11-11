@@ -8,7 +8,6 @@ protected:
     std::unordered_map<int, GameObject* > m_Live;
 
 public:
-    //using GameObject::GameObject;
     Player(std::vector<Component*> comps);
     ~Player() = default;
     void UpdateComponents() override;

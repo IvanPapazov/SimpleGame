@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameObjectManager.h"
 #include <Game/Player.h>
+#include <Game/Enemy.h>
 
 
 GameObjectManager& GameObjectManager::getInstance()

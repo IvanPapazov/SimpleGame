@@ -37,7 +37,7 @@ Rect QuadTree::GetBoundingBox(GameObject* obj) const {
 
 bool QuadTree::Insert(GameObject* obj) {
 	Rect objBox = GetBoundingBox(obj);
-	if (!boundary.Intersects(objBox)) return false;
+	if (!Intersects(this->boundary,objBox)) return false;
 
 	if (objects.size() < CAPACITY) {
 		objects.push_back(obj);
@@ -65,12 +65,15 @@ void QuadTree::Subdivide() {
 }
 
 void QuadTree::Query(const Rect& range, std::vector<GameObject*>& found) {
-	if (!boundary.Intersects(range)) return;
+	if (!Intersects(this->boundary, range)) return;
 
 	for (auto* obj : objects) {
-		Rect objBox = GetBoundingBox(obj);
-		if (range.Intersects(objBox)) {
-			found.push_back(obj);
+		if (obj->HasComponent<CollisionComponent>())
+		{
+			Rect objBox = GetBoundingBox(obj);
+			if (Intersects(range, objBox)) {
+				found.push_back(obj);
+			}
 		}
 	}
 
@@ -80,4 +83,37 @@ void QuadTree::Query(const Rect& range, std::vector<GameObject*>& found) {
 		southeast->Query(range, found);
 		southwest->Query(range, found);
 	}
+}
+
+bool QuadTree::Intersects(const Rect& a, const Rect& b) {
+	SDL_Rect rectA = { (int)a.m_X, (int)a.m_Y, (int)a.m_W, (int)a.m_H };
+	SDL_Rect rectB = { (int)b.m_X, (int)b.m_Y, (int)b.m_W, (int)b.m_H };
+
+	SDL_Point cornersA[] = {
+		{ rectA.x, rectA.y },
+		{ rectA.x + rectA.w, rectA.y },
+		{ rectA.x, rectA.y + rectA.h },
+		{ rectA.x + rectA.w, rectA.y + rectA.h }
+	};
+
+	for (const SDL_Point& p : cornersA) {
+		if (SDL_PointInRect(&p, &rectB)) {
+			return true; 
+		}
+	}
+
+	SDL_Point cornersB[] = {
+		{ rectB.x, rectB.y },
+		{ rectB.x + rectB.w, rectB.y },
+		{ rectB.x, rectB.y + rectB.h },
+		{ rectB.x + rectB.w, rectB.y + rectB.h }
+	};
+
+	for (const SDL_Point& p : cornersB) {
+		if (SDL_PointInRect(&p, &rectA)) {
+			return true;
+		}
+	}
+
+	return false;
 }
