@@ -26,14 +26,13 @@ private:
     void CheckTopCollision(GameObject* b, CollisionComponent* colA, CollisionComponent* colB, const SDL_Rect& bounds);
     void CheckBottomCollision(GameObject* b, CollisionComponent* colA, const SDL_Rect& bounds);
 
-
 public:
-    ~CollisionComponent() = default;
-
     CollisionComponent(float x, float y, float w, float h)
         : m_X(x), m_Y(y), m_Width(w), m_Height(h) {}
 
-    void Update();
+    ~CollisionComponent() override = default;
+
+    void Update() override;
 
     bool LeftCollision() const { return m_LeftCollision; }
     bool RightCollision() const { return m_RightCollision; }
@@ -42,17 +41,20 @@ public:
     bool IsHit() const { return m_Hit; }
     bool IsHitPast() const { return m_HitPast; }
     bool DoorCollision() const { return m_DoorCollision; }
+    bool IsHitDetected() const { return m_HitDetected;}
 
+
+    void SetHitDetected(bool value) { m_HitDetected = value;}
     void SetLeftCollision(bool value) { m_LeftCollision = value; }
     void SetRightCollision(bool value) { m_RightCollision = value; }
     void SetBottomCollision(bool value) { m_BottomCollision = value; }
     void SetTopCollision(bool value) { m_TopCollision = value; }
-    void setHitPast(bool value) { m_HitPast = value; }
+    void SetHitPast(bool value) { m_HitPast = value; }
     void SetHit(bool value);
     void SetDoorCollision(bool value) { m_DoorCollision = value; }
 
-    float getX() const { return m_X; }
-    float getY() const { return m_Y; }
-    float getWidth() const { return m_Width; }
-    float getHeight() const { return m_Height; }
+    float GetX() const { return m_X; }
+    float GetY() const { return m_Y; }
+    float GetWidth() const { return m_Width; }
+    float GetHeight() const { return m_Height; }
 };

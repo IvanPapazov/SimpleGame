@@ -6,23 +6,29 @@
 #include <Game/Game.h>
 
 RampMovementComponent::RampMovementComponent(float speed)
-    : AIComponent(speed){}
+    : AIComponent(speed) {}
 
 extern Game& game;
+
 void RampMovementComponent::Update()
 {
-	RigidBodyComponent* rbA = GetOwner()->GetComponent<RigidBodyComponent>();
-	CollisionComponent* result = GetOwner()->GetComponent<CollisionComponent>();
-	float x = rbA->getPosition().x;
-	float y = rbA->getPosition().y;
-	
-	if (result->BottomCollision())
+    GameObject* owner = GetOwner();
+    if (!owner) return;
+
+    auto* rb = owner->GetComponent<RigidBodyComponent>();
+    auto* col = owner->GetComponent<CollisionComponent>();
+    if (!rb || !col) return;
+
+    float x = rb->getPosition().x;
+    float y = rb->getPosition().y;
+
+	if (col->BottomCollision())
 	{
-		y = rbA->getPosition().y + GetSpeed() * game.GetDeltaTime();;
+		y = rb->getPosition().y + GetSpeed() * game.GetDeltaTime();;
 	}
-	if (result->TopCollision())
+	if (col->TopCollision())
 	{
-		y = rbA->getPosition().y - GetSpeed()* game.GetDeltaTime();
+		y = rb->getPosition().y - GetSpeed() * game.GetDeltaTime();
 	}
-	rbA->setPosition(Vec2(x, y));
+	rb->setPosition(Vec2(x, y));
 }

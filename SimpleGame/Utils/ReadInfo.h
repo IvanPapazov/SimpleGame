@@ -1,5 +1,6 @@
 #pragma once
 #include <unordered_map>
+#include <memory>
 #include <Game/Game.h>
 #include <Game/GameObject.h>
 #include <Components/RigidBodyComponent.h>
@@ -14,22 +15,23 @@
 class ReadInfo
 {
 private:
+    std::unique_ptr<RigidBodyComponent> CreateRigidBodyComponent(Json::Value& data);
+    std::unique_ptr<RenderComponent> CreateRenderComponent(Json::Value& data);
+    std::unique_ptr<CollisionComponent> CreateCollisionComponent(Json::Value& data);
+    std::unique_ptr<HealthComponent> CreateHealthComponent(Json::Value& data);
+    std::unique_ptr<MovementComponent> CreateMovementComponent(Json::Value& data);
+    std::unique_ptr<LevelTransitionComponent> CreateLevelTransitionComponent(Json::Value& data);
+    std::unique_ptr<AIComponent> CreateEnemyRunAIComponent(Json::Value& data);
+    std::unique_ptr<AIComponent> CreateCannonFireAIComponent(Json::Value& data);
+    std::unique_ptr<AIComponent> CreateRampMovementComponent(Json::Value& data);
 
-	RigidBodyComponent* CreateRigidBodyComponent(Json::Value& data);
-	RenderComponent* CreateRenderComponent(Json::Value& data);
-	CollisionComponent* CreateCollisionComponent(Json::Value& data);
-	HealthComponent* CreateHealthComponent(Json::Value& data);
-	MovementComponent* CreateMovementComponent(Json::Value& data);
-	LevelTransitionComponent* CreateLevelTransitionComponent(Json::Value& data);
-	AIComponent* CreateEnemyRunAIComponent(Json::Value& data);
-	AIComponent* CreateCannonFireAIComponent(Json::Value& data);
-	AIComponent* CreateRampMovementComponent(Json::Value& data);
 public:
-	std::unordered_map<int, GameObject*> ReadInfoPlayer(const std::string& levelName);
-	std::unordered_map<int, GameObject*> ReadInfoEnemy(const std::string& levelName);
-	std::unordered_map<int, GameObject*> ReadInfoTerrain(const std::string& levelName);
-	std::unordered_map<int, GameObject*> ReadInfoHearts();
-	std::unordered_map<int, GameObject*> ReadInfoPathways(const std::string& levelName);
-	void ReadTextures();
-	void ReadSpriteData();
+    std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoPlayer(const std::string& levelName);
+    std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoEnemy(const std::string& levelName);
+    std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoTerrain(const std::string& levelName);
+    std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoHearts();
+    std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoPathways(const std::string& levelName);
+
+    void ReadTextures();
+    void ReadSpriteData();
 };

@@ -1,26 +1,27 @@
 #pragma once
 
 #include <unordered_map>
-#include "../Game/GameObject.h"  
+#include <memory>
+#include "../Game/GameObject.h"
 
 class GameObject;
+
 class GameObjectManager {
 public:
-	static GameObjectManager& getInstance();
+    static GameObjectManager& getInstance();
 
-	GameObjectManager() = default;
-	~GameObjectManager() = default;
-	GameObjectManager(const GameObjectManager& g) = delete;
-	GameObjectManager(GameObjectManager&& g) = delete;
+    GameObjectManager() = default;
+    ~GameObjectManager() = default;
+    GameObjectManager(const GameObjectManager& g) = delete;
+    GameObjectManager(GameObjectManager&& g) = delete;
 
-	void AddGameObject(GameObject* obj);
-	void UpdateAllGameObject();
-	void RemoveGameObject(int id);
-	void RemoveAllGameObject();
+    void AddGameObject(std::unique_ptr<GameObject> obj);
+    void UpdateAllGameObject();
+    void RemoveGameObject(int id);
+    void RemoveAllGameObject();
 
-	GameObject* GetPlayer() const;
-	GameObject* GetGameObject(int id) const;
+    GameObject* GetPlayer() const;
+    GameObject* GetGameObject(int id) const;
 
-	std::unordered_map<int, GameObject*> m_gameObjects;
-
+    std::unordered_map<int, std::unique_ptr<GameObject>> m_gameObjects;
 };

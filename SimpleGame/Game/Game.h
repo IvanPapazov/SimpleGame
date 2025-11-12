@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include <memory>
 #include <SDL.h>
 #include "Core/QuadTree.h"
 
@@ -9,39 +10,37 @@ const int g_ScreenWidth = 1200;
 class Game
 {
 private:
-	bool m_IsRunning = false;
-	std::string m_RequestedLevel;
-	bool m_LevelChangeRequested = false;
-	QuadTree* qt;
+    bool m_IsRunning = false;
+    std::string m_RequestedLevel;
+    bool m_LevelChangeRequested = false;
 
-	Uint64 m_LastFrameTime;
-	float m_dt;
+    std::unique_ptr<QuadTree> qt;
 
-	SDL_Window* m_Window;
-	SDL_Renderer* m_Renderer;
+    Uint64 m_LastFrameTime;
+    float m_dt;
+
+    SDL_Window* m_Window = nullptr;
+    SDL_Renderer* m_Renderer = nullptr;
+
 public:
-	static Game& getInstance();
-	SDL_Renderer* GetRenderer() const
-	{
-		return m_Renderer;
-	}
-	SDL_Window* GetWindow() const
-	{
-		return m_Window;
-	}
-	QuadTree* GetQuadTree() const { return qt; }
-	void SetQuadTree(QuadTree* newQT) { qt = newQT; }
-	float GetDeltaTime() const { return m_dt; }
+    static Game& getInstance();
 
-	bool IsInitialized();
-	void Run();
-	void Shutdown();
-	void LoadLevel(const std::string& levelName);
-	void RequestLevelChange(const std::string& levelName);
+    SDL_Renderer* GetRenderer() const { return m_Renderer; }
+    SDL_Window* GetWindow() const { return m_Window; }
 
-	Game() = default;
-	~Game() = default;
-	Game(const Game& g) = delete;
-	Game(Game&& g) = delete;
+    QuadTree* GetQuadTree() const { return qt.get(); }
+    void SetQuadTree(std::unique_ptr<QuadTree> newQT) { qt = std::move(newQT); }
+
+    float GetDeltaTime() const { return m_dt; }
+
+    bool IsInitialized();
+    void Run();
+    void Shutdown();
+    void LoadLevel(const std::string& levelName);
+    void RequestLevelChange(const std::string& levelName);
+
+    Game() = default;
+    ~Game() = default;
+    Game(const Game& g) = delete;
+    Game(Game&& g) = delete;
 };
-

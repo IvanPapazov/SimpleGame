@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
+    <ClCompile Include="Events\EventHandler.cpp" />
+    <ClCompile Include="Events\EventSystem.cpp" />
     <ClCompile Include="Systems\CannonFireAIComponent.cpp" />
     <ClCompile Include="Core\GameObjectManager.cpp" />
     <ClCompile Include="Game\Pathways.cpp" />
@@ -51,7 +53,6 @@
     <ClInclude Include="Components\AIComponent.h" />
     <ClInclude Include="Components\EnemyRunAIComponent.h" />
     <ClInclude Include="Components\RampMovementComponent.h" />
-    <ClInclude Include="Core\ComponentManager.h" />
     <ClInclude Include="Components\CollisionComponent.h" />
     <ClInclude Include="Components\HealthComponent.h" />
     <ClInclude Include="Components\RenderComponent.h" />
@@ -59,6 +60,9 @@
     <ClInclude Include="Components\RigidBodyComponent.h" />
     <ClInclude Include="Core\GameObjectManager.h" />
     <ClInclude Include="Core\Component.h" />
+    <ClInclude Include="Events\EventHandler.h" />
+    <ClInclude Include="Events\Event.h" />
+    <ClInclude Include="Events\EventSystem.h" />
     <ClInclude Include="Game\Pathways.h" />
     <ClInclude Include="Game\Enemy.h" />
     <ClInclude Include="Game\GameObject.h" />

@@ -13,7 +13,7 @@
 
 
 extern Game& game;
-extern ResourceManager& rm;
+extern ResourceManager& g_ResourceManager;
 extern GameObjectManager& gameObjectManager;
 
 CannonFireAIComponent::CannonFireAIComponent(float speed)
@@ -21,44 +21,44 @@ CannonFireAIComponent::CannonFireAIComponent(float speed)
 
 void CannonFireAIComponent::Update()
 {
-	RenderComponent* renderOwner = GetOwner()->GetComponent<RenderComponent>();
-	RigidBodyComponent* rbOwner = GetOwner()->GetComponent<RigidBodyComponent>();
-	rm.setCurrentState(renderOwner->GetTextureId(), "Fire");
-	m_TransitionTimer.Update(1500, [&]() {
-		Enemy* ball = new Enemy({
-			new RigidBodyComponent(rbOwner->getPosition() + Vec2(renderOwner->GetWidth() * 0.3,renderOwner->GetHeight() * 0.3)),
-			new RenderComponent(17, 30, 30, Game::getInstance().GetRenderer()),
-			new CollisionComponent(rbOwner->getPosition().x,rbOwner->getPosition().y,30,30)
-			});
+	//RenderComponent* renderOwner = GetOwner()->GetComponent<RenderComponent>();
+	//RigidBodyComponent* rbOwner = GetOwner()->GetComponent<RigidBodyComponent>();
+	//g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Fire");
+	//m_TransitionTimer.Update(1500, [&]() {
+	//	Enemy* ball = new Enemy({
+	//		new RigidBodyComponent(rbOwner->getPosition() + Vec2(renderOwner->GetWidth() * 0.3,renderOwner->GetHeight() * 0.3)),
+	//		new RenderComponent(17, 30, 30, Game::getInstance().GetRenderer()),
+	//		new CollisionComponent(rbOwner->getPosition().x,rbOwner->getPosition().y,30,30)
+	//		});
 
-		m_Amopu
-		gameObjectManager.AddGameObject(ball);
-		});
+	//	m_Amopu
+	//	gameObjectManager.AddGameObject(ball);
+	//	});
 
 
-	for (auto& [key, object] : m_Amo)
-	{
-		/*if (typeid(*object) == typeid(Enemy) && !object->HasComponent<CannonFireAIComponent>() && !object->HasComponent<EnemyRunAIComponent>())
-		{*/
-			RenderComponent* render = object->GetComponent<RenderComponent>();
-			RigidBodyComponent* rbA = object->GetComponent<RigidBodyComponent>();
-			CollisionComponent* result = object->GetComponent<CollisionComponent>();
-			if (result->IsHit())
-			{
-				object->~GameObject();
-			}
+	//for (auto& [key, object] : m_Amo)
+	//{
+	//	/*if (typeid(*object) == typeid(Enemy) && !object->HasComponent<CannonFireAIComponent>() && !object->HasComponent<EnemyRunAIComponent>())
+	//	{*/
+	//		RenderComponent* render = object->GetComponent<RenderComponent>();
+	//		RigidBodyComponent* rbA = object->GetComponent<RigidBodyComponent>();
+	//		CollisionComponent* result = object->GetComponent<CollisionComponent>();
+	//		if (result->IsHit())
+	//		{
+	//			object->~GameObject();
+	//		}
 
-			Vec2 velocity = rbA->getVelocity();
-			if (GetOwner()->GetComponent<RenderComponent>()->GetTextureId() == 15)
-			{
-				velocity.x = -GetSpeed();
-			}
-			else
-			{
-				velocity.x = GetSpeed();
-			}
-			rbA->setVelocity(velocity);
-			rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * game.GetDeltaTime());
-		
-	}
+	//		Vec2 velocity = rbA->getVelocity();
+	//		if (GetOwner()->GetComponent<RenderComponent>()->GetTextureId() == 15)
+	//		{
+	//			velocity.x = -GetSpeed();
+	//		}
+	//		else
+	//		{
+	//			velocity.x = GetSpeed();
+	//		}
+	//		rbA->setVelocity(velocity);
+	//		rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * game.GetDeltaTime());
+	//	
+	//}
 }

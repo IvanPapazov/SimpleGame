@@ -13,7 +13,7 @@ private:
 	SDL_Rect m_DestRect;
 	static SDL_Texture* m_OffScreenCombinedTexture;
 public:
-	RenderComponent(int id, int w, int h, SDL_Renderer* r);
+	RenderComponent(int id, float w, float h, SDL_Renderer* r);
 	~RenderComponent();
 
 	void Update() override;

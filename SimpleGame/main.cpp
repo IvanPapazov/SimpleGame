@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include <SDL.h>
 #include <Game/Game.h>
+#include <Events/EventHandler.h>
+#include <Core/ResourceManager.h>
 
 Game& game = Game::getInstance();
 

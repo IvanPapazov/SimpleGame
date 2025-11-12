@@ -2,19 +2,24 @@
 #include <Game/GameObject.h>
 #include <Core/Component.h>
 #include <Components/HealthComponent.h>
-#include "Core/GameObjectManager.h"
+#include <Core/GameObjectManager.h>
 #include <Components/RigidBodyComponent.h>
 #include <Components/CollisionComponent.h>
 
 void HealthComponent::Update()
 {
-	HealthComponent* health = GetOwner()->GetComponent<HealthComponent>();
-	CollisionComponent * collision = GetOwner()->GetComponent<CollisionComponent>();
-	if (collision->IsHitPast()) {
-		health->m_Health--;
-		collision->setHitPast(false);
-	}
-	if (health->m_Health <= 0 && health->m_IsActive) {
-		health->m_IsActive = false;
-	}
+    GameObject* owner = GetOwner();
+    if (!owner) return;
+
+    auto* collision = owner->GetComponent<CollisionComponent>();
+    if (!collision) return;
+
+    if (collision->IsHitPast()) {
+        m_Health--;
+        collision->SetHitPast(false);
+    }
+
+    if (m_Health <= 0 && m_IsActive) {
+        m_IsActive = false;
+    }
 }

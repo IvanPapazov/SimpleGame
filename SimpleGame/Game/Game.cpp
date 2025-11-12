@@ -1,152 +1,163 @@
 #include "stdafx.h"
 #include "Game.h"
-#include "iostream"
+#include <iostream>
 #include <Core/GameObjectManager.h>
 #include <Utils/ReadInfo.h>
 #include <Components/RenderComponent.h>
 #include <Core/ResourceManager.h>
 #include <Core/QuadTree.h>
+#include <Events/EventHandler.h>
+#include <Events/EventSystem.h>
+
+GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
+EventHandler& g_EventHandler = EventHandler::getInstance();
+ResourceManager& g_ResourceManager = ResourceManager::getInstance();
 
 Game& Game::getInstance()
 {
-	static Game ms_Instance;
-	return ms_Instance;
+    static Game ms_Instance;
+    return ms_Instance;
 }
-GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
-extern ResourceManager& rm;
 
 bool Game::IsInitialized()
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
-		m_IsRunning = false;
-		return false;
-	}
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+        m_IsRunning = false;
+        return false;
+    }
 
-	m_Window = SDL_CreateWindow("Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, g_ScreenWidth, g_ScreenHeight, SDL_WINDOW_SHOWN);
-	if (m_Window == NULL)
-	{
-		std::cerr << "m_Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-		m_IsRunning = false;
-		return false;
-	}
+    m_Window = SDL_CreateWindow("Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, g_ScreenWidth, g_ScreenHeight, SDL_WINDOW_SHOWN);
+    if (!m_Window)
+    {
+        std::cerr << "Window creation failed! SDL_Error: " << SDL_GetError() << std::endl;
+        m_IsRunning = false;
+        return false;
+    }
 
-	m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
-	if (m_Renderer == NULL)
-	{
-		std::cerr << "m_Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-		m_IsRunning = false;
-		return false;
-	}
+    m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
+    if (!m_Renderer)
+    {
+        std::cerr << "Renderer creation failed! SDL_Error: " << SDL_GetError() << std::endl;
+        m_IsRunning = false;
+        return false;
+    }
 
-	Rect worldBounds = { 0,0,g_ScreenWidth, g_ScreenHeight };
-	qt = new QuadTree(worldBounds);
+    Rect worldBounds = { 0, 0, g_ScreenWidth, g_ScreenHeight };
+    qt = std::make_unique<QuadTree>(worldBounds);
 
-	m_IsRunning = true;
-	return true;
+    m_IsRunning = true;
+    return true;
 }
 
-
-
 void Game::RequestLevelChange(const std::string& levelName) {
-	m_RequestedLevel = levelName;
-	m_LevelChangeRequested = true;
+    m_RequestedLevel = levelName;
+    m_LevelChangeRequested = true;
 }
 
 void Game::LoadLevel(const std::string& levelName)
 {
-	ReadInfo info;
-	auto terrains = info.ReadInfoTerrain(levelName);
-	for (auto& [key, object] : terrains) {
-		gameObjectManager.AddGameObject(object);
-	}
-	auto pathways = info.ReadInfoPathways(levelName);
-	for (auto& [key, object] : pathways) {
-		gameObjectManager.AddGameObject(object);
-	}
-	auto enemies = info.ReadInfoEnemy(levelName);
-	for (auto& [key, object] : enemies) {
-		gameObjectManager.AddGameObject(object);
-	}
-	auto players = info.ReadInfoPlayer(levelName);
-	for (auto& [key, object] : players) {
-		gameObjectManager.AddGameObject(object);
-	}
+    EventSystem eventSystem;
+    ReadInfo info;
+    auto terrains = info.ReadInfoTerrain(levelName);
+    for (auto& [key, object] : terrains) {
+        gameObjectManager.AddGameObject(std::move(object));
+    }
+    auto pathways = info.ReadInfoPathways(levelName);
+    for (auto& [key, object] : pathways) {
+        GameObject* rawPtr = object.get();
+        eventSystem.RegisterEvents(rawPtr);
+        gameObjectManager.AddGameObject(std::move(object));
+
+    }
+    auto enemies = info.ReadInfoEnemy(levelName);
+    for (auto& [key, object] : enemies) {
+        GameObject* rawPtr = object.get();
+        eventSystem.RegisterEvents(rawPtr);
+        gameObjectManager.AddGameObject(std::move(object));
+
+    }
+    auto players = info.ReadInfoPlayer(levelName);
+    for (auto& [key, object] : players) {
+        GameObject* rawPtr = object.get();
+        eventSystem.RegisterEvents(rawPtr);
+        gameObjectManager.AddGameObject(std::move(object));
+    }
 }
 
 void Game::Shutdown()
 {
-	if (m_Renderer)
-	{
-		SDL_DestroyRenderer(m_Renderer);
-		m_Renderer = NULL;
-	}
+    if (m_Renderer)
+    {
+        SDL_DestroyRenderer(m_Renderer);
+        m_Renderer = nullptr;
+    }
 
-	if (m_Window)
-	{
-		SDL_DestroyWindow(m_Window);
-		m_Window = NULL;
-	}
+    if (m_Window)
+    {
+        SDL_DestroyWindow(m_Window);
+        m_Window = nullptr;
+    }
 
-	SDL_Quit();
+    SDL_Quit();
 }
 
 void Game::Run()
 {
-	ReadInfo info;
-	info.ReadTextures();
-	info.ReadSpriteData();
-	LoadLevel("level_1");
-	m_LastFrameTime = SDL_GetPerformanceCounter();
+    ReadInfo info;
+    info.ReadTextures();
+    info.ReadSpriteData();
+    LoadLevel("level_1");
+    m_LastFrameTime = SDL_GetPerformanceCounter();
 
-	while (m_IsRunning) {
-		SDL_Event event;
-		std::vector<int> toRemove;
+    while (m_IsRunning) {
+        SDL_Event event;
+        std::vector<int> toRemove;
 
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				m_IsRunning = false;
-			}
-		}
-		SDL_RenderClear(m_Renderer);
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                m_IsRunning = false;
+            }
+        }
 
-		Uint64 start = SDL_GetPerformanceCounter();
-		Uint64 frameTime = start - m_LastFrameTime;
-		m_dt = (frameTime / (float)SDL_GetPerformanceFrequency()) * 100.0f;
-		m_LastFrameTime = start;
+        SDL_RenderClear(m_Renderer);
 
-		if (RenderComponent::GetOffScreenCombinedTexture())
-		{
-			SDL_Rect dst = { 0, 0, g_ScreenWidth, g_ScreenHeight };
-			SDL_RenderCopy(m_Renderer, RenderComponent::GetOffScreenCombinedTexture(), NULL, &dst);
-		}
+        Uint64 start = SDL_GetPerformanceCounter();
+        Uint64 frameTime = start - m_LastFrameTime;
+        m_dt = (frameTime / static_cast<float>(SDL_GetPerformanceFrequency())) * 100.0f;
+        m_LastFrameTime = start;
 
-		
+        if (RenderComponent::GetOffScreenCombinedTexture())
+        {
+            SDL_Rect dst = { 0, 0, g_ScreenWidth, g_ScreenHeight };
+            SDL_RenderCopy(m_Renderer, RenderComponent::GetOffScreenCombinedTexture(), nullptr, &dst);
+        }
 
-		gameObjectManager.UpdateAllGameObject();
+        gameObjectManager.UpdateAllGameObject();
 
+        for (const auto& [key, obj] : gameObjectManager.m_gameObjects) {
+            if (obj && !obj->GetIsActive()) {
+                toRemove.push_back(obj->GetId());
+            }
+        }
+        for (int id : toRemove) {
+            gameObjectManager.RemoveGameObject(id);
+        }
 
-		for (const auto& [key, obj] : gameObjectManager.m_gameObjects) {
-			if (obj && !obj->GetIsActive()) {
-				toRemove.push_back(obj->GetId());
-			}
-		}
-		for (int id : toRemove) {
-			gameObjectManager.RemoveGameObject(id);
-		}
-		
-		if (m_LevelChangeRequested) {
-			gameObjectManager.RemoveAllGameObject();
-			LoadLevel(m_RequestedLevel);
-			m_LevelChangeRequested = false;
-		}
+        if (m_LevelChangeRequested) {
+            gameObjectManager.RemoveAllGameObject();
+            LoadLevel(m_RequestedLevel);
+            m_LevelChangeRequested = false;
+        }
 
+        if (qt) {
+            qt->Clear();
+            for (auto& [key, obj] : gameObjectManager.m_gameObjects) {
+                qt->Insert(obj.get());
+            }
+        }
 
-		GetQuadTree()->Clear();
-		for (auto& [key, obj] : gameObjectManager.m_gameObjects) {
-			GetQuadTree()->Insert(obj);
-		}
-		SDL_RenderPresent(m_Renderer);
-	}
+        SDL_RenderPresent(m_Renderer);
+    }
 }

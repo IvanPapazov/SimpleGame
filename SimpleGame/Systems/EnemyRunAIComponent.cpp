@@ -10,50 +10,53 @@
 #include <Game/Game.h>
 
 extern Game& game;
-extern ResourceManager& rm;
+extern ResourceManager& g_ResourceManager;
 
 EnemyRunAIComponent::EnemyRunAIComponent(float speed)
-	:AIComponent(speed) {}
+    : AIComponent(speed) {}
 
 void EnemyRunAIComponent::Update()
 {
-	RenderComponent* render = GetOwner()->GetComponent<RenderComponent>();
-	RigidBodyComponent* rbA = GetOwner()->GetComponent<RigidBodyComponent>();
-	CollisionComponent* result = GetOwner()->GetComponent<CollisionComponent>();
-	float x;
-	float y;
+    auto* owner = GetOwner();
+    if (!owner) return;
 
-	x = rbA->getAcceleration().x;
-	if (result->BottomCollision())
-	{
-		Vec2 accel = rbA->getAcceleration();
-		accel.y = m_GravityScale;
-		rbA->setAcceleration(accel);
-	}
-	else
-	{
-		Vec2 vel = rbA->getVelocity();
-		vel.y = 0;
-		rbA->setVelocity(vel);
-	}
+    auto* render = owner->GetComponent<RenderComponent>();
+    auto* rb = owner->GetComponent<RigidBodyComponent>();
+    auto* col = owner->GetComponent<CollisionComponent>();
+    if (!render || !rb || !col) return;
 
-	x = rbA->getVelocity().x;
-	y = rbA->getVelocity().y;
-	rbA->setVelocity(Vec2(0, y));
+    // Apply gravity
+    if (col->BottomCollision()) {
+        Vec2 accel = rb->getAcceleration();
+        accel.y = m_GravityScale;
+        rb->setAcceleration(accel);
+    }
+    else {
+        Vec2 vel = rb->getVelocity();
+        vel.y = 0;
+        rb->setVelocity(vel);
+        rb->setPosition(rb->getPosition() - Vec2(0, 0.1f));
+    }
 
-	if (result->LeftCollision())
-	{
-		x = rbA->getVelocity().x - GetSpeed();
-		rm.setCurrentState(render->GetTextureId(), "RunLeft");
-	}
-	if (result->RightCollision())
-	{
-		x = rbA->getVelocity().x + GetSpeed();
-		rm.setCurrentState(render->GetTextureId(), "RunRight");
-	}
-	rbA->setVelocity(Vec2(x, y));
+    // Reset horizontal velocity
+    float x = 0.0f;
+    float y = rb->getVelocity().y;
 
-	rbA->setVelocity(rbA->getVelocity() + rbA->getAcceleration() * game.GetDeltaTime());
-	rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * game.GetDeltaTime());
-	rbA->setAcceleration(Vec2(0, 0));
+    // Movement logic
+    if (col->LeftCollision()) {
+        x = -GetSpeed();
+        g_ResourceManager.setCurrentState(render->GetTextureId(), "RunLeft");
+    }
+    if (col->RightCollision()) {
+        x = GetSpeed();
+        g_ResourceManager.setCurrentState(render->GetTextureId(), "RunRight");
+    }
+
+    rb->setVelocity(Vec2(x, y));
+
+    // Apply physics
+    const float dt = game.GetDeltaTime();
+    rb->setVelocity(rb->getVelocity() + rb->getAcceleration() * dt);
+    rb->setPosition(rb->getPosition() + rb->getVelocity() * dt);
+    rb->setAcceleration(Vec2(0, 0));
 }

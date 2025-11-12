@@ -3,12 +3,12 @@
 #include <string>
 #include <SDL.h>
 #include <unordered_map>
-
+#include <memory>
 
 struct Animation {
     int m_StartFrame;
     int m_FrameCount;
-    int m_FrameSpeed; 
+    int m_FrameSpeed;
 };
 
 struct SpriteData {
@@ -23,7 +23,7 @@ class ResourceManager
 private:
     std::unordered_map<std::string, Json::Value> m_JsonFiles;
     std::unordered_map<int, SDL_Texture*> m_Textures;
-    std::unordered_map<int, SpriteData*> m_SpriteData;
+    std::unordered_map<int, std::unique_ptr<SpriteData>> m_SpriteData;
 
 public:
     ResourceManager() = default;
@@ -40,10 +40,9 @@ public:
     bool loadTexture(const int& id, const std::string& filePath);
     SDL_Texture* getTexture(const int& id);
 
-    void loadSpriteData(const int& id, SpriteData* spriteData);
+    void loadSpriteData(const int& id, std::unique_ptr<SpriteData> spriteData);
     SDL_Rect* getSrcRect(const int& id) const;
 
     std::string getCurrentState(int id) const;
     void setCurrentState(int id, const std::string& state);
-
 };

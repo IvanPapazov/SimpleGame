@@ -8,40 +8,37 @@
 #include <Components/RenderComponent.h>
 #include <iostream>
 
-
-LevelTransitionComponent::LevelTransitionComponent(std::string level) :
-	m_Level(level) {}
+LevelTransitionComponent::LevelTransitionComponent(std::string level)
+    : m_Level(std::move(level)) {}
 
 extern Game& game;
-extern ResourceManager& rm;
+extern ResourceManager& g_ResourceManager;
 extern GameObjectManager& gameObjectManager;
 
 void LevelTransitionComponent::Update() {
-	GameObject* player = gameObjectManager.GetPlayer();
-	CollisionComponent* doorCollider = GetOwner()->GetComponent<CollisionComponent>();
-	RenderComponent* renderOwner = GetOwner()->GetComponent<RenderComponent>();
-	CollisionComponent* col = player->GetComponent<CollisionComponent>();
-	RenderComponent* render = player->GetComponent<RenderComponent>();
+    GameObject* player = gameObjectManager.GetPlayer();
+    GameObject* owner = GetOwner();
+    if (!player || !owner) return;
 
-	rm.setCurrentState(renderOwner->GetTextureId(), "Idle");
+    auto* doorCollider = owner->GetComponent<CollisionComponent>();
+    auto* renderOwner = owner->GetComponent<RenderComponent>();
+    auto* playerCollider = player->GetComponent<CollisionComponent>();
+    auto* playerRender = player->GetComponent<RenderComponent>();
 
+    if (!doorCollider || !renderOwner || !playerCollider || !playerRender) return;
 
-	if (doorCollider->DoorCollision()) {
+    g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Idle");
 
-		rm.setCurrentState(renderOwner->GetTextureId(), "StayOpen");
-		if (rm.getCurrentState(render->GetTextureId()) == "Idle")
-		{
-			m_TransitionTimer.Update(1500, [&]() {
-				game.RequestLevelChange(GetLevel());
-				});
-			return;
-		}
-		else
-		{
-			m_TransitionTimer.Stop();
+    if (doorCollider->DoorCollision()) {
+        g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "StayOpen");
 
-		}
-
-	}
-
+        if (g_ResourceManager.getCurrentState(playerRender->GetTextureId()) == "Idle") {
+            m_TransitionTimer.Update(1500, [&]() {
+                game.RequestLevelChange(GetLevel());
+                });
+        }
+        else {
+            m_TransitionTimer.Stop();
+        }
+    }
 }

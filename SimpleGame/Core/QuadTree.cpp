@@ -28,10 +28,10 @@ Rect QuadTree::GetBoundingBox(GameObject* obj) const {
 	if (!col) return Rect{ 0, 0, 0, 0 };
 
 	return Rect{
-	   col->getX(),
-	   col->getY(),
-	   col->getWidth(),
-	   col->getHeight()
+	   col->GetX(),
+	   col->GetY(),
+	   col->GetWidth(),
+	   col->GetHeight()
 	};
 }
 
