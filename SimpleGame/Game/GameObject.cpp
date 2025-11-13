@@ -4,6 +4,7 @@
 #include <Events/EventHandler.h>
 
 static int g_Id = 1;
+extern EventHandler& g_EventHandler;
 
 GameObject::GameObject(std::vector<std::unique_ptr<Component>> comps)
     : m_Id(g_Id++) {
@@ -13,7 +14,6 @@ GameObject::GameObject(std::vector<std::unique_ptr<Component>> comps)
 }
 
 GameObject::~GameObject() {
-    EventHandler::getInstance().Unsubscribe(this);
     m_Components.clear();
     std::cout << "m_Id: " << m_Id << std::endl;
 }
