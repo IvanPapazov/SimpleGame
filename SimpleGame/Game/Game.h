@@ -4,6 +4,9 @@
 #include <SDL.h>
 #include "Core/QuadTree.h"
 
+#include <Events/EventSystem.h>
+#include <Utils/ReadInfo.h>
+
 const int g_ScreenHeight = 1000;
 const int g_ScreenWidth = 1200;
 
@@ -21,6 +24,9 @@ private:
 
     SDL_Window* m_Window = nullptr;
     SDL_Renderer* m_Renderer = nullptr;
+
+    EventSystem m_EventSystem;
+    ReadInfo m_Info;
 
 public:
     static Game& getInstance();

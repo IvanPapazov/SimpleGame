@@ -1,7 +1,6 @@
 #pragma once
 #include <unordered_map>
 #include <memory>
-#include <Game/Game.h>
 #include <Game/GameObject.h>
 #include <Components/RigidBodyComponent.h>
 #include <Components/CollisionComponent.h>

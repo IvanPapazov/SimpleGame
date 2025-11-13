@@ -955,11 +955,11 @@ bool Reader::decodeUnicodeEscapeSequence(Token& token, Location& current,
 }
 
 bool Reader::addError(const String& message, Token& token, Location extra) {
-  ErrorInfo info;
-  info.token_ = token;
-  info.message_ = message;
-  info.extra_ = extra;
-  errors_.push_back(info);
+  ErrorInfo m_Info;
+  m_Info.token_ = token;
+  m_Info.message_ = message;
+  m_Info.extra_ = extra;
+  errors_.push_back(m_Info);
   return false;
 }
 
@@ -1058,11 +1058,11 @@ bool Reader::pushError(const Value& value, const String& message) {
   token.type_ = tokenError;
   token.start_ = begin_ + value.getOffsetStart();
   token.end_ = begin_ + value.getOffsetLimit();
-  ErrorInfo info;
-  info.token_ = token;
-  info.message_ = message;
-  info.extra_ = nullptr;
-  errors_.push_back(info);
+  ErrorInfo m_Info;
+  m_Info.token_ = token;
+  m_Info.message_ = message;
+  m_Info.extra_ = nullptr;
+  errors_.push_back(m_Info);
   return true;
 }
 
@@ -1076,11 +1076,11 @@ bool Reader::pushError(const Value& value, const String& message,
   token.type_ = tokenError;
   token.start_ = begin_ + value.getOffsetStart();
   token.end_ = begin_ + value.getOffsetLimit();
-  ErrorInfo info;
-  info.token_ = token;
-  info.message_ = message;
-  info.extra_ = begin_ + extra.getOffsetStart();
-  errors_.push_back(info);
+  ErrorInfo m_Info;
+  m_Info.token_ = token;
+  m_Info.message_ = message;
+  m_Info.extra_ = begin_ + extra.getOffsetStart();
+  errors_.push_back(m_Info);
   return true;
 }
 
@@ -1989,11 +1989,11 @@ bool OurReader::decodeUnicodeEscapeSequence(Token& token, Location& current,
 }
 
 bool OurReader::addError(const String& message, Token& token, Location extra) {
-  ErrorInfo info;
-  info.token_ = token;
-  info.message_ = message;
-  info.extra_ = extra;
-  errors_.push_back(info);
+  ErrorInfo m_Info;
+  m_Info.token_ = token;
+  m_Info.message_ = message;
+  m_Info.extra_ = extra;
+  errors_.push_back(m_Info);
   return false;
 }
 

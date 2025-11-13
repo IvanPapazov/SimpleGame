@@ -10,8 +10,10 @@
 #include <Components/EnemyRunAIComponent.h>
 #include <Components/RampMovementComponent.h>
 #include <Core/ResourceManager.h>
+#include <Game/Game.h>
 
 extern ResourceManager& g_ResourceManager;
+extern Game& game;
 
 std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoPlayer(const std::string& levelName) {
     g_ResourceManager.loadJson("player", "jsons/PlayerFile.json");
@@ -189,7 +191,7 @@ std::unique_ptr<MovementComponent> ReadInfo::CreateMovementComponent(Json::Value
 }
 
 std::unique_ptr<RenderComponent> ReadInfo::CreateRenderComponent(Json::Value& data) {
-    return std::make_unique<RenderComponent>(data["id"].asInt(), data["width"].asFloat(), data["height"].asFloat(), Game::getInstance().GetRenderer());
+    return std::make_unique<RenderComponent>(data["id"].asInt(), data["width"].asFloat(), data["height"].asFloat(), game.GetRenderer());
 }
 
 std::unique_ptr<LevelTransitionComponent> ReadInfo::CreateLevelTransitionComponent(Json::Value& data) {

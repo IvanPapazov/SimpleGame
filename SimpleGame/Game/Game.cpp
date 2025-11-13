@@ -2,12 +2,10 @@
 #include "Game.h"
 #include <iostream>
 #include <Core/GameObjectManager.h>
-#include <Utils/ReadInfo.h>
 #include <Components/RenderComponent.h>
 #include <Core/ResourceManager.h>
 #include <Core/QuadTree.h>
 #include <Events/EventHandler.h>
-#include <Events/EventSystem.h>
 
 GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
 EventHandler& g_EventHandler = EventHandler::getInstance();
@@ -58,30 +56,28 @@ void Game::RequestLevelChange(const std::string& levelName) {
 
 void Game::LoadLevel(const std::string& levelName)
 {
-    EventSystem eventSystem;
-    ReadInfo info;
-    auto terrains = info.ReadInfoTerrain(levelName);
+    auto terrains = m_Info.ReadInfoTerrain(levelName);
     for (auto& [key, object] : terrains) {
         gameObjectManager.AddGameObject(std::move(object));
     }
-    auto pathways = info.ReadInfoPathways(levelName);
+    auto pathways = m_Info.ReadInfoPathways(levelName);
     for (auto& [key, object] : pathways) {
         GameObject* rawPtr = object.get();
-        eventSystem.RegisterEvents(rawPtr);
+        m_EventSystem.RegisterEvents(rawPtr);
         gameObjectManager.AddGameObject(std::move(object));
 
     }
-    auto enemies = info.ReadInfoEnemy(levelName);
+    auto enemies = m_Info.ReadInfoEnemy(levelName);
     for (auto& [key, object] : enemies) {
         GameObject* rawPtr = object.get();
-        eventSystem.RegisterEvents(rawPtr);
+        m_EventSystem.RegisterEvents(rawPtr);
         gameObjectManager.AddGameObject(std::move(object));
 
     }
-    auto players = info.ReadInfoPlayer(levelName);
+    auto players = m_Info.ReadInfoPlayer(levelName);
     for (auto& [key, object] : players) {
         GameObject* rawPtr = object.get();
-        eventSystem.RegisterEvents(rawPtr);
+        m_EventSystem.RegisterEvents(rawPtr);
         gameObjectManager.AddGameObject(std::move(object));
     }
 }
@@ -105,9 +101,8 @@ void Game::Shutdown()
 
 void Game::Run()
 {
-    ReadInfo info;
-    info.ReadTextures();
-    info.ReadSpriteData();
+    m_Info.ReadTextures();
+    m_Info.ReadSpriteData();
     LoadLevel("level_1");
     m_LastFrameTime = SDL_GetPerformanceCounter();
 
