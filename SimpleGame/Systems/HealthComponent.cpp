@@ -13,7 +13,7 @@ void HealthComponent::Update()
 
     auto* collision = owner->GetComponent<CollisionComponent>();
     if (!collision) return;
-
+    
     if (collision->IsHitPast()) {
         m_Health--;
         collision->SetHitPast(false);
