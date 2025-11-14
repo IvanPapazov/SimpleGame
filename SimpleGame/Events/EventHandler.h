@@ -1,6 +1,9 @@
 #pragma once
-#include <Events/Event.h>
+#include <unordered_map>
+#include <typeindex>
+#include <vector>
 #include <functional>
+#include <Events/Event.h>
 
 class EventHandler
 {
@@ -16,21 +19,28 @@ public:
         handlers.push_back({ target, std::move(handler), std::move(condition) });
     }
 
-    //template<typename EventType>
-    //void Unsubscribe(GameObject* target) {
-    //    if (!target) return;
-    //    auto it = m_Handlers.find(std::type_index(typeid(EventType)));
-    //    if (it != m_Handlers.end()) {
-    //        auto& vec = it->second;
-    //        vec.erase(
-    //            std::remove_if(vec.begin(), vec.end(),
-    //                [target](const HandlerEntry& entry) {
-    //                    return entry.target == target;
-    //                }),
-    //            vec.end()
-    //                    );
-    //    }
-    //}
+    
+    void Unsubscribe(GameObject* target) {
+        for (auto it = m_Handlers.begin(); it != m_Handlers.end(); )
+        {
+            auto& vec = it->second;
+
+            vec.erase(
+                std::remove_if(vec.begin(), vec.end(),
+                    [target](const HandlerEntry& entry) {
+                        return entry.target == target;
+                    }),
+                vec.end()
+                        );
+
+            if (vec.empty()) {
+                it = m_Handlers.erase(it);
+            }
+            else {
+                ++it;
+            }
+        }
+    }
 
     void Notify(const Event& event, GameObject* context);
 

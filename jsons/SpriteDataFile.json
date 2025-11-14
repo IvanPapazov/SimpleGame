@@ -99,12 +99,12 @@
       "Idle": {
         "startFrame": 4,
         "frameCount": 1,
-        "frameSpeed": 100
+        "frameSpeed": 500
       },
       "Fire": {
         "startFrame": 0,
         "frameCount": 4,
-        "frameSpeed": 200
+        "frameSpeed": 100
       }
     }
   },
@@ -115,12 +115,12 @@
       "Idle": {
         "startFrame": 4,
         "frameCount": 1,
-        "frameSpeed": 100
+        "frameSpeed": 500
       },
       "Fire": {
         "startFrame": 0,
         "frameCount": 4,
-        "frameSpeed": 200
+        "frameSpeed": 100
       }
     }
   }

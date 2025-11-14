@@ -2,6 +2,9 @@
 #include "GameObjectManager.h"
 #include <Game/Player.h>
 #include <Game/Enemy.h>
+#include <Game/Pathways.h>
+#include <Game/EnemyCannonBall.h>
+
 
 GameObjectManager& GameObjectManager::getInstance()
 {
@@ -11,6 +14,20 @@ GameObjectManager& GameObjectManager::getInstance()
 
 void GameObjectManager::AddGameObject(std::unique_ptr<GameObject> obj)
 {
+    GameObject* rawPtr = obj.get();
+    if (typeid(*obj) == typeid(Player) || typeid(*obj) == typeid(Enemy) ||
+        typeid(*obj) == typeid(Pathways) || typeid(*obj) == typeid(EnemyCannonBall))
+    {     
+        m_EventSystem->RegisterCollisionEvent(rawPtr);
+    }
+    if (typeid(*obj) == typeid(Player) || typeid(*obj) == typeid(Enemy))
+    {
+        m_EventSystem->RegisterGravityEvents(rawPtr);
+    }
+    if ( typeid(*obj) == typeid(Enemy))
+    {
+        m_EventSystem->RegisterCreateFireBallEvents(rawPtr);
+    }
     if (obj) {
         int id = obj->GetId();
         m_gameObjects[id] = std::move(obj);

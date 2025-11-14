@@ -63,6 +63,7 @@ void CollisionComponent::Update()
     for (GameObject* b : nearby) {
         if (!b || b->GetId() == owner->GetId()) continue;
 
+        //f (owner == nullptr) continue;
         auto* colB = b->GetComponent<CollisionComponent>();
         if (!colB) continue;
 

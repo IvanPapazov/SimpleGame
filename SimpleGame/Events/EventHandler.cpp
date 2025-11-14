@@ -13,9 +13,8 @@ void EventHandler::Notify(const Event& event, GameObject* context)
 {
     auto it = m_Handlers.find(std::type_index(typeid(event)));
     if (it == m_Handlers.end()) return;
-
     for (const auto& entry : it->second) {
-        if (entry.target == context || context == nullptr) {
+        if (context == nullptr || entry.target == context) {
             if (!entry.condition || entry.condition(event)) {
                 entry.handler(event);
             }

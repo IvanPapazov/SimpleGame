@@ -3,10 +3,14 @@
 #include <unordered_map>
 #include <memory>
 #include "../Game/GameObject.h"
+#include <Events/EventSystem.h>
 
-class GameObject;
 
+class GameObject; 
+class EventSystem;
 class GameObjectManager {
+private:
+    EventSystem* m_EventSystem;
 public:
     static GameObjectManager& getInstance();
 

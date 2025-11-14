@@ -2,6 +2,8 @@
 #include <typeindex>
 #include <Game/GameObject.h>
 
+class GameObject;
+
 class Event {
 public:
     virtual ~Event() = default;
@@ -20,5 +22,12 @@ class GravityEvent : public Event {
 public:
     GameObject* object;
     GravityEvent(GameObject* obj) 
+        : object(obj) {}
+};
+
+class BallEvent : public Event {
+public:
+    GameObject* object;
+    BallEvent(GameObject* obj)
         : object(obj) {}
 };

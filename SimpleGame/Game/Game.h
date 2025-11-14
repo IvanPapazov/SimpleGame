@@ -24,8 +24,6 @@ private:
 
     SDL_Window* m_Window = nullptr;
     SDL_Renderer* m_Renderer = nullptr;
-
-    EventSystem m_EventSystem;
     ReadInfo m_Info;
 
 public:

@@ -7,9 +7,17 @@
 #include <Components/LevelTransitionComponent.h>
 #include <Game/Door.h>
 #include <iostream>
+#include <Game/EnemyCannonBall.h>
+#include <Game/Terrain.h>
+#include <Core/ResourceManager.h>
+#include <Game/Game.h>
 
 extern EventHandler& g_EventHandler;
-void EventSystem::RegisterCollisionEvents(GameObject* object) {
+extern GameObjectManager& gameObjectManager;
+extern Game& game;
+extern ResourceManager& g_ResourceManager;
+
+void EventSystem::RegisterCollisionEvent(GameObject* object) {
 	g_EventHandler.Subscribe<CollisionEvent>(
 		object,
 		[object](const Event& e) {
@@ -24,6 +32,19 @@ void EventSystem::RegisterCollisionEvents(GameObject* object) {
 		[](const Event& e) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
 			if (typeid(*collision.objectA) == typeid(Player) && typeid(*collision.objectB) == typeid(Enemy))
+				return true;
+			return false;
+		});
+
+	g_EventHandler.Subscribe<CollisionEvent>(
+		object,
+		[object](const Event& e) {
+			const auto& collision = static_cast<const CollisionEvent&>(e);
+			collision.objectA->SetIsActive(false);
+		},
+		[](const Event& e) {
+			const auto& collision = static_cast<const CollisionEvent&>(e);
+			if (typeid(*collision.objectA) == typeid(EnemyCannonBall) && typeid(*collision.objectB) == typeid(Terrain))
 				return true;
 			return false;
 		});
@@ -52,14 +73,28 @@ void EventSystem::RegisterCollisionEvents(GameObject* object) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
 			GameObject* a = collision.objectA;
 			auto* colA = a->GetComponent<CollisionComponent>();
-			colA->SetTopCollision(false);
-			colA->SetBottomCollision(true);
+			if (colA->TopCollision())
+			{
+				colA->SetTopCollision(false);
+			}
+			else
+			{
+				colA->SetTopCollision(true);
+			}
+			if (colA->BottomCollision())
+			{
+				colA->SetBottomCollision(false);
+			}
+			else
+			{
+				colA->SetBottomCollision(true);
+			}
 		}, 
 		[](const Event& e) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
 			GameObject* b = collision.objectB;
 			auto* colB = b->GetComponent<CollisionComponent>();
-			if (typeid(*collision.objectA) == typeid(Pathways) && typeid(*collision.objectB) == typeid(Player) && !colB->TopCollision())
+			if (typeid(*collision.objectA) == typeid(Pathways) && typeid(*collision.objectB) == typeid(Player) && !colB->TopCollision() && colB->BottomCollision())
 				return true;
 			return false;
 		});
@@ -159,3 +194,29 @@ void EventSystem::RegisterGravityEvents(GameObject* object) {
 			return false;
 		});
 }
+
+void EventSystem::RegisterCreateFireBallEvents(GameObject* object) {
+	g_EventHandler.Subscribe<BallEvent>(
+		object,
+		[](const Event& e) {
+			const auto& gravity = static_cast<const BallEvent&>(e);
+			auto* obj = gravity.object;
+
+			RenderComponent* renderOwner = obj->GetComponent<RenderComponent>();
+			RigidBodyComponent* rbOwner = obj->GetComponent<RigidBodyComponent>();
+
+			//g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Fire");
+
+			std::vector<std::unique_ptr<Component>> components;
+			components.push_back(std::make_unique<RigidBodyComponent>(rbOwner->getPosition() + Vec2(renderOwner->GetWidth() * 0.5, renderOwner->GetHeight() * 0.3), 0.0));
+			components.push_back(std::make_unique<CollisionComponent>(rbOwner->getPosition().x, rbOwner->getPosition().y, 30, 30));
+			components.push_back(std::make_unique<RenderComponent>(17, 30, 30, Game::getInstance().GetRenderer()));
+
+			auto ball = std::make_unique<EnemyCannonBall>(std::move(components));
+			Enemy* enemy = dynamic_cast<Enemy*>(obj);
+			enemy->cannonBalls.push_back(std::move(ball));
+			
+			g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Idle");
+		});
+}
+

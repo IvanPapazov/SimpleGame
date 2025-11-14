@@ -17,7 +17,6 @@ GameObject::~GameObject() {
     m_Components.clear();
     std::cout << "m_Id: " << m_Id << std::endl;
 }
-
 int GameObject::GetId() const {
     return m_Id;
 }

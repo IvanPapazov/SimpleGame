@@ -36,7 +36,7 @@
       "y": 190,
       "width": 80,
       "height": 80,
-      "speed": 3
+      "speed": 1
     },
     "Cannon2": {
       "id": 15,
@@ -44,7 +44,7 @@
       "y": 390,
       "width": 80,
       "height": 80,
-      "speed": 3
+      "speed": 1
     },
     "Cannon3": {
       "id": 16,
@@ -52,7 +52,7 @@
       "y": 590,
       "width": 80,
       "height": 80,
-      "speed": 3
+      "speed": 1
     },
     "Cannon4": {
       "id": 15,
@@ -60,7 +60,7 @@
       "y": 190,
       "width": 80,
       "height": 80,
-      "speed": 3
+      "speed": 1
     },
     "Cannon5": {
       "id": 16,
@@ -68,7 +68,7 @@
       "y": 390,
       "width": 80,
       "height": 80,
-      "speed": 3
+      "speed": 1
     },
     "Cannon6": {
       "id": 15,
@@ -76,7 +76,7 @@
       "y": 590,
       "width": 80,
       "height": 80,
-      "speed": 3
+      "speed": 1
     }
   }
 }
