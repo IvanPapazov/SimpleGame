@@ -3,6 +3,7 @@
 
 class EventSystem {
 public:
-    void RegisterEvents(GameObject* object);
+    void RegisterCollisionEvents(GameObject* object);
+    void RegisterGravityEvents(GameObject* object);
 };
 

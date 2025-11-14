@@ -63,21 +63,27 @@ void Game::LoadLevel(const std::string& levelName)
     auto pathways = m_Info.ReadInfoPathways(levelName);
     for (auto& [key, object] : pathways) {
         GameObject* rawPtr = object.get();
-        m_EventSystem.RegisterEvents(rawPtr);
+        m_EventSystem.RegisterCollisionEvents(rawPtr);
+        gameObjectManager.AddGameObject(std::move(object));
+    }
+    auto doors = m_Info.ReadInfoDoors(levelName);
+    for (auto& [key, object] : doors) {
         gameObjectManager.AddGameObject(std::move(object));
 
     }
     auto enemies = m_Info.ReadInfoEnemy(levelName);
     for (auto& [key, object] : enemies) {
         GameObject* rawPtr = object.get();
-        m_EventSystem.RegisterEvents(rawPtr);
+        m_EventSystem.RegisterCollisionEvents(rawPtr);
+        m_EventSystem.RegisterGravityEvents(rawPtr);
         gameObjectManager.AddGameObject(std::move(object));
 
     }
     auto players = m_Info.ReadInfoPlayer(levelName);
     for (auto& [key, object] : players) {
         GameObject* rawPtr = object.get();
-        m_EventSystem.RegisterEvents(rawPtr);
+        m_EventSystem.RegisterCollisionEvents(rawPtr);
+        m_EventSystem.RegisterGravityEvents(rawPtr);
         gameObjectManager.AddGameObject(std::move(object));
     }
 }

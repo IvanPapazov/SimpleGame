@@ -6,7 +6,8 @@
       "y": 50,
       "width": 60,
       "height": 80,
-      "health": 3
+      "health": 3,
+      "gravity": 0.3
     }
   },
   "level_2": {
@@ -16,7 +17,8 @@
       "y": 175,
       "width": 60,
       "height": 80,
-      "health": 3
+      "health": 3,
+      "gravity": 0.3
     }
   }
 } 

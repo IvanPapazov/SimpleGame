@@ -6,7 +6,8 @@
       "y": 800,
       "width": 50,
       "height": 50,
-      "speed": 3
+      "speed": 3,
+      "gravity": 0.3
     },
 
     "pig2": {
@@ -15,7 +16,8 @@
       "y": 500,
       "width": 50,
       "height": 50,
-      "speed": 3
+      "speed": 3,
+      "gravity": 0.3
     },
     "pig3": {
       "id": 10,
@@ -23,7 +25,8 @@
       "y": 320,
       "width": 50,
       "height": 50,
-      "speed": 3
+      "speed": 3,
+      "gravity": 0.3
     }
   },
   "level_2": {

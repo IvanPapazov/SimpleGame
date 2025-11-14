@@ -25,12 +25,12 @@ private:
     std::unique_ptr<AIComponent> CreateRampMovementComponent(Json::Value& data);
 
 public:
+    void ReadTextures();
+    void ReadSpriteData();
+    std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoHearts();
     std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoPlayer(const std::string& levelName);
     std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoEnemy(const std::string& levelName);
     std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoTerrain(const std::string& levelName);
-    std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoHearts();
     std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoPathways(const std::string& levelName);
-
-    void ReadTextures();
-    void ReadSpriteData();
+    std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfoDoors(const std::string& levelName);
 };

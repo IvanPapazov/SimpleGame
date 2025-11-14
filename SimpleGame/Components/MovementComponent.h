@@ -11,7 +11,6 @@
 class MovementComponent : public Component
 {
 private:
-    float m_GravityScale = 0.3f;
     float m_Speed = 3.0f;
     float m_Jump = 7.0f;
 

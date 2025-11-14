@@ -20,11 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
+    <ClCompile Include="Game\EnemyCannonBall.cpp" />
+    <ClCompile Include="Game\Pathways.cpp" />
     <ClCompile Include="Events\EventHandler.cpp" />
     <ClCompile Include="Events\EventSystem.cpp" />
     <ClCompile Include="Systems\CannonFireAIComponent.cpp" />
     <ClCompile Include="Core\GameObjectManager.cpp" />
-    <ClCompile Include="Game\Pathways.cpp" />
+    <ClCompile Include="Game\Door.cpp" />
     <ClCompile Include="Game\Enemy.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\Player.cpp" />
@@ -60,10 +62,12 @@
     <ClInclude Include="Components\RigidBodyComponent.h" />
     <ClInclude Include="Core\GameObjectManager.h" />
     <ClInclude Include="Core\Component.h" />
+    <ClInclude Include="Game\EnemyCannonBall.h" />
+    <ClInclude Include="Game\Pathways.h" />
     <ClInclude Include="Events\EventHandler.h" />
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\EventSystem.h" />
-    <ClInclude Include="Game\Pathways.h" />
+    <ClInclude Include="Game\Door.h" />
     <ClInclude Include="Game\Enemy.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\Game.h" />

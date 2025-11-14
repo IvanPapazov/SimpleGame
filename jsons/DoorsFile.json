@@ -1,0 +1,30 @@
+{
+  "level_1": {
+    "Door1": {
+      "level": "level_2",
+      "id": 13,
+      "x": 70,
+      "y": 145,
+      "width": 120,
+      "height": 120
+    }
+  },
+  "level_2": {
+    "Door1": {
+      "level": "level_1",
+      "id": 13,
+      "x": 430,
+      "y": 140,
+      "width": 120,
+      "height": 120
+    },
+    "Door2": {
+      "level": "level_2",
+      "id": 13,
+      "x": 650,
+      "y": 140,
+      "width": 120,
+      "height": 120
+    }
+  }
+}

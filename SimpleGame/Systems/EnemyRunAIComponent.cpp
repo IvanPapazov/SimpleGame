@@ -10,6 +10,7 @@
 #include <Game/Game.h>
 
 extern Game& game;
+extern EventHandler& g_EventHandler;
 extern ResourceManager& g_ResourceManager;
 
 EnemyRunAIComponent::EnemyRunAIComponent(float speed)
@@ -25,18 +26,7 @@ void EnemyRunAIComponent::Update()
     auto* col = owner->GetComponent<CollisionComponent>();
     if (!render || !rb || !col) return;
 
-    // Apply gravity
-    if (col->BottomCollision()) {
-        Vec2 accel = rb->getAcceleration();
-        accel.y = m_GravityScale;
-        rb->setAcceleration(accel);
-    }
-    else {
-        Vec2 vel = rb->getVelocity();
-        vel.y = 0;
-        rb->setVelocity(vel);
-        rb->setPosition(rb->getPosition() - Vec2(0, 0.1f));
-    }
+    g_EventHandler.Notify(GravityEvent(owner), owner);
 
     // Reset horizontal velocity
     float x = 0.0f;

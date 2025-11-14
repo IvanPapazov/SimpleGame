@@ -19,6 +19,7 @@
 
 extern Game& game;
 extern GameObjectManager& gameObjectManager;
+extern EventHandler& g_EventHandler;
 
 void CollisionComponent::SetHit(bool value) {
     if (value && !m_Hit) {
@@ -71,8 +72,7 @@ void CollisionComponent::Update()
 
         if (CheckCollision(colA, colB)) {
 
-            CollisionEvent event(owner, b);
-            EventHandler::getInstance().Notify(event, owner);
+            g_EventHandler.Notify(CollisionEvent(owner, b), owner);
         }
     }
 

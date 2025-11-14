@@ -5,9 +5,11 @@
 #include <Game/Enemy.h>
 #include <Game/Pathways.h>
 #include <Components/LevelTransitionComponent.h>
+#include <Game/Door.h>
+#include <iostream>
 
 extern EventHandler& g_EventHandler;
-void EventSystem::RegisterEvents(GameObject* object) {
+void EventSystem::RegisterCollisionEvents(GameObject* object) {
 	g_EventHandler.Subscribe<CollisionEvent>(
 		object,
 		[object](const Event& e) {
@@ -33,13 +35,12 @@ void EventSystem::RegisterEvents(GameObject* object) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
 			GameObject* b = collision.objectB;
 			auto* colB = b->GetComponent<CollisionComponent>();
-
 			colB->SetDoorCollision(true);
 
 		},
 		[](const Event& e) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
-			if (typeid(*collision.objectA) == typeid(Player) && typeid(*collision.objectB) == typeid(Pathways) && collision.objectB->HasComponent<LevelTransitionComponent>())
+			if (typeid(*collision.objectA) == typeid(Player) && typeid(*collision.objectB) == typeid(Door))
 				return true;
 			return false;
 		});
@@ -66,7 +67,6 @@ void EventSystem::RegisterEvents(GameObject* object) {
 	g_EventHandler.Subscribe<CollisionEvent>(
 		object,
 		[object](const Event& e) {
-
 			const auto& collision = static_cast<const CollisionEvent&>(e);
 			GameObject* a = collision.objectA;
 			auto* colA = a->GetComponent<CollisionComponent>();
@@ -121,7 +121,40 @@ void EventSystem::RegisterEvents(GameObject* object) {
 		}, 
 		[](const Event& e) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
-			if (typeid(*collision.objectB) != typeid(Player))
+			if (typeid(*collision.objectB) != typeid(Door) && typeid(*collision.objectB) != typeid(Player))
+				return true;
+			return false;
+		});
+
+}
+
+void EventSystem::RegisterGravityEvents(GameObject* object) {
+	g_EventHandler.Subscribe<GravityEvent>(
+		object,
+		[](const Event& e) {
+			const auto& gravity = static_cast<const GravityEvent&>(e);
+			auto* obj = gravity.object;
+			if (!obj) return;
+
+			auto* rb = obj->GetComponent<RigidBodyComponent>();
+			auto* col = obj->GetComponent<CollisionComponent>();
+			if (!rb || !col) return;
+
+			if (col->BottomCollision()) {
+				Vec2 accel = rb->getAcceleration();
+				accel.y = rb->GetGravityScale();
+				rb->setAcceleration(accel);
+			}
+			else {
+				Vec2 vel = rb->getVelocity();
+				vel.y = 0;
+				rb->setVelocity(vel);
+				rb->setPosition(rb->getPosition() - Vec2(0, 0.1f));
+			}
+		},
+		[](const Event& e) {
+			const auto& collision = static_cast<const GravityEvent&>(e);
+			if (typeid(*collision.object) == typeid(Player) || typeid(*collision.object) == typeid(Enemy))
 				return true;
 			return false;
 		});

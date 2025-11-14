@@ -15,3 +15,10 @@ public:
     CollisionEvent(GameObject* a, GameObject* b)
         : objectA(a), objectB(b) {}
 };
+
+class GravityEvent : public Event {
+public:
+    GameObject* object;
+    GravityEvent(GameObject* obj) 
+        : object(obj) {}
+};

@@ -11,6 +11,7 @@
 #include <SDL.h>
 
 extern Game& game;
+extern EventHandler& g_EventHandler;
 extern ResourceManager& g_ResourceManager;
 
 void MovementComponent::Update()
@@ -30,7 +31,8 @@ void MovementComponent::Update()
         return;
     }
 
-    ApplyGravity(rb, col);
+    //ApplyGravity(rb, col);
+    g_EventHandler.Notify(GravityEvent(owner), owner);
     ApplyHorizontalMovement(rb, col, keys);
     ApplyJump(rb, col, keys);
     UpdateAnimation(col, render, keys);
@@ -43,7 +45,7 @@ void MovementComponent::Update()
 
 void MovementComponent::ApplyGravity(RigidBodyComponent* rb, CollisionComponent* col)
 {
-    if (col->BottomCollision()) {
+   /* if (col->BottomCollision()) {
         Vec2 accel = rb->getAcceleration();
         accel.y = m_GravityScale;
         rb->setAcceleration(accel);
@@ -53,7 +55,7 @@ void MovementComponent::ApplyGravity(RigidBodyComponent* rb, CollisionComponent*
         vel.y = 0;
         rb->setVelocity(vel);
         rb->setPosition(rb->getPosition() - Vec2(0, 0.1f));
-    }
+    }*/
 }
 
 void MovementComponent::ApplyHorizontalMovement(RigidBodyComponent* rb, CollisionComponent* col, const Uint8* keys)
