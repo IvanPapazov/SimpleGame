@@ -9,7 +9,7 @@ struct Rect {
 
 class QuadTree {
 private:
-    static const int CAPACITY = 8;
+    static const int CAPACITY = 10;
     Rect boundary;
     std::vector<GameObject*> objects;
     bool divided = false;

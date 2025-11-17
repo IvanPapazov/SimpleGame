@@ -25,36 +25,40 @@ void CannonFireAIComponent::Update()
 {
 	RenderComponent* renderOwner = GetOwner()->GetComponent<RenderComponent>();
 	//g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Idle");
-	
+
 	GameObject* owner = GetOwner();
-	m_TransitionTimer.Update(1500, [&]() {
+	m_TransitionTimer.Update(3500, [&]() {
 		g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Fire");
 		g_EventHandler.Notify(BallEvent(owner), owner);
 		});
 
-	Enemy* enemy = dynamic_cast<Enemy*>(GetOwner());
-	for (auto object : enemy->cannonBalls)
+	m_CannonBalls.erase(
+		std::remove_if(m_CannonBalls.begin(), m_CannonBalls.end(),
+			[](EnemyCannonBall* object) {
+				return !object || !object->GetIsActive() || !gameObjectManager.GetGameObject(object->GetId());
+			}),
+		m_CannonBalls.end()
+				);
+
+	for (EnemyCannonBall* object : m_CannonBalls)
 	{
-		if (typeid(*object) == typeid(EnemyCannonBall))
+		RenderComponent* render = object->GetComponent<RenderComponent>();
+		RigidBodyComponent* rbA = object->GetComponent<RigidBodyComponent>();
+		CollisionComponent* result = object->GetComponent<CollisionComponent>();
+
+		Vec2 velocity = rbA->getVelocity();
+		if (GetOwner()->GetComponent<RenderComponent>()->GetTextureId() == 15)
 		{
-			RenderComponent* render = object->GetComponent<RenderComponent>();
-			RigidBodyComponent* rbA = object->GetComponent<RigidBodyComponent>();
-			CollisionComponent* result = object->GetComponent<CollisionComponent>();
-
-			Vec2 velocity = rbA->getVelocity();
-			if (GetOwner() == enemyBall && GetOwner()->GetComponent<RenderComponent>()->GetTextureId() == 15)
-			{
 			velocity.x = -GetSpeed();
-			}
-			if (GetOwner() == enemyBall && GetOwner()->GetComponent<RenderComponent>()->GetTextureId() == 16)
-			{
-					velocity.x = GetSpeed();
-			}
-			float dt = game.GetDeltaTime();
-			rbA->setVelocity(velocity + rbA->getAcceleration() * dt);
-			rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * dt);
-			object->UpdateComponents();
 		}
-
+		if (GetOwner()->GetComponent<RenderComponent>()->GetTextureId() == 16)
+		{
+			velocity.x = GetSpeed();
+		}
+		float dt = game.GetDeltaTime();
+		rbA->setVelocity(velocity + rbA->getAcceleration() * dt);
+		rbA->setPosition(rbA->getPosition() + rbA->getVelocity() * dt);
+		object->UpdateComponents();
 	}
+
 }

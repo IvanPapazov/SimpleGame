@@ -1338,28 +1338,28 @@
       "terrainGoround3": {
         "id": 4,
         "x": 60,
-        "y": 460,
+        "y": 480,
         "width": 200,
         "height": 60
       },
       "terrainGoround4": {
         "id": 4,
         "x": 200,
-        "y": 460,
+        "y": 480,
         "width": 200,
         "height": 60
       },
       "terrainGoround5": {
         "id": 4,
         "x": 370,
-        "y": 660,
+        "y": 700,
         "width": 200,
         "height": 60
       },
       "terrainGoround6": {
         "id": 4,
         "x": 230,
-        "y": 660,
+        "y": 700,
         "width": 200,
         "height": 60
       },
@@ -1373,14 +1373,14 @@
       "terrainCube2": {
         "id": 5,
         "x": 510,
-        "y": 460,
+        "y": 480,
         "width": 60,
         "height": 60
       },
       "terrainCube3": {
         "id": 5,
         "x": 60,
-        "y": 660,
+        "y": 700,
         "width": 60,
         "height": 60
       },
@@ -1402,28 +1402,28 @@
       "terrainGoround9": {
         "id": 4,
         "x": 940,
-        "y": 460,
+        "y": 480,
         "width": 200,
         "height": 60
       },
       "terrainGoround10": {
         "id": 4,
         "x": 800,
-        "y": 460,
+        "y": 480,
         "width": 200,
         "height": 60
       },
       "terrainGoround11": {
         "id": 4,
-        "x":630,
-        "y": 660,
+        "x": 630,
+        "y": 700,
         "width": 200,
         "height": 60
       },
       "terrainGoround12": {
         "id": 4,
         "x": 770,
-        "y": 660,
+        "y": 700,
         "width": 200,
         "height": 60
       },
@@ -1437,15 +1437,162 @@
       "terrainCube5": {
         "id": 5,
         "x": 630,
-        "y": 460,
+        "y": 480,
         "width": 60,
         "height": 60
       },
       "terrainCube6": {
         "id": 5,
         "x": 1080,
-        "y": 660,
+        "y": 700,
         "width": 60,
+        "height": 60
+      }
+    }
+  },
+  "level_3": {
+    "3": {
+      "terrainWallLeft1": {
+        "id": 1,
+        "x": 0,
+        "y": 0,
+        "width": 60,
+        "height": 250
+      },
+      "terrainWallLeft2": {
+        "id": 1,
+        "x": 0,
+        "y": 250,
+        "width": 60,
+        "height": 250
+      },
+      "terrainWallLeft3": {
+        "id": 1,
+        "x": 0,
+        "y": 500,
+        "width": 60,
+        "height": 250
+      },
+      "terrainWallLeft4": {
+        "id": 1,
+        "x": 0,
+        "y": 735,
+        "width": 60,
+        "height": 225
+      },
+
+      "terrainWallRight1": {
+        "id": 2,
+        "x": 1140,
+        "y": 0,
+        "width": 60,
+        "height": 250
+      },
+      "terrainWallRight2": {
+        "id": 2,
+        "x": 1140,
+        "y": 250,
+        "width": 60,
+        "height": 250
+      },
+      "terrainWallRight3": {
+        "id": 2,
+        "x": 1140,
+        "y": 500,
+        "width": 60,
+        "height": 250
+      },
+      "terrainWallRight4": {
+        "id": 2,
+        "x": 1140,
+        "y": 735,
+        "width": 60,
+        "height": 225
+      },
+
+      "terrainWallDown1": {
+        "id": 3,
+        "x": 0,
+        "y": 940,
+        "width": 200,
+        "height": 60
+      },
+      "terrainWallDown2": {
+        "id": 3,
+        "x": 200,
+        "y": 940,
+        "width": 200,
+        "height": 60
+      },
+      "terrainWallDown3": {
+        "id": 3,
+        "x": 400,
+        "y": 940,
+        "width": 200,
+        "height": 60
+      },
+      "terrainWallDown4": {
+        "id": 3,
+        "x": 600,
+        "y": 940,
+        "width": 200,
+        "height": 60
+      },
+      "terrainWallDown5": {
+        "id": 3,
+        "x": 800,
+        "y": 940,
+        "width": 200,
+        "height": 60
+      },
+      "terrainWallDown6": {
+        "id": 3,
+        "x": 1000,
+        "y": 940,
+        "width": 200,
+        "height": 60
+      },
+
+      "terrainRoof1": {
+        "id": 12,
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 60
+      },
+      "terrainRoof2": {
+        "id": 12,
+        "x": 200,
+        "y": 0,
+        "width": 200,
+        "height": 60
+      },
+      "terrainRoof3": {
+        "id": 12,
+        "x": 400,
+        "y": 0,
+        "width": 200,
+        "height": 60
+      },
+      "terrainRoof4": {
+        "id": 12,
+        "x": 600,
+        "y": 0,
+        "width": 200,
+        "height": 60
+      },
+      "terrainRoof5": {
+        "id": 12,
+        "x": 800,
+        "y": 0,
+        "width": 200,
+        "height": 60
+      },
+      "terrainRoof6": {
+        "id": 12,
+        "x": 1000,
+        "y": 0,
+        "width": 200,
         "height": 60
       }
     }

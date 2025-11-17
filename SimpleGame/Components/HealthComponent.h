@@ -1,10 +1,12 @@
 #pragma once
 #include "stdafx.h"
+#include <Utils/Timer.h>
 class HealthComponent : public Component
 {
 private:
 	bool m_IsActive = true;
 	int m_Health;
+	Timer m_TransitionTimer;
 public:
 	~HealthComponent()= default;
 	HealthComponent(int health)

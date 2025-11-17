@@ -31,7 +31,7 @@ void EventSystem::RegisterCollisionEvent(GameObject* object) {
 		},
 		[](const Event& e) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
-			if (typeid(*collision.objectA) == typeid(Player) && typeid(*collision.objectB) == typeid(Enemy))
+			if (typeid(*collision.objectA) == typeid(Player) && (typeid(*collision.objectB) == typeid(Enemy) || typeid(*collision.objectB) == typeid(EnemyCannonBall)))
 				return true;
 			return false;
 		});
@@ -156,7 +156,7 @@ void EventSystem::RegisterCollisionEvent(GameObject* object) {
 		}, 
 		[](const Event& e) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
-			if (typeid(*collision.objectB) != typeid(Door) && typeid(*collision.objectB) != typeid(Player))
+			if (typeid(*collision.objectB) != typeid(EnemyCannonBall) && typeid(*collision.objectB) != typeid(Door) && typeid(*collision.objectB) != typeid(Player))
 				return true;
 			return false;
 		});
@@ -213,9 +213,10 @@ void EventSystem::RegisterCreateFireBallEvents(GameObject* object) {
 			components.push_back(std::make_unique<RenderComponent>(17, 30, 30, Game::getInstance().GetRenderer()));
 
 			auto ball = std::make_unique<EnemyCannonBall>(std::move(components));
-			Enemy* enemy = dynamic_cast<Enemy*>(obj);
-			enemy->cannonBalls.push_back(std::move(ball));
-			
+			auto* cannonBalls = gravity.object->GetComponent<CannonFireAIComponent>();
+
+			cannonBalls->AddCannonBall(ball.get());
+			gameObjectManager.AddGameObject(std::move(ball));
 			g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Idle");
 		});
 }

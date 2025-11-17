@@ -63,6 +63,11 @@
         "startFrame": 31,
         "frameCount": 2,
         "frameSpeed": 50
+      },
+      "Dead": {
+        "startFrame": 33,
+        "frameCount": 3,
+        "frameSpeed": 300
       }
     }
   },

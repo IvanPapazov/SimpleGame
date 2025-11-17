@@ -6,7 +6,6 @@
 
 class Enemy : public GameObject {
 public:
-    std::vector<std::unique_ptr<EnemyCannonBall>> cannonBalls;
     using GameObject::GameObject;
     ~Enemy() = default;
     void UpdateComponents() override;

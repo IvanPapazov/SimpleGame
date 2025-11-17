@@ -5,6 +5,12 @@
 #include <Core/GameObjectManager.h>
 #include <Components/RigidBodyComponent.h>
 #include <Components/CollisionComponent.h>
+#include <Core/ResourceManager.h>
+#include <Game/Game.h>
+
+extern Game& game;
+extern ResourceManager& g_ResourceManager;
+extern GameObjectManager& gameObjectManager;
 
 void HealthComponent::Update()
 {
@@ -12,6 +18,7 @@ void HealthComponent::Update()
     if (!owner) return;
 
     auto* collision = owner->GetComponent<CollisionComponent>();
+    auto* renderOwner = owner->GetComponent<RenderComponent>();
     if (!collision) return;
     
     if (collision->IsHitPast()) {
@@ -20,6 +27,9 @@ void HealthComponent::Update()
     }
 
     if (m_Health <= 0 && m_IsActive) {
-        m_IsActive = false;
+        m_TransitionTimer.Update(3000, [&]() {
+            game.RequestLevelChange("level_1");
+            });
+        g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Dead");
     }
 }
