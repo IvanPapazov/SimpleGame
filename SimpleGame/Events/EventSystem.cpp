@@ -102,6 +102,24 @@ void EventSystem::RegisterCollisionEvent(GameObject* object) {
 	g_EventHandler.Subscribe<CollisionEvent>(
 		object,
 		[object](const Event& e) {
+
+			const auto& collision = static_cast<const CollisionEvent&>(e);
+			GameObject* a = collision.objectA;
+			auto* rb = a->GetComponent<RigidBodyComponent>();
+			rb->setPosition(rb->getPosition() - Vec2(0, 1));
+		},
+		[](const Event& e) {
+			const auto& collision = static_cast<const CollisionEvent&>(e);
+			GameObject* b = collision.objectB;
+			auto* colB = b->GetComponent<CollisionComponent>();
+			if (typeid(*collision.objectA) == typeid(Player) && typeid(*collision.objectB) == typeid(Pathways) && colB->TopCollision())
+				return true;
+			return false;
+		});
+
+	g_EventHandler.Subscribe<CollisionEvent>(
+		object,
+		[object](const Event& e) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
 			GameObject* a = collision.objectA;
 			auto* colA = a->GetComponent<CollisionComponent>();
@@ -184,7 +202,6 @@ void EventSystem::RegisterGravityEvents(GameObject* object) {
 				Vec2 vel = rb->getVelocity();
 				vel.y = 0;
 				rb->setVelocity(vel);
-				rb->setPosition(rb->getPosition() - Vec2(0, 0.1f));
 			}
 		},
 		[](const Event& e) {

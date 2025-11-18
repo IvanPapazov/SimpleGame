@@ -27,7 +27,7 @@ void CannonFireAIComponent::Update()
 
 	if (m_Fire)
 	{
-		m_TransitionTimer.Update(300, [&]() {
+		m_TransitionTimer.Update(250, [&]() {
 			g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Idle");
 			m_Fire = false;
 			});
