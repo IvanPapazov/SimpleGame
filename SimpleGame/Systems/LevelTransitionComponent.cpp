@@ -34,6 +34,8 @@ void LevelTransitionComponent::Update() {
 
         if (g_ResourceManager.getCurrentState(playerRender->GetTextureId()) == "Idle") {
             m_TransitionTimer.Update(1500, [&]() {
+                game.setPreviousLevel(getPreviousLevel());
+                game.setCurrentLevel(getNextLevel());
                 game.RequestLevelChange(getNextLevel());
                 });
         }
