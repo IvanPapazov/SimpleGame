@@ -22,7 +22,9 @@ void MovementComponent::Update()
     auto* rb = owner->GetComponent<RigidBodyComponent>();
     auto* col = owner->GetComponent<CollisionComponent>();
     auto* render = owner->GetComponent<RenderComponent>();
-    if (!rb || !col || !render) return;
+    auto* health = owner->GetComponent<HealthComponent>();
+
+    if (!rb || !col || !render || health->IsDead()) return;
 
     const Uint8* keys = SDL_GetKeyboardState(nullptr);
 
@@ -31,7 +33,6 @@ void MovementComponent::Update()
         return;
     }
 
-    //ApplyGravity(rb, col);
     g_EventHandler.Notify(GravityEvent(owner), owner);
     ApplyHorizontalMovement(rb, col, keys);
     ApplyJump(rb, col, keys);
@@ -43,20 +44,7 @@ void MovementComponent::Update()
     rb->setAcceleration(Vec2(0, 0));
 }
 
-void MovementComponent::ApplyGravity(RigidBodyComponent* rb, CollisionComponent* col)
-{
-   /* if (col->BottomCollision()) {
-        Vec2 accel = rb->getAcceleration();
-        accel.y = m_GravityScale;
-        rb->setAcceleration(accel);
-    }
-    else {
-        Vec2 vel = rb->getVelocity();
-        vel.y = 0;
-        rb->setVelocity(vel);
-        rb->setPosition(rb->getPosition() - Vec2(0, 0.1f));
-    }*/
-}
+
 
 void MovementComponent::ApplyHorizontalMovement(RigidBodyComponent* rb, CollisionComponent* col, const Uint8* keys)
 {

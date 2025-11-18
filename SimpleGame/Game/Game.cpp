@@ -127,6 +127,20 @@ void Game::Run()
             SDL_RenderCopy(m_Renderer, RenderComponent::GetOffScreenCombinedTexture(), nullptr, &dst);
         }
 
+        if (m_LevelChangeRequested) {
+            gameObjectManager.RemoveAllGameObject();
+            LoadLevel(m_RequestedLevel);
+
+            m_LevelChangeRequested = false;
+        }
+
+        if (qt) {
+            qt->Clear();
+            for (auto& [key, obj] : gameObjectManager.m_gameObjects) {
+                qt->Insert(obj.get());
+            }
+        }
+
         gameObjectManager.UpdateAllGameObject();
 
         for (const auto& [key, obj] : gameObjectManager.m_gameObjects) {
@@ -139,18 +153,7 @@ void Game::Run()
             gameObjectManager.RemoveGameObject(id);
         }
 
-        if (m_LevelChangeRequested) {
-            gameObjectManager.RemoveAllGameObject();
-            LoadLevel(m_RequestedLevel);
-            m_LevelChangeRequested = false;
-        }
-
-        if (qt) {
-            qt->Clear();
-            for (auto& [key, obj] : gameObjectManager.m_gameObjects) {
-                qt->Insert(obj.get());
-            }
-        }
+       
 
         SDL_RenderPresent(m_Renderer);
     }

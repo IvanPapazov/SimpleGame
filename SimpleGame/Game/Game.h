@@ -16,6 +16,8 @@ private:
     bool m_IsRunning = false;
     std::string m_RequestedLevel;
     bool m_LevelChangeRequested = false;
+    std::string m_PreviousLevel = "level_1";
+    std::string m_CurrentLevel = "level_1";
 
     std::unique_ptr<QuadTree> qt;
 
@@ -34,6 +36,11 @@ public:
 
     QuadTree* GetQuadTree() const { return qt.get(); }
     void SetQuadTree(std::unique_ptr<QuadTree> newQT) { qt = std::move(newQT); }
+    const std::string& getPreviousLevel() const { return m_PreviousLevel; }
+    void setPreviousLevel(const std::string& levelName) { m_PreviousLevel = levelName; }
+
+    const std::string& getCurrentLevel() const { return m_CurrentLevel; }
+    void setCurrentLevel(const std::string& levelName) { m_CurrentLevel = levelName; }
 
     float GetDeltaTime() const { return m_dt; }
 
@@ -42,6 +49,7 @@ public:
     void Shutdown();
     void LoadLevel(const std::string& levelName);
     void RequestLevelChange(const std::string& levelName);
+
 
     Game() = default;
     ~Game() = default;

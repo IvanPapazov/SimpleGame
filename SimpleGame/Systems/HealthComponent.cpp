@@ -26,7 +26,9 @@ void HealthComponent::Update()
         collision->SetHitPast(false);
     }
 
-    if (m_Health <= 0 && m_IsActive) {
+    if (m_Health <= 0) 
+    {
+        m_IsDead = true;
         m_TransitionTimer.Update(3000, [&]() {
             game.RequestLevelChange("level_1");
             });

@@ -4,7 +4,7 @@
 class HealthComponent : public Component
 {
 private:
-	bool m_IsActive = true;
+	bool m_IsDead = false;
 	int m_Health;
 	Timer m_TransitionTimer;
 public:
@@ -12,8 +12,8 @@ public:
 	HealthComponent(int health)
 		:m_Health(health){}
 
-	bool IsActive() const {
-		return m_IsActive;
+	bool IsDead() const {
+		return m_IsDead;
 	}
 
 	int GetHealth() const { return m_Health; }

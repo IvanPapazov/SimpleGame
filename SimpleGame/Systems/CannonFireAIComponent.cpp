@@ -24,12 +24,20 @@ CannonFireAIComponent::CannonFireAIComponent(float speed)
 void CannonFireAIComponent::Update()
 {
 	RenderComponent* renderOwner = GetOwner()->GetComponent<RenderComponent>();
-	//g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Idle");
+
+	if (m_Fire)
+	{
+		m_TransitionTimer.Update(300, [&]() {
+			g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Idle");
+			m_Fire = false;
+			});
+	}
 
 	GameObject* owner = GetOwner();
 	m_TransitionTimer.Update(3500, [&]() {
 		g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Fire");
 		g_EventHandler.Notify(BallEvent(owner), owner);
+		m_Fire = true;
 		});
 
 	m_CannonBalls.erase(

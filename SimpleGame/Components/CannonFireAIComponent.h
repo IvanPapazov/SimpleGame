@@ -10,6 +10,7 @@ class CannonFireAIComponent : public AIComponent
 private:
     Timer m_TransitionTimer;
     std::vector<EnemyCannonBall*> m_CannonBalls;
+    bool m_Fire = false;
 public:
     explicit CannonFireAIComponent(float speed);
     ~CannonFireAIComponent() override = default;

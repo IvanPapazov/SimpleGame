@@ -205,7 +205,6 @@ void EventSystem::RegisterCreateFireBallEvents(GameObject* object) {
 			RenderComponent* renderOwner = obj->GetComponent<RenderComponent>();
 			RigidBodyComponent* rbOwner = obj->GetComponent<RigidBodyComponent>();
 
-			//g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Fire");
 
 			std::vector<std::unique_ptr<Component>> components;
 			components.push_back(std::make_unique<RigidBodyComponent>(rbOwner->getPosition() + Vec2(renderOwner->GetWidth() * 0.5, renderOwner->GetHeight() * 0.3), 0.0));
@@ -217,7 +216,6 @@ void EventSystem::RegisterCreateFireBallEvents(GameObject* object) {
 
 			cannonBalls->AddCannonBall(ball.get());
 			gameObjectManager.AddGameObject(std::move(ball));
-			g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Idle");
 		});
 }
 

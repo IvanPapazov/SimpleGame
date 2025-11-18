@@ -9,7 +9,7 @@
 #include <iostream>
 
 LevelTransitionComponent::LevelTransitionComponent(std::string level)
-    : m_Level(std::move(level)) {}
+    : m_NextLevel(std::move(level)) {}
 
 extern Game& game;
 extern ResourceManager& g_ResourceManager;
@@ -34,7 +34,7 @@ void LevelTransitionComponent::Update() {
 
         if (g_ResourceManager.getCurrentState(playerRender->GetTextureId()) == "Idle") {
             m_TransitionTimer.Update(1500, [&]() {
-                game.RequestLevelChange(GetLevel());
+                game.RequestLevelChange(getNextLevel());
                 });
         }
         else {
