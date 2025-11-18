@@ -89,7 +89,7 @@ void EventSystem::RegisterCollisionEvent(GameObject* object) {
 			{
 				colA->SetBottomCollision(true);
 			}
-		}, 
+		},
 		[](const Event& e) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
 			GameObject* b = collision.objectB;
@@ -126,52 +126,52 @@ void EventSystem::RegisterCollisionEvent(GameObject* object) {
 			GameObject* b = collision.objectB;
 			auto* colB = b->GetComponent<CollisionComponent>();
 
-			SDL_Rect bounds = { 
-			    static_cast<int>(colB->GetX()), 
-			    static_cast<int>(colB->GetY()),
-			    static_cast<int>(colB->GetWidth()), 
-			    static_cast<int>(colB->GetHeight()) };
+			SDL_Rect bounds = {
+				static_cast<int>(colB->GetX()),
+				static_cast<int>(colB->GetY()),
+				static_cast<int>(colB->GetWidth()),
+				static_cast<int>(colB->GetHeight()) };
 
-			    //bottom
-			    for (int x = 1; x < static_cast<int>(colA->GetWidth() - 1); ++x) {
-			        SDL_Point pt = { static_cast<int>(colA->GetX() + x), static_cast<int>(colA->GetY() + colA->GetHeight()) };
-			        if (SDL_PointInRect(&pt, &bounds)) {
-			            colA->SetBottomCollision(false);
-			            colA->SetTopCollision(true);
-			            break;
-			        }
-			    }
+			//bottom
+			for (int x = 1; x < static_cast<int>(colA->GetWidth() - 1); ++x) {
+				SDL_Point pt = { static_cast<int>(colA->GetX() + x), static_cast<int>(colA->GetY() + colA->GetHeight()) };
+				if (SDL_PointInRect(&pt, &bounds)) {
+					colA->SetBottomCollision(false);
+					colA->SetTopCollision(true);
+					break;
+				}
+			}
 
-			    //top
-			    for (int x = 1; x < static_cast<int>(colA->GetWidth()) - 1; ++x) {
-			        SDL_Point pt = { static_cast<int>(colA->GetX() + x), static_cast<int>(colA->GetY()) };
-			        if (SDL_PointInRect(&pt, &bounds)) {
-			            colA->SetTopCollision(false);
-			            colA->SetBottomCollision(true);
-			            break;
-			        }
-			    }
+			//top
+			for (int x = 1; x < static_cast<int>(colA->GetWidth()) - 1; ++x) {
+				SDL_Point pt = { static_cast<int>(colA->GetX() + x), static_cast<int>(colA->GetY()) };
+				if (SDL_PointInRect(&pt, &bounds)) {
+					colA->SetTopCollision(false);
+					colA->SetBottomCollision(true);
+					break;
+				}
+			}
 
-			    //left
-			    for (int y = 1; y < static_cast<int>(colA->GetHeight()) - 1; ++y) {
-			        SDL_Point pt = { static_cast<int>(colA->GetX()), static_cast<int>(colA->GetY() + y) };
-			        if (SDL_PointInRect(&pt, &bounds)) {
-			            colA->SetLeftCollision(false);
-			            colA->SetRightCollision(true);
-			            break;
-			        }
-			    }
+			//left
+			for (int y = 1; y < static_cast<int>(colA->GetHeight()) - 1; ++y) {
+				SDL_Point pt = { static_cast<int>(colA->GetX()), static_cast<int>(colA->GetY() + y) };
+				if (SDL_PointInRect(&pt, &bounds)) {
+					colA->SetLeftCollision(false);
+					colA->SetRightCollision(true);
+					break;
+				}
+			}
 
-			    //right
-			    for (int y = 1; y < static_cast<int>(colA->GetHeight()) - 1; ++y) {
-			        SDL_Point pt = { static_cast<int>(colA->GetX() + colA->GetWidth()), static_cast<int>(colA->GetY() + y) };
-			        if (SDL_PointInRect(&pt, &bounds)) {
-			            colA->SetRightCollision(false);
-			            colA->SetLeftCollision(true);
-			            break;
-			        }
-			    }
-		}, 
+			//right
+			for (int y = 1; y < static_cast<int>(colA->GetHeight()) - 1; ++y) {
+				SDL_Point pt = { static_cast<int>(colA->GetX() + colA->GetWidth()), static_cast<int>(colA->GetY() + y) };
+				if (SDL_PointInRect(&pt, &bounds)) {
+					colA->SetRightCollision(false);
+					colA->SetLeftCollision(true);
+					break;
+				}
+			}
+		},
 		[](const Event& e) {
 			const auto& collision = static_cast<const CollisionEvent&>(e);
 			if (typeid(*collision.objectB) != typeid(EnemyCannonBall) && typeid(*collision.objectB) != typeid(Door) && typeid(*collision.objectB) != typeid(Player))
@@ -235,4 +235,31 @@ void EventSystem::RegisterCreateFireBallEvents(GameObject* object) {
 			gameObjectManager.AddGameObject(std::move(ball));
 		});
 }
+
+
+
+void EventSystem::RegisterCreateLevelTransitionEvents(GameObject* object) {
+	g_EventHandler.Subscribe<LevelTransitionPlayerPositionEvent>(
+		object,
+		[](const Event& e) {
+			const auto& levelTransition = static_cast<const LevelTransitionPlayerPositionEvent&>(e);
+			auto* object = levelTransition.object;
+
+			RigidBodyComponent* rbOwner = object->GetComponent<RigidBodyComponent>();
+
+			for (const auto& [id, obj] : gameObjectManager.m_gameObjects) {
+				if (typeid(*obj) == typeid(Door))
+				{
+					if (game.getPreviousLevel() > game.getCurrentLevel() ) {
+						continue;
+					}
+					RigidBodyComponent*  rbObj = obj->GetComponent<RigidBodyComponent>();
+					rbOwner->setPosition(Vec2(rbObj->getPosition().x , rbObj->getPosition().y));
+
+					return;
+				}
+			}
+		});
+}
+
 

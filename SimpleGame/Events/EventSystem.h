@@ -8,5 +8,6 @@ public:
     void RegisterCollisionEvent(GameObject* object);
     void RegisterGravityEvents(GameObject* object);
     void RegisterCreateFireBallEvents(GameObject* object);
+    void RegisterCreateLevelTransitionEvents(GameObject* object);
 };
 

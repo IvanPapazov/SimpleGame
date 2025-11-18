@@ -5,6 +5,7 @@
 #include <Game/Pathways.h>
 #include <Game/EnemyCannonBall.h>
 
+extern EventHandler& g_EventHandler;
 
 GameObjectManager& GameObjectManager::getInstance()
 {
@@ -20,12 +21,15 @@ void GameObjectManager::AddGameObject(std::unique_ptr<GameObject> obj)
     {     
         m_EventSystem->RegisterCollisionEvent(rawPtr);
     }
-    if (typeid(*obj) == typeid(Player) || typeid(*obj) == typeid(Enemy))
+    if (typeid(*obj) == typeid(Player))
     {
         m_EventSystem->RegisterGravityEvents(rawPtr);
+        m_EventSystem->RegisterCreateLevelTransitionEvents(rawPtr);
+        g_EventHandler.Notify(LevelTransitionPlayerPositionEvent(rawPtr), rawPtr);
     }
     if ( typeid(*obj) == typeid(Enemy))
     {
+        m_EventSystem->RegisterGravityEvents(rawPtr);
         m_EventSystem->RegisterCreateFireBallEvents(rawPtr);
     }
     if (obj) {

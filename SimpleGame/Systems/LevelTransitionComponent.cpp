@@ -8,8 +8,8 @@
 #include <Components/RenderComponent.h>
 #include <iostream>
 
-LevelTransitionComponent::LevelTransitionComponent(std::string level)
-    : m_NextLevel(std::move(level)) {}
+LevelTransitionComponent::LevelTransitionComponent(std::string nextLevel, std::string previousLevel)
+    : m_NextLevel(std::move(nextLevel)), m_PreviousLevel(std::move(previousLevel)) {}
 
 extern Game& game;
 extern ResourceManager& g_ResourceManager;
@@ -32,7 +32,7 @@ void LevelTransitionComponent::Update() {
     if (doorCollider->DoorCollision()) {
         g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "StayOpen");
 
-        if (g_ResourceManager.getCurrentState(playerRender->GetTextureId()) == "Idle") {
+        if (g_ResourceManager.getCurrentState(playerRender->GetTextureId()) == "Idle" && getNextLevel() != "") {
             m_TransitionTimer.Update(1500, [&]() {
                 game.setPreviousLevel(getPreviousLevel());
                 game.setCurrentLevel(getNextLevel());

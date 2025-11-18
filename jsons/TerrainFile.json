@@ -1293,13 +1293,13 @@
         "width": 200,
         "height": 60
       },
-      "terrainVerticalWall1": {
-        "id": 14,
-        "x": 570,
-        "y": 60,
-        "width": 60,
-        "height": 200
-      },
+      //"terrainVerticalWall1": {
+      //  "id": 14,
+      //  "x": 570,
+      //  "y": 60,
+      //  "width": 60,
+      //  "height": 200
+      //},
       "terrainVerticalWall2": {
         "id": 14,
         "x": 570,

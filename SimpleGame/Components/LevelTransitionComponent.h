@@ -11,7 +11,7 @@ private:
     std::string m_PreviousLevel;
     Timer m_TransitionTimer;
 public:
-    LevelTransitionComponent(std::string nextLevel);
+    LevelTransitionComponent(std::string nextLevel, std::string previousLevel);
     ~LevelTransitionComponent() = default;
 
     const std::string& GetLevel() const {

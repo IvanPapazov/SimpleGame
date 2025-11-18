@@ -208,7 +208,7 @@ std::unique_ptr<RenderComponent> ReadInfo::CreateRenderComponent(Json::Value& da
 }
 
 std::unique_ptr<LevelTransitionComponent> ReadInfo::CreateLevelTransitionComponent(Json::Value& data) {
-	return std::make_unique<LevelTransitionComponent>(data["level"].asString());
+	return std::make_unique<LevelTransitionComponent>(data["nextLevel"].asString(),data["currentLevel"].asString());
 }
 
 std::unique_ptr<AIComponent> ReadInfo::CreateEnemyRunAIComponent(Json::Value& data) {
