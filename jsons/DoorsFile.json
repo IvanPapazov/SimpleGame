@@ -1,21 +1,21 @@
 {
   "level_1": {
-    "Door1": {
-      "currentLevel": "level_1",
-      "id": 13,
-      "x": 70,
-      "y": 820,
-      "width": 120,
-      "height": 120
-    },
     //"Door1": {
     //  "currentLevel": "level_1",
     //  "id": 13,
-    //  "x": 500,
-    //  "y": 145,
+    //  "x": 70,
+    //  "y": 820,
     //  "width": 120,
     //  "height": 120
     //},
+    "Door1": {
+      "currentLevel": "level_1",
+      "id": 13,
+      "x": 500,
+      "y": 145,
+      "width": 120,
+      "height": 120
+    },
     "Door2": {
       "nextLevel": "level_2",
       "currentLevel": "level_1",
@@ -50,6 +50,35 @@
     "Door1": {
       "nextLevel": "level_2",
       "currentLevel": "level_3",
+      "id": 13,
+      "x": 70,
+      "y": 820,
+      "width": 120,
+      "height": 120
+    },
+    //"Door1": {
+    //  "nextLevel": "level_2",
+    //  "currentLevel": "level_3",
+    //  "id": 13,
+    //  "x": 500,
+    //  "y": 145,
+    //  "width": 120,
+    //  "height": 120
+    //},
+    "Door2": {
+      "nextLevel": "level_4",
+      "currentLevel": "level_3",
+      "id": 13,
+      "x": 70,
+      "y": 145,
+      "width": 120,
+      "height": 120
+    }
+  },
+  "level_4": {
+    "Door1": {
+      "nextLevel": "level_3",
+      "currentLevel": "level_4",
       "id": 13,
       "x": 430,
       "y": 820,

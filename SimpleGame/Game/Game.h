@@ -7,12 +7,11 @@
 #include <Events/EventSystem.h>
 #include <Utils/ReadInfo.h>
 
-const int g_ScreenHeight = 1000;
-const int g_ScreenWidth = 1200;
-
 class Game
 {
 private:
+    static const int g_ScreenWidth = 2500;
+    static const int g_ScreenHeight = 1300;
     bool m_IsRunning = false;
     std::string m_RequestedLevel;
     bool m_LevelChangeRequested = false;
@@ -43,7 +42,8 @@ public:
     void setCurrentLevel(const std::string& levelName) { m_CurrentLevel = levelName; }
 
     float GetDeltaTime() const { return m_dt; }
-
+    static int GetScreenWidth() { return g_ScreenWidth; }
+    static int GetScreenHeight() { return g_ScreenHeight; }
     bool IsInitialized();
     void Run();
     void Shutdown();

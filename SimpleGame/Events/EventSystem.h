@@ -9,5 +9,6 @@ public:
     void RegisterGravityEvents(GameObject* object);
     void RegisterCreateFireBallEvents(GameObject* object);
     void RegisterCreateLevelTransitionEvents(GameObject* object);
+    void RegisterCreateSpotlightEvents(GameObject* object);
 };
 

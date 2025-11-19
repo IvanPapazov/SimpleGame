@@ -31,5 +31,16 @@
       "health": 3,
       "gravity": 0.3
     }
+  },
+  "level_4": {
+    "player": {
+      "id": 9,
+      "x": 460,
+      "y": 175,
+      "width": 60,
+      "height": 80,
+      "health": 3,
+      "gravity": 0.3
+    }
   }
 } 

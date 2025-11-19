@@ -31,9 +31,17 @@ public:
     BallEvent(GameObject* obj)
         : object(obj) {}
 };
+
 class LevelTransitionPlayerPositionEvent : public Event {
 public:
     GameObject* object;
     LevelTransitionPlayerPositionEvent(GameObject* obj)
+        : object(obj) {}
+};
+
+class SpotlightEvent : public Event {
+public:
+    GameObject* object;
+    SpotlightEvent(GameObject* obj)
         : object(obj) {}
 };

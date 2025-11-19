@@ -22,7 +22,7 @@ void RenderComponent::CombineTextures(int x, int y)
 {
     if (!m_OffScreenCombinedTexture) {
         m_OffScreenCombinedTexture = SDL_CreateTexture(
-            m_Renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1200, 1000);
+            m_Renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 2500, 1300);
     }
 
     SDL_SetRenderTarget(m_Renderer, m_OffScreenCombinedTexture);

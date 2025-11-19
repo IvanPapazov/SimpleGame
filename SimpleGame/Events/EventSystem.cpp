@@ -236,8 +236,6 @@ void EventSystem::RegisterCreateFireBallEvents(GameObject* object) {
 		});
 }
 
-
-
 void EventSystem::RegisterCreateLevelTransitionEvents(GameObject* object) {
 	g_EventHandler.Subscribe<LevelTransitionPlayerPositionEvent>(
 		object,
@@ -250,16 +248,48 @@ void EventSystem::RegisterCreateLevelTransitionEvents(GameObject* object) {
 			for (const auto& [id, obj] : gameObjectManager.m_gameObjects) {
 				if (typeid(*obj) == typeid(Door))
 				{
-					if (game.getPreviousLevel() > game.getCurrentLevel() ) {
-						continue;
+					if (game.getPreviousLevel() <= game.getCurrentLevel() ) {
+						RigidBodyComponent* rbObj = obj->GetComponent<RigidBodyComponent>();
+						rbOwner->setPosition(Vec2(rbObj->getPosition().x + 30, rbObj->getPosition().y));
+						return;
 					}
 					RigidBodyComponent*  rbObj = obj->GetComponent<RigidBodyComponent>();
-					rbOwner->setPosition(Vec2(rbObj->getPosition().x , rbObj->getPosition().y));
-
-					return;
+					rbOwner->setPosition(Vec2(rbObj->getPosition().x + 30 , rbObj->getPosition().y));
 				}
 			}
 		});
+}
+
+void EventSystem::RegisterCreateSpotlightEvents(GameObject* object) {
+	/*g_EventHandler.Subscribe<SpotlightEvent>(object, [](const Event& e) {
+		const auto& spotlight = static_cast<const SpotlightEvent&>(e);
+		auto* obj = spotlight.object;
+		if (!obj) return;
+
+		auto* 
+
+		SDL_Renderer* renderer = game.GetRenderer();
+		int screenWidth = game.GetScreenWidth();
+		int screenHeight = game.GetScreenHeight();
+
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_Rect fullScreen = { 0, 0, screenWidth, screenHeight };
+		SDL_RenderFillRect(renderer, &fullScreen);
+
+		int centerX = static_cast<int>(obj->get + obj->GetWidth() / 2);
+		int centerY = static_cast<int>(obj->GetY() + obj->GetHeight() / 2);
+
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+		for (int w = -spotlight.radius; w <= spotlight.radius; ++w) {
+			for (int h = -spotlight.radius; h <= spotlight.radius; ++h) {
+				if (w * w + h * h <= spotlight.radius * spotlight.radius) {
+					SDL_RenderDrawPoint(renderer, centerX + w, centerY + h);
+				}
+			}
+		}
+		});*/
+
 }
 
 
