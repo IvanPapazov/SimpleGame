@@ -17,7 +17,6 @@ extern ResourceManager& g_ResourceManager;
 extern Game& game;
 
 std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoPlayer(const std::string& levelName) {
-	g_ResourceManager.loadJson("player", "jsons/PlayerFile.json");
 	Json::Value root = g_ResourceManager.getJson("player");
 	Json::Value playerData = root[levelName];
 
@@ -38,7 +37,6 @@ std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoPlayer(co
 }
 
 std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoEnemy(const std::string& levelName) {
-	g_ResourceManager.loadJson("enemy", "jsons/EnemyFile.json");
 	Json::Value root = g_ResourceManager.getJson("enemy");
 	Json::Value enemyData = root[levelName];
 
@@ -64,7 +62,6 @@ std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoEnemy(con
 }
 
 std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoTerrain(const std::string& levelName) {
-	g_ResourceManager.loadJson("terrain", "jsons/TerrainFile.json");
 	Json::Value root = g_ResourceManager.getJson("terrain");
 	Json::Value terrainData = root[levelName];
 
@@ -75,12 +72,6 @@ std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoTerrain(c
 
 		for (const auto& key : group.getMemberNames()) {
 			Json::Value& node = group[key];
-
-			if (key.find("Background") != std::string::npos) {
-				auto render = CreateRenderComponent(node);
-				render->CombineTextures(node["x"].asFloat(), node["y"].asFloat());
-				continue;
-			}
 
 			std::vector<std::unique_ptr<Component>> components;
 			components.push_back(CreateRigidBodyComponent(node));
@@ -94,8 +85,32 @@ std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoTerrain(c
 	return m_AllGameObject;
 }
 
+void ReadInfo::ReadInfoBackground()
+{
+	Json::Value root = g_ResourceManager.getJson("background");
+
+
+	for (const auto& groupKey : root.getMemberNames())
+	{
+		Json::Value& group = root[groupKey];
+
+
+		for (const auto& objectKey : group.getMemberNames())
+		{
+			Json::Value& node = group[objectKey];
+
+
+			auto render = CreateRenderComponent(node);
+			float x = node["x"].asFloat();
+			float y = node["y"].asFloat();
+
+			render->CombineTextures(x, y);
+		}
+	}
+}
+
+
 std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoPathways(const std::string& levelName) {
-	g_ResourceManager.loadJson("pathways", "jsons/PathwaysFile.json");
 	Json::Value root = g_ResourceManager.getJson("pathways");
 	Json::Value pathwaysData = root[levelName];
 
@@ -114,7 +129,6 @@ std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoPathways(
 }
 
 std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoDoors(const std::string& levelName) {
-	g_ResourceManager.loadJson("doors", "jsons/DoorsFile.json");
 	Json::Value root = g_ResourceManager.getJson("doors");
 	Json::Value doorsData = root[levelName];
 
@@ -134,7 +148,6 @@ std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoDoors(con
 }
 
 std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoHearts() {
-	g_ResourceManager.loadJson("hearts", "jsons/HeartsFile.json");
 	Json::Value itemsData = g_ResourceManager.getJson("hearts");
 
 	std::unordered_map<int, std::unique_ptr<GameObject>> m_AllGameObject;
@@ -151,7 +164,6 @@ std::unordered_map<int, std::unique_ptr<GameObject>> ReadInfo::ReadInfoHearts() 
 }
 
 void ReadInfo::ReadTextures() {
-	g_ResourceManager.loadJson("textures", "jsons/TexturesFile.json");
 	Json::Value texturesData = g_ResourceManager.getJson("textures");
 
 	for (const auto& key : texturesData.getMemberNames()) {
@@ -163,7 +175,6 @@ void ReadInfo::ReadTextures() {
 }
 
 void ReadInfo::ReadSpriteData() {
-	g_ResourceManager.loadJson("sprite", "jsons/SpriteDataFile.json");
 	Json::Value spriteData = g_ResourceManager.getJson("sprite");
 
 	for (const auto& key : spriteData.getMemberNames()) {

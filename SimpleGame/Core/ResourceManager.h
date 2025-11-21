@@ -37,6 +37,8 @@ public:
     bool loadJson(const std::string& id, const std::string& filePath);
     Json::Value getJson(const std::string& id);
 
+    void setJson(const std::string& id, const Json::Value& json);
+
     bool loadTexture(const int& id, const std::string& filePath);
     SDL_Texture* getTexture(const int& id);
 

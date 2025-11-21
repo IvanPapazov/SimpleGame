@@ -6,10 +6,12 @@
 #include <Core/ResourceManager.h>
 #include <Core/QuadTree.h>
 #include <Events/EventHandler.h>
+#include <Core/LevelGenerator.h>
 
 GameObjectManager& gameObjectManager = GameObjectManager::getInstance();
 EventHandler& g_EventHandler = EventHandler::getInstance();
 ResourceManager& g_ResourceManager = ResourceManager::getInstance();
+LevelGenerator& g_LevelGenerator = LevelGenerator::getInstance();
 
 Game& Game::getInstance()
 {
@@ -41,6 +43,20 @@ bool Game::IsInitialized()
         m_IsRunning = false;
         return false;
     }
+
+    g_ResourceManager.loadJson("objectsInfo", "jsons/ObjectsInfoFile.json");
+
+    g_ResourceManager.loadJson("player", "jsons/PlayerFile.json");
+    g_ResourceManager.loadJson("enemy", "jsons/EnemyFile.json");
+    g_ResourceManager.loadJson("terrain", "jsons/TerrainFile.json");
+    g_ResourceManager.loadJson("background", "jsons/BackgroundFile.json");
+    g_ResourceManager.loadJson("pathways", "jsons/PathwaysFile.json");
+    g_ResourceManager.loadJson("doors", "jsons/DoorsFile.json");
+    g_ResourceManager.loadJson("hearts", "jsons/HeartsFile.json");
+    g_ResourceManager.loadJson("textures", "jsons/TexturesFile.json");
+    g_ResourceManager.loadJson("sprite", "jsons/SpriteDataFile.json");
+
+    g_LevelGenerator.CreateLevel();
 
     Rect worldBounds = { 0, 0, g_ScreenWidth, g_ScreenHeight };
     qt = std::make_unique<QuadTree>(worldBounds);
@@ -101,6 +117,7 @@ void Game::Run()
 {
     m_Info.ReadTextures();
     m_Info.ReadSpriteData();
+    m_Info.ReadInfoBackground();
     LoadLevel("level_1");
     m_LastFrameTime = SDL_GetPerformanceCounter();
 

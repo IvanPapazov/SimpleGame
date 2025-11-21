@@ -1,23 +1,23 @@
 {
-  "1": { //HorizontalWall
-    "id": 4,
-    "x": 0,
-    "y": 0,
-    "width": 200,
-    "height": 60
-  },
-  "2": { //VerticalWall
-    "id": 4,
-    "x": 0,
-    "y": 0,
-    "width": 60,
-    "height": 200
-  },
-  "3": { //Cube
+  "1": { //Cube
     "id": 5,
     "x": 0,
     "y": 0,
     "width": 60,
+    "height": 60
+  },
+  "2": { //VerticalWall
+    "id": 2,
+    "x": 0,
+    "y": 0,
+    "width": 60,
+    "height": 250
+  },
+  "3": { //HorizontalWall
+    "id": 4,
+    "x": 0,
+    "y": 0,
+    "width": 220,
     "height": 60
   },
   "4": { //Ramp
@@ -62,7 +62,7 @@
     "width": 80,
     "height": 80,
     "speed": 2
-  },
+  }
   //"10": {
   //  "image": "images/CannonBall.png"
   //}

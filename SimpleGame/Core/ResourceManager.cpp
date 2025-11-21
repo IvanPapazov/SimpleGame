@@ -51,6 +51,11 @@ Json::Value ResourceManager::getJson(const std::string& id)
     return m_JsonFiles.count(id) ? m_JsonFiles[id] : Json::Value();
 }
 
+void ResourceManager::setJson(const std::string& id, const Json::Value& json)
+{
+    m_JsonFiles[id] = json;
+}
+
 bool ResourceManager::loadTexture(const int& id, const std::string& filePath)
 {
     if (m_Textures.count(id)) {

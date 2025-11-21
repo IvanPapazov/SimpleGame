@@ -1,15 +1,15 @@
 {
   "1": {
-    "image": "images/WallLeft.png"
+    "image": "images/Wall.png"
   },
   "2": {
-    "image": "images/WallRight.png"
+    "image": "images/Wall.png"
   },
   "3": {
-    "image": "images/WallDown.png"
+    "image": "images/Ground.png"
   },
   "4": {
-    "image": "images/Ground2.png"
+    "image": "images/Ground.png"
   },
   "5": {
     "image": "images/Cube.png"

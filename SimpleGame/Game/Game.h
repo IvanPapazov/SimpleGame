@@ -10,7 +10,7 @@
 class Game
 {
 private:
-    static const int g_ScreenWidth = 2500;
+    static const int g_ScreenWidth = 2560;
     static const int g_ScreenHeight = 1300;
     bool m_IsRunning = false;
     std::string m_RequestedLevel;
