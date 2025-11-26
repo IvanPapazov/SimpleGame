@@ -24,8 +24,8 @@
     "id": 6,
     "x": 0,
     "y": 0,
-    "width": 0,
-    "height": 0,
+    "width": 140,
+    "height": 20,
     "speed": 1
   },
   "5": { //Player

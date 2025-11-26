@@ -85,7 +85,7 @@ void Game::LoadLevel(const std::string& levelName)
         gameObjectManager.AddGameObject(std::move(object));
 
     }
-    auto players = m_Info.ReadInfoPlayer(levelName);
+    auto players = m_Info.ReadInfoPlayer("level_1");
     for (auto& [key, object] : players) {
         gameObjectManager.AddGameObject(std::move(object));
     }
@@ -118,7 +118,7 @@ void Game::Run()
     m_Info.ReadTextures();
     m_Info.ReadSpriteData();
     m_Info.ReadInfoBackground();
-    LoadLevel("level_1");
+    LoadLevel("level_3");
     m_LastFrameTime = SDL_GetPerformanceCounter();
 
     while (m_IsRunning) {

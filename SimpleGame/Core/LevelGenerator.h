@@ -8,15 +8,19 @@ class LevelGenerator
 public:
     static LevelGenerator& getInstance();
     void CreateLevel();
-
 private:
     int m_Rows = 130;
     int m_Cols = 256;
-    bool m_IsHalfGround = false;
+
+    Json::Value root;
+    Json::Value& levelData;
 
     std::unordered_map<int, std::string> objectsInfoMap;
     std::vector<std::vector<int>> matrix;
     std::vector<int> path;
+
+    std::vector<int> pathDirections;
+
     std::vector<int> rowPos;
     std::vector<int> colPos;
 
@@ -50,11 +54,9 @@ private:
     void GenerateMatrix();
     void ReadObjectsInfo();
     void CalculateRowAndColPositions();
-    bool CheckPathConditions(int x, int y, int id);
-    bool CheckExtraConditions(int x, int y, int id);
+    bool CheckPathConditions(int& x, int y, int id);
     bool FindHamiltonianPath(std::vector<int>& path, std::vector<bool>& visited);
-
+    bool FindPathDirections(int id);
     void MarkRect(std::vector<std::vector<int>>& m, int x, int y, int w, int h);
-    int BlocksPath(int x, int y, int p1, int p2, const std::vector<int>& rowPos, const std::vector<int>& colPos);
-    int GetMovementType(int p1, int p2, int p3);
+    bool BlocksPath(int x, int y, int p1, int p2, const std::vector<int>& rowPos, const std::vector<int>& colPos);
 };

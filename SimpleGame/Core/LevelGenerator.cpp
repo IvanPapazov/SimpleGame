@@ -14,7 +14,7 @@ LevelGenerator& LevelGenerator::getInstance()
 	return instance;
 }
 
-LevelGenerator::LevelGenerator()
+LevelGenerator::LevelGenerator() : levelData(root)
 {
 	matrix = std::vector<std::vector<int>>(m_Rows, std::vector<int>(m_Cols));
 }
@@ -22,18 +22,25 @@ LevelGenerator::LevelGenerator()
 void LevelGenerator::MarkRect(std::vector<std::vector<int>>& m, int x, int y, int w, int h)
 {
 	int m_Rows = m.size();
+	if (m_Rows == 0) return;
 	int m_Cols = m[0].size();
 
-	for (int i = y; i < y + h && i < m_Rows; ++i)
+	if (x < 0) x = 0;
+	if (y < 0) y = 0;
+
+	int maxW = std::min(w, m_Cols - x);
+	int maxH = std::min(h, m_Rows - y);
+
+	for (int i = y; i < y + maxH; ++i)
 	{
-		for (int j = x; j < x + w && j < m_Cols; ++j)
+		for (int j = x; j < x + maxW; ++j)
 		{
 			m[i][j] = -1;
 		}
 	}
 }
 
-int LevelGenerator::BlocksPath(int x, int y, int p1, int p2, const std::vector<int>& rowPos, const std::vector<int>& colPos)
+bool LevelGenerator::BlocksPath(int x, int y, int p1, int p2, const std::vector<int>& rowPos, const std::vector<int>& colPos)
 {
 	int r1 = p1 / 5;
 	int r2 = p2 / 5;
@@ -47,36 +54,23 @@ int LevelGenerator::BlocksPath(int x, int y, int p1, int p2, const std::vector<i
 	// move left
 	if (p2 == p1 - 1)
 	{
-		if (y > rowPos[r1] && y < rowPos[r1 + 1] && x == colPos[c1])
-		{
-			return 1;
-		}
+		return (y > rowPos[r1] && y < rowPos[r1 + 1] && x == colPos[c1]);
 	}
 	// move right
 	if (p2 == p1 + 1)
 	{
-		if (y > rowPos[r1] && y < rowPos[r1 + 1] && x == colPos[c2])
-		{
-			return 2;
-		}
+		return (y > rowPos[r1] && y < rowPos[r1 + 1] && x == colPos[c2]);
 	}
 	// move up
 	if (p2 == p1 - 5)
 	{
-		if (x > colPos[c1] && x < colPos[c1 + 1] && y == rowPos[r1])
-		{
-			return 3;
-		}
+		return (x > colPos[c1] && x < colPos[c1 + 1] && y == rowPos[r1]);
 	}
 	// move down
 	if (p2 == p1 + 5)
 	{
-		if (x > colPos[c1] && x < colPos[c1 + 1] && y == rowPos[r2])
-		{
-			return 4;
-		}
+		return (x > colPos[c1] && x < colPos[c1 + 1] && y == rowPos[r2]);
 	}
-
 	return false;
 }
 
@@ -105,6 +99,9 @@ void LevelGenerator::GenerateMatrix()
 		std::cout << "No Hamiltonian Path found starting from " << startNode << "\n";
 	}
 
+	FindPathDirections(0);
+
+
 	for (auto& [id, object] : objectsInfoMap)
 	{
 		for (int y = 0; y < m_Rows; y++)
@@ -118,20 +115,6 @@ void LevelGenerator::GenerateMatrix()
 			}
 		}
 	}
-
-	/*for (auto& [id, object] : objectsInfoMap)
-	{
-		for (int y = 0; y < m_Rows; y++)
-		{
-			for (int x = 0; x < m_Cols; x++)
-			{
-				if (CheckExtraConditions(x, y, id))
-				{
-					matrix[y][x] = id;
-				}
-			}
-		}
-	}*/
 }
 
 void LevelGenerator::ReadObjectsInfo()
@@ -163,7 +146,7 @@ void LevelGenerator::CalculateRowAndColPositions()
 	}
 }
 
-bool LevelGenerator::CheckPathConditions(int x, int y, int id)
+bool LevelGenerator::CheckPathConditions(int& x, int y, int id)
 {
 
 	if (matrix[y][x] != 0)
@@ -196,7 +179,7 @@ bool LevelGenerator::CheckPathConditions(int x, int y, int id)
 			}
 			for (int i = 0; i + 1 < path.size(); i++)
 			{
-				if (BlocksPath(x, y, path[i], path[i + 1], rowPos, colPos) == 1 || BlocksPath(x, y, path[i], path[i + 1], rowPos, colPos) == 2)
+				if (BlocksPath(x, y, path[i], path[i + 1], rowPos, colPos))
 				{
 					return false;
 				}
@@ -213,146 +196,100 @@ bool LevelGenerator::CheckPathConditions(int x, int y, int id)
 			{
 				continue;
 			}
-			for (int i = 0; i + 1 < path.size(); i++)
+			for (int i = 0; i < path.size() -1; i++)
 			{
-				if (BlocksPath(x, y, path[i], path[i + 1], rowPos, colPos) == 3 || BlocksPath(x, y, path[i], path[i + 1], rowPos, colPos) == 4)
+				if (BlocksPath(x, y, path[i], path[i + 1], rowPos, colPos))
 				{
-					return false;
-				}
-			}
+					if (pathDirections[i] == 6 || pathDirections[i] == 9 || pathDirections[i] == 7 || pathDirections[i] == 3)
+					{
+						MarkRect(matrix, x, y, 44, 6);
+						matrix[y][x + 29] = 4;
+						matrix[y][x + 22] = 1;
+						return true;
+					}
+					else if (pathDirections[i] == 5 || pathDirections[i] == 8 || pathDirections[i] == 1 || pathDirections[i] == 10)
+					{
+						MarkRect(matrix, x, y, 44, 6);
+						matrix[y][x] = 1;
+						matrix[y][x + 7] = 4;
+						x = x + 22;
+						return true;
+					}
 
+				}
+
+			}
 			MarkRect(matrix, x, y, 22, 6);
 			return true;
 		}
 		return false;
+	case 7: {
+		//satrt
+		int startIndex = 0;
+		int startTile = path[startIndex];
+		int startRow = startTile / 5;
+		int startCol = startTile % 5;
 
-	case 7:
-		if (BlocksPath(x  , y  , path[0], path[1], rowPos, colPos) == 1)
+		if (startRow + 1 >= rowPos.size()) return false;
+		if (startCol + 1 >= colPos.size()) return false;
+
+		int startDir = pathDirections[startIndex];
+
+		int temp_y1 = rowPos[startRow + 1] - 12;
+		int temp_x1 = 0;
+
+		if (startDir == 5 || startDir == 8 || startDir == 10 || startDir == 4 || startDir == 1) {            
+			temp_x1 = colPos[startCol + 1] - 12;
+		}
+		else if (startDir == 6 || startDir == 7 || startDir == 9 || startDir == 2 || startDir == 3) {        
+
+			temp_x1 = colPos[startCol] + 6;
+		}
+
+		//end
+		int endIndex = path.size() - 1;
+		int endTile = path[endIndex];
+		int endRow = endTile / 5;
+		int endCol = endTile % 5;
+
+		if (endRow + 1 >= rowPos.size()) return false;
+		if (endCol + 1 >= colPos.size()) return false;
+
+		int endDir = pathDirections[endIndex - 1];
+
+		int temp_y2 = rowPos[endRow + 1] - 12;
+		int temp_x2 = 0;
+
+		if (endDir == 5 || endDir == 8 || endDir == 10 || endDir == 2 || endDir == 1) {            
+			temp_x2 = colPos[endCol + 1] - 12;
+		}
+		else if (endDir == 6 || endDir == 7 || endDir == 9 || endDir == 4 || endDir == 3) {
+			temp_x2 = colPos[endCol] + 6;
+		}
+
+		if ((x == temp_x1 && y == temp_y1) ||
+			(x == temp_x2 && y == temp_y2))
 		{
 			MarkRect(matrix, x, y, 12, 12);
 			return true;
 		}
+
 		return false;
+	}
+
+
+
 
 	default:
 		return false;
 	}
 }
 
-int LevelGenerator::GetMovementType(int p1, int p2, int p3)
-{
-	int d1 = p2 - p1;
-	int d2 = p3 - p2;
-	if (d1 == -5)
-	{
-		if (d2 == 1) return 0;
-		if (d2 == -1) return 1;
-		if (d2 == -5) return 2;
-		if (d2 == 5) return 12;
-	}
-	if (d1 == 5)
-	{
-		if (d2 == 1) return 3;
-		if (d2 == -1) return 4;
-		if (d2 == 5) return 5;
-		if (d2 == -5) return 13;
-	}
-	if (d1 == 1)
-	{
-		if (d2 == 1) return 6;
-		if (d2 == 5) return 9;
-		if (d2 == -5) return 11;
-	}
-	if (d1 == -1)
-	{
-		if (d2 == -1) return 7;
-		if (d2 == 5) return 8;
-		if (d2 == -5) return 10;
-	}
-	return -1;
-}
 
 
-//bool LevelGenerator::CheckExtraConditions(int x, int y, int id)
-//{
-//	if (matrix[y][x] != 0)
-//	{
-//		return false;
-//	}
-//
-//
-//	for (int i = 1; i + 1 < path.size(); i++)
-//	{
-//		int r1 = path[i] / 5;
-//		int r2 = path[i + 1] / 5;
-//
-//		int c1 = path[i] % 5;
-//		int c2 = path[i + 1] % 5;
-//		int midX = (colPos[c1] + colPos[c1 + 1]) / 2;
-//		switch (GetMovementType(path[i - 1], path[i], path[i + 1]))
-//		{
-//		case 1:
-//
-//			return false;
-//
-//		case 2:
-//
-//			return false;
-//
-//		case 3:
-//
-//			return false;
-//		case 4:
-//
-//			return false;
-//
-//		case 5:
-//
-//			return false;
-//
-//		case 6:
-//
-//			return false;
-//		case 7:
-//
-//			return false;
-//
-//		case 8:		
-//			if (x > midX && x < colPos[c1 + 1] && id==3)
-//			{
-//				MarkRect(matrix, x, y, 22, 6);
-//				return true;
-//			}
-//
-//			//x > colPos[c1] && x < colPos[c1 + 1] && y == rowPos[r1]
-//			return false;
-//
-//
-//		case 9:
-//
-//			return false;
-//		case 10:
-//
-//			return false;
-//
-//		case 11:
-//
-//			return false;
-//
-//		case 12:
-//
-//			return false;
-//
-//		case 13:
-//
-//			return false;
-//
-//		default:
-//			return false;
-//		}
-//	}
-//
-//}
+
+
+
 
 
 bool LevelGenerator::FindHamiltonianPath(std::vector<int>& path, std::vector<bool>& visited)
@@ -385,12 +322,58 @@ bool LevelGenerator::FindHamiltonianPath(std::vector<int>& path, std::vector<boo
 	return false;
 }
 
+bool LevelGenerator::FindPathDirections(int id)
+{
+	if (id >= path.size() - 1)
+		return true;
+
+	int current = path[id];
+	int next = path[id + 1];
+
+	int diff = next - current;
+
+	int direction = -1;
+
+	if (diff == 1)        direction = 2;    
+	else if (diff == -1)  direction = 4;     
+
+	else if (diff == 5)   direction = 3;    
+	else if (diff == -5)  direction = 1;    
+
+	if (direction == -1)
+		return false;
+
+	if (!pathDirections.empty())
+	{
+		int last = pathDirections.back();
+
+		if (direction == 3)
+		{
+			if (last == 4) direction = 5;
+			else if (last == 2) direction = 6;
+			else if (last == 3 || last == 7) direction = 7;
+		}
+		if (direction == 1)
+		{
+			if (last == 4) direction = 8;
+			else if (last == 2) direction = 9;
+			else if (last == 1 || last == 10) direction = 10;
+		}
+	}
+
+	pathDirections.push_back(direction);
+
+	return FindPathDirections(id + 1);
+}
+
 void LevelGenerator::CreateLevel()
 {
 	GenerateMatrix();
 
-	Json::Value root = g_ResourceManager.getJson("terrain");
-	Json::Value& levelData = root["level_3"]["3"];
+	// Load terrain and doors JSON once
+	Json::Value terrainRoot = g_ResourceManager.getJson("terrain");
+	Json::Value doorsRoot = g_ResourceManager.getJson("doors");
+	Json::Value pathwaysRoot = g_ResourceManager.getJson("pathways");
 
 	for (int y = 0; y < m_Rows; ++y)
 	{
@@ -401,6 +384,23 @@ void LevelGenerator::CreateLevel()
 			if (it == objectsInfoMap.end())
 				continue;
 
+			Json::Value* levelPtr = nullptr;
+
+			if (val == 1 || val == 2 || val == 3)
+			{
+				levelPtr = &terrainRoot["level_3"]["3"];
+			}
+			else if (val == 4)
+			{
+				levelPtr = &pathwaysRoot["level_3"];
+			}
+			else if (val == 7)
+			{
+				levelPtr = &doorsRoot["level_3"];
+			}
+
+			if (!levelPtr) continue;
+
 			Json::Value valueJson;
 			Json::CharReaderBuilder builder;
 			std::string errs;
@@ -410,15 +410,22 @@ void LevelGenerator::CreateLevel()
 			{
 				valueJson["x"] = x * 10;
 				valueJson["y"] = y * 10;
+				if (val == 7)
+				{
+					valueJson["nextLevel"] = "level_2";
+					valueJson["currentLevel"] = "level_3";
+				}
 
 				std::string key = std::to_string(val) + "-" +
 					std::to_string(x) + "-" +
 					std::to_string(y);
 
-				levelData[key] = valueJson;
+				(*levelPtr)[key] = valueJson;
 			}
 		}
 	}
-
-	g_ResourceManager.setJson("terrain", root);
+	g_ResourceManager.setJson("terrain", terrainRoot);
+	g_ResourceManager.setJson("doors", doorsRoot);
+	g_ResourceManager.setJson("pathways", pathwaysRoot);
 }
+
