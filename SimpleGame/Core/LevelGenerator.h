@@ -12,6 +12,8 @@ private:
     int m_Rows = 130;
     int m_Cols = 256;
 
+    bool toggle = true;
+
     Json::Value root;
     Json::Value& levelData;
 

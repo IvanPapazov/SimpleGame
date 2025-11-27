@@ -37,18 +37,31 @@ Rect QuadTree::GetBoundingBox(GameObject* obj) const {
 
 bool QuadTree::Insert(GameObject* obj) {
 	Rect objBox = GetBoundingBox(obj);
-	if (!Intersects(this->boundary,objBox)) return false;
 
-	if (objects.size() < CAPACITY) {
+	if (!Intersects(boundary, objBox))
+		return false;
+
+	if (!divided && objects.size() < CAPACITY) {
 		objects.push_back(obj);
 		return true;
 	}
 
-	if (!divided) Subdivide();
+	if (!divided)
+		Subdivide();
 
-	return (northeast->Insert(obj) || northwest->Insert(obj) ||
-		southeast->Insert(obj) || southwest->Insert(obj));
+	if (northeast->Contains(objBox)) 
+		return northeast->Insert(obj);
+	if (northwest->Contains(objBox))
+		return northwest->Insert(obj);
+	if (southeast->Contains(objBox))
+		return southeast->Insert(obj);
+	if (southwest->Contains(objBox))
+		return southwest->Insert(obj);
+
+	objects.push_back(obj);
+	return true;
 }
+
 
 void QuadTree::Subdivide() {
 	float x = boundary.m_X;
@@ -63,6 +76,15 @@ void QuadTree::Subdivide() {
 
 	divided = true;
 }
+
+bool QuadTree::Contains(const Rect& obj) const {
+	return (obj.m_X >= boundary.m_X &&
+		obj.m_Y >= boundary.m_Y &&
+		obj.m_X + obj.m_W <= boundary.m_X + boundary.m_W &&
+		obj.m_Y + obj.m_H <= boundary.m_Y + boundary.m_H);
+}
+
+
 
 void QuadTree::Query(const Rect& range, std::vector<GameObject*>& found) {
 	if (!Intersects(this->boundary, range)) return;
@@ -86,34 +108,9 @@ void QuadTree::Query(const Rect& range, std::vector<GameObject*>& found) {
 }
 
 bool QuadTree::Intersects(const Rect& a, const Rect& b) {
-	SDL_Rect rectA = { (int)a.m_X, (int)a.m_Y, (int)a.m_W, (int)a.m_H };
-	SDL_Rect rectB = { (int)b.m_X, (int)b.m_Y, (int)b.m_W, (int)b.m_H };
-
-	SDL_Point cornersA[] = {
-		{ rectA.x, rectA.y },
-		{ rectA.x + rectA.w, rectA.y },
-		{ rectA.x, rectA.y + rectA.h },
-		{ rectA.x + rectA.w, rectA.y + rectA.h }
-	};
-
-	for (const SDL_Point& p : cornersA) {
-		if (SDL_PointInRect(&p, &rectB)) {
-			return true; 
-		}
-	}
-
-	SDL_Point cornersB[] = {
-		{ rectB.x, rectB.y },
-		{ rectB.x + rectB.w, rectB.y },
-		{ rectB.x, rectB.y + rectB.h },
-		{ rectB.x + rectB.w, rectB.y + rectB.h }
-	};
-
-	for (const SDL_Point& p : cornersB) {
-		if (SDL_PointInRect(&p, &rectA)) {
-			return true;
-		}
-	}
-
-	return false;
+	return !(a.m_X + a.m_W < b.m_X ||
+		a.m_X > b.m_X + b.m_W ||
+		a.m_Y + a.m_H < b.m_Y ||
+		a.m_Y > b.m_Y + b.m_H);
 }
+

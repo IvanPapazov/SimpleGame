@@ -26,6 +26,7 @@ public:
     void Query(const Rect& range, std::vector<GameObject*>& found);
     bool Intersects(const Rect& a, const Rect& b);
     void Subdivide();
+    bool Contains(const Rect& obj) const;
     void Clear();
     Rect GetBoundingBox(GameObject* obj) const;
 };

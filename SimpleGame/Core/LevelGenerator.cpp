@@ -199,37 +199,29 @@ bool LevelGenerator::CheckPathConditions(int& x, int y, int id)
 			{
 				if (BlocksPath(x, y, path[i], path[i + 1], rowPos, colPos))
 				{
-					bool nextIsVert = (i + 1 < pathDirections.size() &&
-						(pathDirections[i + 1] == 4 || pathDirections[i + 1] == 2));
-
-					bool prevIsVert = (i - 1 >= 0 &&
-						(pathDirections[i - 1] == 4 || pathDirections[i - 1] == 2));
-
 					switch (pathDirections[i])
 					{
-					case 6: case 9: case 7: case 3:
+					case 3: case 10: case 12: case 11: case 8:
 					{
 						MarkRect(matrix, x, y, 44, 6);
 						matrix[y][x + 29] = 4;
 						matrix[y][x + 22] = 1;
 
-						if (nextIsVert || prevIsVert)
-							matrix[y - 6][x + 22] = 1;
-
+						//matrix[y - 6][x + 22] = 1;
 						return true;
 					}
-					case 5: case 8: case 1: case 10:
+					case 1: case 7: case 13: case 14: case 9:
 					{
 						MarkRect(matrix, x, y, 44, 6);
 						matrix[y][x + 16] = 1;
 						matrix[y][x + 1] = 4;
 
-						if (nextIsVert || prevIsVert)
-							matrix[y - 6][x + 16] = 1;
+						//matrix[y - 6][x + 16] = 1;
 
 						x += 22;
 						return true;
 					}
+					case 15:case 16:
 
 					default:
 						break;
@@ -366,18 +358,36 @@ bool LevelGenerator::FindPathDirections(int id)
 	if (!pathDirections.empty())
 	{
 		int last = pathDirections.back();
-
-		if (direction == 3)
-		{
-			if (last == 4) direction = 5;
-			else if (last == 2) direction = 6;
-			else if (last == 3 || last == 7) direction = 7;
+		int beforeLast = -1;
+		if (pathDirections.size() >= 2) {
+			 beforeLast = pathDirections[pathDirections.size() - 2];
 		}
-		if (direction == 1)
+
+		if (last == 3)
 		{
-			if (last == 4) direction = 8;
-			else if (last == 2) direction = 9;
-			else if (last == 1 || last == 10) direction = 10;
+			if (direction == 4) direction = 5;
+			else if (direction == 2) direction = 6;
+			else if (direction == 3) direction = 7;
+			else if (beforeLast == 7) direction = 3;
+		}
+		if (last == 1)
+		{
+			if (direction == 4) direction = 8;
+			else if (direction == 2) direction = 9;
+			else if (direction == 1 ) direction = 10;
+			else if (direction == 10) direction = 1;
+		}
+		if (last == 2)
+		{
+			if (direction == 3) direction = 12;
+			else if (direction == 1) direction = 11;
+			else if (direction == 2 || direction == 15) direction = 15;
+		}
+		if (last == 4)
+		{
+			if (direction == 3) direction = 14;
+			else if (direction == 1) direction = 13;
+			else if (direction == 4 || direction == 16) direction = 16;
 		}
 	}
 
