@@ -193,36 +193,56 @@ bool LevelGenerator::CheckPathConditions(int& x, int y, int id)
 		for (int k = 0; k < rowPos.size(); k++)
 		{
 			if (y != rowPos[k])
-			{
 				continue;
-			}
-			for (int i = 0; i < path.size() -1; i++)
+
+			for (int i = 0; i < path.size() - 1; i++)
 			{
 				if (BlocksPath(x, y, path[i], path[i + 1], rowPos, colPos))
 				{
-					if (pathDirections[i] == 6 || pathDirections[i] == 9 || pathDirections[i] == 7 || pathDirections[i] == 3)
+					bool nextIsVert = (i + 1 < pathDirections.size() &&
+						(pathDirections[i + 1] == 4 || pathDirections[i + 1] == 2));
+
+					bool prevIsVert = (i - 1 >= 0 &&
+						(pathDirections[i - 1] == 4 || pathDirections[i - 1] == 2));
+
+					switch (pathDirections[i])
+					{
+					case 6: case 9: case 7: case 3:
 					{
 						MarkRect(matrix, x, y, 44, 6);
 						matrix[y][x + 29] = 4;
 						matrix[y][x + 22] = 1;
+
+						if (nextIsVert || prevIsVert)
+							matrix[y - 6][x + 22] = 1;
+
 						return true;
 					}
-					else if (pathDirections[i] == 5 || pathDirections[i] == 8 || pathDirections[i] == 1 || pathDirections[i] == 10)
+					case 5: case 8: case 1: case 10:
 					{
 						MarkRect(matrix, x, y, 44, 6);
-						matrix[y][x] = 1;
-						matrix[y][x + 7] = 4;
-						x = x + 22;
+						matrix[y][x + 16] = 1;
+						matrix[y][x + 1] = 4;
+
+						if (nextIsVert || prevIsVert)
+							matrix[y - 6][x + 16] = 1;
+
+						x += 22;
 						return true;
 					}
 
+					default:
+						break;
+					}
 				}
-
 			}
 			MarkRect(matrix, x, y, 22, 6);
 			return true;
 		}
+
 		return false;
+
+
 	case 7: {
 		//satrt
 		int startIndex = 0;
@@ -238,10 +258,10 @@ bool LevelGenerator::CheckPathConditions(int& x, int y, int id)
 		int temp_y1 = rowPos[startRow + 1] - 12;
 		int temp_x1 = 0;
 
-		if (startDir == 5 || startDir == 8 || startDir == 10 || startDir == 4 || startDir == 1) {            
+		if (startDir == 5 || startDir == 8 || startDir == 10 || startDir == 4 || startDir == 1) {
 			temp_x1 = colPos[startCol + 1] - 12;
 		}
-		else if (startDir == 6 || startDir == 7 || startDir == 9 || startDir == 2 || startDir == 3) {        
+		else if (startDir == 6 || startDir == 7 || startDir == 9 || startDir == 2 || startDir == 3) {
 
 			temp_x1 = colPos[startCol] + 6;
 		}
@@ -260,7 +280,7 @@ bool LevelGenerator::CheckPathConditions(int& x, int y, int id)
 		int temp_y2 = rowPos[endRow + 1] - 12;
 		int temp_x2 = 0;
 
-		if (endDir == 5 || endDir == 8 || endDir == 10 || endDir == 2 || endDir == 1) {            
+		if (endDir == 5 || endDir == 8 || endDir == 10 || endDir == 2 || endDir == 1) {
 			temp_x2 = colPos[endCol + 1] - 12;
 		}
 		else if (endDir == 6 || endDir == 7 || endDir == 9 || endDir == 4 || endDir == 3) {
@@ -334,11 +354,11 @@ bool LevelGenerator::FindPathDirections(int id)
 
 	int direction = -1;
 
-	if (diff == 1)        direction = 2;    
-	else if (diff == -1)  direction = 4;     
+	if (diff == 1)        direction = 2;
+	else if (diff == -1)  direction = 4;
 
-	else if (diff == 5)   direction = 3;    
-	else if (diff == -5)  direction = 1;    
+	else if (diff == 5)   direction = 3;
+	else if (diff == -5)  direction = 1;
 
 	if (direction == -1)
 		return false;
@@ -370,7 +390,6 @@ void LevelGenerator::CreateLevel()
 {
 	GenerateMatrix();
 
-	// Load terrain and doors JSON once
 	Json::Value terrainRoot = g_ResourceManager.getJson("terrain");
 	Json::Value doorsRoot = g_ResourceManager.getJson("doors");
 	Json::Value pathwaysRoot = g_ResourceManager.getJson("pathways");
