@@ -99,9 +99,18 @@
     <ClCompile Include="Game\EnemyCannonBall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\LevelGenerator.cpp">
+    <ClCompile Include="..\externals\sqlite3\sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Database.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\DatabaseInitializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <!--<ClCompile Include="Core\LevelGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>-->
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -200,8 +209,23 @@
     <ClInclude Include="Game\EnemyCannonBall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\LevelGenerator.h">
+    <ClInclude Include="..\externals\sqlite3\sqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\externals\sqlite3\sqlite3ext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DatabaseInitializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PlayerProgress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <!--<ClInclude Include="Core\LevelGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>-->
   </ItemGroup>
 </Project>

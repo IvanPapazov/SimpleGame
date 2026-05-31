@@ -1,0 +1,24 @@
+{
+  "Board": {
+    "id": 18,
+    "x": 450,
+    "y": 300,
+    "width": 1500,
+    "height": 800
+  },
+  "Start": {
+    "id": 19,
+    "width": 600,
+    "height": 110
+  },
+  "Login": {
+    "id": 21,
+    "width": 600,
+    "height": 110
+  },
+  "Stop": {
+    "id": 20,
+    "width": 600,
+    "height": 110
+  }
+}

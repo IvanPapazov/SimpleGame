@@ -49,5 +49,26 @@
   },
   "17": {
     "image": "images/CannonBall.png"
+  },
+  "18": {
+    "image": "images/MenuBoard.png"
+  },
+  "19": {
+    "image": "images/Start.png"
+  },
+  "20": {
+    "image": "images/Stop.png"
+  },
+  "21": {
+    "image": "images/Login.png"
+  },
+  "22": {
+    "image": "images/TextField.png"
+  },
+  "23": {
+    "image": "images/Apply.png"
+  },
+  "24": {
+    "image": "images/Cancel.png"
   }
 }

@@ -7,6 +7,7 @@
 #include <Core/ResourceManager.h>
 #include <iostream>
 
+
 SDL_Texture* RenderComponent::m_OffScreenCombinedTexture = nullptr;
 extern ResourceManager& g_ResourceManager;
 
@@ -21,8 +22,10 @@ RenderComponent::~RenderComponent() = default;
 void RenderComponent::CombineTextures(int x, int y)
 {
     if (!m_OffScreenCombinedTexture) {
-        m_OffScreenCombinedTexture = SDL_CreateTexture(
-            m_Renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 2560, 1300);
+       /* m_OffScreenCombinedTexture = SDL_CreateTexture(
+            m_Renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 2560, 1300);*/
+         m_OffScreenCombinedTexture = SDL_CreateTexture(
+            m_Renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
     }
 
     SDL_SetRenderTarget(m_Renderer, m_OffScreenCombinedTexture);

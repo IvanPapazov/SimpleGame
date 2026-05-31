@@ -6,19 +6,22 @@
 
 #include <Events/EventSystem.h>
 #include <Utils/ReadInfo.h>
+#include <Core/Database.h>
 
 class Game
 {
 private:
-    static const int g_ScreenWidth = 2560;
-    static const int g_ScreenHeight = 1300;
+    const int g_ScreenWidth = GetSystemMetrics(SM_CXSCREEN);
+    const int g_ScreenHeight = GetSystemMetrics(SM_CYSCREEN);
     bool m_IsRunning = false;
+    bool m_ReturnToMenu = false;
     std::string m_RequestedLevel;
     bool m_LevelChangeRequested = false;
     std::string m_PreviousLevel = "level_1";
     std::string m_CurrentLevel = "level_1";
 
     std::unique_ptr<QuadTree> qt;
+    Database m_Database;
 
     Uint64 m_LastFrameTime;
     float m_dt;
@@ -30,6 +33,7 @@ private:
 public:
     static Game& getInstance();
 
+    Database& GetDatabase() { return m_Database; }
     SDL_Renderer* GetRenderer() const { return m_Renderer; }
     SDL_Window* GetWindow() const { return m_Window; }
 
@@ -42,13 +46,19 @@ public:
     void setCurrentLevel(const std::string& levelName) { m_CurrentLevel = levelName; }
 
     float GetDeltaTime() const { return m_dt; }
-    static int GetScreenWidth() { return g_ScreenWidth; }
-    static int GetScreenHeight() { return g_ScreenHeight; }
+    int GetScreenWidth() { return g_ScreenWidth; }
+    int GetScreenHeight() { return g_ScreenHeight; }
     bool IsInitialized();
+    bool RunMainMenu();
+    bool RunLoginMenu();
     void Run();
     void Shutdown();
     void LoadLevel(const std::string& levelName);
     void RequestLevelChange(const std::string& levelName);
+    void RequestReturnToMenu();
+    bool IsReturnToMenu() const { return m_ReturnToMenu; }
+    void ResetReturnToMenu() { m_ReturnToMenu = false; }
+    void SaveDeathRecord();
 
 
     Game() = default;

@@ -101,8 +101,8 @@ void ReadInfo::ReadInfoBackground()
 
 
 			auto render = CreateRenderComponent(node);
-			float x = node["x"].asFloat();
-			float y = node["y"].asFloat();
+			float x = node["x"].asFloat() * (GetSystemMetrics(SM_CXSCREEN) / 2560.0f);
+			float y = node["y"].asFloat() * (GetSystemMetrics(SM_CYSCREEN) / 1300.0f);
 
 			render->CombineTextures(x, y);
 		}
@@ -199,11 +199,21 @@ void ReadInfo::ReadSpriteData() {
 
 }
 std::unique_ptr<RigidBodyComponent> ReadInfo::CreateRigidBodyComponent(Json::Value& data) {
-	return std::make_unique<RigidBodyComponent>(Vec2(data["x"].asFloat(), data["y"].asFloat()), data["gravity"].asFloat());
+
+	float scaleX = GetSystemMetrics(SM_CXSCREEN) / 2560.0f;
+	float scaleY = GetSystemMetrics(SM_CYSCREEN) / 1300.0f;
+
+	return std::make_unique<RigidBodyComponent>(
+		Vec2(
+			data["x"].asFloat() * scaleX,
+			data["y"].asFloat() * scaleY
+		),
+		data["gravity"].asFloat()
+	);
 }
 
 std::unique_ptr<CollisionComponent> ReadInfo::CreateCollisionComponent(Json::Value& data) {
-	return std::make_unique<CollisionComponent>(data["x"].asFloat(), data["y"].asFloat(), data["width"].asFloat(), data["height"].asFloat());
+	return std::make_unique<CollisionComponent>(data["x"].asFloat() * (GetSystemMetrics(SM_CXSCREEN) / 2560.0f), data["y"].asFloat() * (GetSystemMetrics(SM_CYSCREEN) / 1300.0f), data["width"].asFloat() * (GetSystemMetrics(SM_CXSCREEN) / 2560.0f), data["height"].asFloat() * (GetSystemMetrics(SM_CYSCREEN) / 1300.0f));
 }
 
 std::unique_ptr<HealthComponent> ReadInfo::CreateHealthComponent(Json::Value& data) {
@@ -215,7 +225,7 @@ std::unique_ptr<MovementComponent> ReadInfo::CreateMovementComponent(Json::Value
 }
 
 std::unique_ptr<RenderComponent> ReadInfo::CreateRenderComponent(Json::Value& data) {
-	return std::make_unique<RenderComponent>(data["id"].asInt(), data["width"].asFloat(), data["height"].asFloat(), game.GetRenderer());
+	return std::make_unique<RenderComponent>(data["id"].asInt(), data["width"].asFloat() * (GetSystemMetrics(SM_CXSCREEN) / 2560.0f), data["height"].asFloat() * (GetSystemMetrics(SM_CYSCREEN) / 1300.0f), game.GetRenderer());
 }
 
 std::unique_ptr<LevelTransitionComponent> ReadInfo::CreateLevelTransitionComponent(Json::Value& data) {

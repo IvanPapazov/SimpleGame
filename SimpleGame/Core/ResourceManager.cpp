@@ -26,7 +26,9 @@ void ResourceManager::setCurrentState(int id, const std::string& state) {
 
 bool ResourceManager::loadJson(const std::string& id, const std::string& filePath)
 {
+    std::cout << "Path = " << filePath << std::endl;
     std::ifstream file(filePath, std::ios::binary);
+
     if (!file.is_open())
     {
         std::cerr << "Could not open JSON\n";

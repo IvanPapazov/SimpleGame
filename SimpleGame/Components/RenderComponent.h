@@ -3,6 +3,8 @@
 #include <SDL.h>
 #include "Core/Component.h"
 #include "SDL_image.h"
+#include <iostream>
+#include <windows.h>
 
 class RenderComponent : public Component
 {

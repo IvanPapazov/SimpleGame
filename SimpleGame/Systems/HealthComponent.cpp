@@ -30,7 +30,8 @@ void HealthComponent::Update()
     {
         m_IsDead = true;
         m_TransitionTimer.Update(3000, [&]() {
-            game.RequestLevelChange("level_1");
+            game.SaveDeathRecord();
+            game.RequestReturnToMenu();
             });
         g_ResourceManager.setCurrentState(renderOwner->GetTextureId(), "Dead");
     }

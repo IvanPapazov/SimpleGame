@@ -20,11 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\externals\jsoncpp\jsoncpp.cpp" />
+    <ClCompile Include="..\externals\sqlite3\sqlite3.c" />
+    <ClCompile Include="Core\Database.cpp" />
+    <ClCompile Include="Core\DatabaseInitializer.cpp" />
     <ClCompile Include="Game\EnemyCannonBall.cpp" />
     <ClCompile Include="Game\Pathways.cpp" />
     <ClCompile Include="Events\EventHandler.cpp" />
     <ClCompile Include="Events\EventSystem.cpp" />
-    <ClCompile Include="Core\LevelGenerator.cpp" />
+    <!--<ClCompile Include="Core\LevelGenerator.cpp" />-->
     <ClCompile Include="Systems\CannonFireAIComponent.cpp" />
     <ClCompile Include="Core\GameObjectManager.cpp" />
     <ClCompile Include="Game\Door.cpp" />
@@ -52,6 +55,8 @@
   <ItemGroup>
     <ClInclude Include="..\externals\jsoncpp\json\json-forwards.h" />
     <ClInclude Include="..\externals\jsoncpp\json\json.h" />
+    <ClInclude Include="..\externals\sqlite3\sqlite3.h" />
+    <ClInclude Include="..\externals\sqlite3\sqlite3ext.h" />
     <ClInclude Include="Components\CannonFireAIComponent.h" />
     <ClInclude Include="Components\AIComponent.h" />
     <ClInclude Include="Components\EnemyRunAIComponent.h" />
@@ -61,8 +66,11 @@
     <ClInclude Include="Components\RenderComponent.h" />
     <ClInclude Include="Components\MovementComponent.h" />
     <ClInclude Include="Components\RigidBodyComponent.h" />
+    <ClInclude Include="Core\Database.h" />
+    <ClInclude Include="Core\DatabaseInitializer.h" />
     <ClInclude Include="Core\GameObjectManager.h" />
     <ClInclude Include="Core\Component.h" />
+    <ClInclude Include="Core\PlayerProgress.h" />
     <ClInclude Include="Game\EnemyCannonBall.h" />
     <ClInclude Include="Game\Pathways.h" />
     <ClInclude Include="Events\EventHandler.h" />
@@ -78,7 +86,7 @@
     <ClInclude Include="Core\ResourceManager.h" />
     <ClInclude Include="Components\LevelTransitionComponent.h" />
     <ClInclude Include="Core\QuadTree.h" />
-    <ClInclude Include="Core\LevelGenerator.h" />
+    <!--<ClInclude Include="Core\LevelGenerator.h" />-->
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils\Timer.h" />
     <ClInclude Include="Utils\ReadInfo.h" />
@@ -108,7 +116,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -144,7 +152,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\i_pap\Desktop\SImpleGame\externals\SDL2_image\include;C:\Users\i_pap\Desktop\SImpleGame\externals\SDL2\include;D:\SimpleGame\externals\SDL2_image\include;D:\SimpleGame\externals\SDL2\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\i_pap\Desktop\SImpleGame\externals\SDL2_image\include;C:\Users\i_pap\Desktop\SImpleGame\externals\SDL2\include;D:\SimpleGame\externals\SDL2_image\include;D:\SimpleGame\externals\SDL2\include;$(SolutionDir);$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\i_pap\Desktop\SImpleGame\externals\SDL2_image\lib\x64;C:\Users\i_pap\Desktop\SImpleGame\externals\SDL2\lib\x64;D:\SimpleGame\externals\SDL2_image\lib\x64;D:\SimpleGame\externals\SDL2\lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)build\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(Configuration)\</IntDir>
@@ -188,12 +196,12 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\SimpleGame\externals\jsoncpp;$(SolutionDir)\SimpleGame\system;$(SolutionDir)\SimpleGame\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)externals\SDL2\lib\x64\SDL2.dll" "$(SolutionDir)build\SDL2.dll"

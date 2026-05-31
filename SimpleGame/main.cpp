@@ -13,7 +13,14 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	game.Run();
+	while (game.RunMainMenu()) {
+		game.Run();
+		if (!game.IsReturnToMenu()) {
+			break;
+		}
+		game.ResetReturnToMenu();
+	}
+
 	game.Shutdown();
 
 	return 0;
